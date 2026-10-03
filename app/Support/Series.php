@@ -10,7 +10,7 @@ class Series
     public static function group(Collection $motors): Collection
     {
         return $motors->groupBy('series_slug')->map(function (Collection $types) {
-            $types = $types->sortBy(fn ($t) => $t->lowest['cash'])->values();
+            $types = $types->sortBy(fn ($t) => $t->lowest_offer['cash'])->values();
             $cheapest = $types->first();
             $homeTypes = $types->where('show_on_home', true);
 

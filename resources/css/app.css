@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+[x-cloak] { display: none !important; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.swiper-pagination-bullet-active { background: #d6001c !important; }
+:root { --swiper-theme-color: #d6001c; }
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid rgba(214, 0, 28, 0.25);
+    border-color: #d6001c;
+}
+input[type="checkbox"] { accent-color: #d6001c; }
