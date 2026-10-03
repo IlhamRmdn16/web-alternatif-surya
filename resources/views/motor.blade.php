@@ -65,14 +65,14 @@
         <span class="text-zinc-800">{{ $motor->full_name }}</span>
     </nav>
 
-    <div class="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-14">
-        <div>
+    <div class="mt-6 grid items-start gap-8 lg:grid-cols-2 lg:gap-14">
+        <div class="lg:sticky lg:top-28">
             <div class="flex aspect-square items-center justify-center rounded-3xl bg-zinc-50 p-6 md:aspect-[4/3]">
                 <img :src="image" alt="{{ $motor->full_name }} Garut" class="max-h-full max-w-full object-contain" x-show="image" @if(! $imgUrl && ! optional($motor->colors->first())->image) style="display:none" @endif>
                 <p x-show="!image" class="text-sm text-zinc-400" @if($imgUrl) style="display:none" @endif>Foto belum tersedia</p>
             </div>
             @if($motor->colors->isNotEmpty())
-            <div class="mt-5">
+            <div class="mt-5" data-tour="colors">
                 <p class="text-sm font-bold text-zinc-900">Pilihan warna: <span class="font-medium text-zinc-600" x-text="colors[ci]?.name">{{ $motor->colors->first()->name }}</span></p>
                 <div class="mt-3 flex flex-wrap gap-3">
                     <template x-for="(c, i) in colors" :key="i">
@@ -91,7 +91,7 @@
 
             @if($siblings->count() > 1)
                 <p class="mt-6 text-sm font-bold text-zinc-900">Pilih tipe {{ $motor->name }}</p>
-                <div class="mt-3 flex flex-wrap gap-2">
+                <div class="mt-3 flex flex-wrap gap-2" data-tour="types">
                     @foreach($siblings as $t)
                         <a href="{{ route('motor.show', $t) }}" @if($t->id === $motor->id) aria-current="page" @endif
                            class="rounded-xl border-2 px-4 py-2 text-sm font-bold transition {{ $t->id === $motor->id ? 'border-honda bg-red-50 text-honda' : 'border-zinc-300 text-zinc-700 hover:border-zinc-500' }}">{{ $t->variant }}</a>
@@ -99,16 +99,26 @@
                 </div>
             @endif
 
-            {{-- Harga: berubah otomatis sesuai warna yang dipilih --}}
-            <div class="mt-6 rounded-2xl bg-zinc-50 p-5">
-                <p class="text-xs text-zinc-500">Harga OTR Garut tipe {{ $motor->variant }}<span x-show="colors[ci]?.name"> - warna <span x-text="colors[ci]?.name">{{ $motor->colors->first()?->name }}</span></span></p>
-                <div class="mt-1">
-                    <span x-show="offer.price <= 0" class="text-2xl font-extrabold text-honda" @if($first['price'] > 0) style="display:none" @endif>Hubungi kami</span>
-                    <div x-show="offer.price > 0" class="flex flex-wrap items-baseline gap-x-3" @if($first['price'] <= 0) style="display:none" @endif>
-                        <s x-show="offer.discount > 0" x-text="rp(offer.price)" class="text-lg font-semibold text-zinc-400" @if($first['discount'] <= 0) style="display:none" @endif>{{ $rp($first['price']) }}</s>
-                        <span x-text="rp(offer.cash)" class="text-3xl font-extrabold text-honda">{{ $rp($first['cash']) }}</span>
+            {{-- Harga: berubah otomatis sesuai warna. Harga OTR & harga cash SELALU tampil (tanpa diskon, nilainya sama). --}}
+            <div class="mt-6 rounded-2xl bg-zinc-50 p-5" data-tour="price">
+                <p class="text-xs text-zinc-500">Harga Garut tipe {{ $motor->variant }}<span x-show="colors[ci]?.name"> - warna <span x-text="colors[ci]?.name">{{ $motor->colors->first()?->name }}</span></span></p>
+
+                <p x-show="offer.price <= 0" class="mt-2 text-2xl font-extrabold text-honda" @if($first['price'] > 0) style="display:none" @endif>Hubungi kami</p>
+
+                <div x-show="offer.price > 0" class="mt-3 grid grid-cols-2 gap-4" @if($first['price'] <= 0) style="display:none" @endif>
+                    <div>
+                        <p class="text-xs font-semibold text-zinc-500">Harga OTR</p>
+                        <p class="mt-1 text-lg font-bold text-zinc-900 md:text-xl"
+                           x-text="rp(offer.price)"
+                           :style="offer.discount > 0 ? 'text-decoration:line-through;color:#a1a1aa' : ''"
+                           @if($first['discount'] > 0) style="text-decoration:line-through;color:#a1a1aa" @endif>{{ $rp($first['price']) }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-semibold text-zinc-500">Harga cash</p>
+                        <p class="mt-1 text-2xl font-extrabold text-honda md:text-3xl" x-text="rp(offer.cash)">{{ $rp($first['cash']) }}</p>
                     </div>
                 </div>
+
                 <p x-show="offer.discount > 0" class="mt-3 inline-block rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-700" @if($first['discount'] <= 0) style="display:none" @endif>
                     Diskon pembelian cash <span x-text="rp(offer.discount)">{{ $rp($first['discount']) }}</span></p>
                 <p x-show="offer.discount > 0" class="mt-2 text-xs text-zinc-500" @if($first['discount'] <= 0) style="display:none" @endif>Harga coret adalah harga OTR normal. Harga setelah diskon berlaku untuk pembelian cash.</p>
@@ -116,7 +126,7 @@
                 <p class="mt-2 text-xs text-zinc-500">Harga dapat berubah sewaktu-waktu. Konfirmasi harga & stok ke sales kami.</p>
             </div>
 
-            <button type="button" @click="open = true; done = false" class="mt-6 w-full rounded-xl bg-honda py-4 text-base font-bold text-white shadow-lg shadow-red-200 transition hover:bg-honda-dark md:w-auto md:px-10">Konsultasi Pembelian</button>
+            <button type="button" data-tour="consult" @click="open = true; done = false" class="mt-6 w-full rounded-xl bg-honda py-4 text-base font-bold text-white shadow-lg shadow-red-200 transition hover:bg-honda-dark md:w-auto md:px-10">Konsultasi Pembelian</button>
 
             @if($motor->description)
                 <div class="mt-8">
@@ -124,9 +134,13 @@
                     <p class="mt-2 whitespace-pre-line text-sm leading-relaxed text-zinc-600">{{ $motor->description }}</p>
                 </div>
             @endif
+        </div>
+    </div>
 
+    {{-- Tabel harga: lebar penuh di bawah foto & info, supaya tidak ada ruang kosong di kolom foto --}}
+    <section class="mt-12 grid gap-8 lg:gap-14 {{ $varied ? 'lg:grid-cols-2' : '' }}" aria-label="Daftar harga">
             @if($varied)
-                <div class="mt-8">
+                <div>
                     <h2 class="text-lg font-bold text-zinc-900">Harga {{ $motor->full_name }} per warna</h2>
                     <div class="mt-3 overflow-x-auto rounded-xl border border-zinc-200">
                         <table class="w-full text-sm">
@@ -137,7 +151,7 @@
                                     <tr>
                                         <td class="px-4 py-3 font-medium"><span class="mr-2 inline-block h-3 w-3 rounded-full ring-1 ring-zinc-300" style="background:{{ $c->hex }}"></span>{{ $c->name }}</td>
                                         <td class="px-4 py-3 text-right {{ $o['discount'] > 0 ? 'text-zinc-400 line-through' : 'font-bold text-honda' }}">{{ $o['price'] > 0 ? $rp($o['price']) : '-' }}</td>
-                                        <td class="px-4 py-3 text-right font-bold text-honda">{{ $o['discount'] > 0 ? $rp($o['cash']) : '-' }}</td>
+                                        <td class="px-4 py-3 text-right font-bold text-honda">{{ $o['price'] > 0 ? $rp($o['cash']) : '-' }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -146,7 +160,7 @@
                 </div>
             @endif
 
-            <div class="mt-8">
+            <div>
                 <h2 class="text-lg font-bold text-zinc-900">Daftar harga {{ $motor->display_name }} Garut</h2>
                 <div class="mt-3 overflow-x-auto rounded-xl border border-zinc-200">
                     <table class="w-full text-sm">
@@ -156,12 +170,38 @@
                                 @php($o = $t->lowest_offer)
                                 <tr class="{{ $t->id === $motor->id ? 'bg-red-50/50' : '' }}">
                                     <td class="px-4 py-3 font-medium"><a href="{{ route('motor.show', $t) }}" class="hover:text-honda">{{ $t->variant }}</a></td>
-                                    <td class="px-4 py-3 text-right {{ $o['discount'] > 0 ? 'text-zinc-400 line-through' : 'font-bold text-honda' }}">{{ $t->has_varied_prices ? 'mulai ' : '' }}{{ $o['price'] > 0 ? $rp($o['price']) : '-' }}</td>
-                                    <td class="px-4 py-3 text-right font-bold text-honda">{{ $o['discount'] > 0 ? $rp($o['cash']) : '-' }}</td>
+                                    <td class="px-4 py-3 text-right {{ $o['discount'] > 0 ? 'text-zinc-400 line-through' : 'font-bold text-honda' }}">{{ $o['price'] > 0 ? $rp($o['price']) : '-' }}</td>
+                                    <td class="px-4 py-3 text-right font-bold text-honda">{{ $o['price'] > 0 ? $rp($o['cash']) : '-' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+            </div>
+    </section>
+
+    {{-- Tombol petunjuk (?) di atas tombol WhatsApp. Klik untuk membuka tutorial halaman. --}}
+    <button type="button" x-data @click="$dispatch('open-guide')" title="Petunjuk penggunaan halaman" aria-label="Petunjuk penggunaan halaman"
+            class="fixed bottom-[88px] right-[26px] z-40 flex h-11 w-11 items-center justify-center rounded-full bg-white text-honda shadow-lg ring-1 ring-zinc-200 transition hover:scale-110 hover:bg-honda hover:text-white md:bottom-[108px] md:right-[42px]">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </button>
+
+    {{-- Petunjuk penggunaan halaman: otomatis tampil sekali saja (lihat motorGuide di app.js) --}}
+    <div x-data="motorGuide" @open-guide.window="start(false)" x-cloak>
+        <div x-show="active" x-transition.opacity class="fixed inset-x-4 bottom-4 z-[70] mx-auto max-w-md rounded-2xl bg-zinc-900 p-5 text-white shadow-2xl sm:bottom-6" role="dialog" aria-live="polite" aria-label="Petunjuk halaman">
+            <div class="flex items-start justify-between gap-3">
+                <p class="text-xs font-bold uppercase tracking-widest text-red-400" x-text="'Petunjuk ' + (i + 1) + ' dari ' + list.length"></p>
+                <button type="button" @click="finish()" class="text-xs font-semibold text-zinc-400 hover:text-white">Lewati</button>
+            </div>
+            <p class="mt-2 text-base font-bold" x-text="step.title"></p>
+            <p class="mt-1 text-sm leading-relaxed text-zinc-300" x-text="step.text"></p>
+            <div class="mt-4 flex items-center justify-between gap-3">
+                <div class="flex gap-1.5">
+                    <template x-for="(s, n) in list" :key="n"><span class="h-1.5 w-5 rounded-full" :class="n === i ? 'bg-red-500' : 'bg-zinc-600'"></span></template>
+                </div>
+                <div class="flex gap-2">
+                    <button type="button" x-show="i > 0" @click="prev()" class="rounded-lg border border-zinc-600 px-4 py-2 text-xs font-bold hover:border-white">Kembali</button>
+                    <button type="button" @click="next()" class="rounded-lg bg-honda px-4 py-2 text-xs font-bold hover:bg-honda-dark" x-text="i < list.length - 1 ? 'Lanjut' : 'Mengerti'"></button>
                 </div>
             </div>
         </div>
@@ -173,8 +213,9 @@
             <template x-if="done">
                 <div class="text-center">
                     <p class="text-lg font-bold text-zinc-900">Data terkirim</p>
-                    <p class="mt-2 text-sm text-zinc-600">Terima kasih! Tim kami akan segera menghubungi Anda.</p>
-                    <button @click="open = false" class="mt-5 w-full rounded-xl bg-zinc-900 py-3 text-sm font-semibold text-white">Tutup</button>
+                    <p class="mt-2 text-sm text-zinc-600">Terima kasih! Data Anda sudah kami terima dan WhatsApp sales kami dibuka di tab baru. Jika tidak terbuka, klik tombol di bawah.</p>
+                    <a x-show="waUrl" :href="waUrl" target="_blank" rel="noopener" class="mt-5 block w-full rounded-xl bg-green-500 py-3 text-sm font-semibold text-white hover:bg-green-600">Buka WhatsApp</a>
+                    <button @click="open = false" class="mt-3 w-full rounded-xl border border-zinc-300 py-3 text-sm font-semibold">Tutup</button>
                 </div>
             </template>
             <form x-show="!done" @submit.prevent="submit">
@@ -203,11 +244,12 @@
                         </select></label>
                 </div>
 
+                <p class="mt-3 text-xs text-zinc-500">Setelah dikirim, Anda akan diarahkan ke WhatsApp sales kami dengan pesan yang sudah terisi.</p>
                 <p x-show="error" x-text="error" class="mt-3 text-sm text-red-600"></p>
                 <div class="mt-5 flex gap-3">
                     <button type="button" @click="open = false" class="flex-1 rounded-xl border border-zinc-300 py-3 text-sm font-semibold">Batal</button>
                     <button type="submit" :disabled="loading" class="flex-1 rounded-xl bg-honda py-3 text-sm font-semibold text-white hover:bg-honda-dark disabled:opacity-60">
-                        <span x-show="!loading">Kirim</span><span x-show="loading">Mengirim...</span>
+                        <span x-show="!loading">Kirim via WhatsApp</span><span x-show="loading">Mengirim...</span>
                     </button>
                 </div>
             </form>

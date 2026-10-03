@@ -13,20 +13,29 @@
 @endpush
 
 @section('content')
-<section class="mx-auto max-w-3xl px-4 pt-10">
-    <h1 class="text-2xl font-extrabold text-zinc-900 md:text-4xl">Pertanyaan Seputar Beli Motor Honda di Garut</h1>
-    <div class="mt-3 h-1 w-14 rounded bg-honda"></div>
-    <div class="mt-8 space-y-3" x-data="{ open: 0 }">
-        @forelse($faqs as $i => $f)
-            <div class="rounded-xl border border-zinc-200">
-                <button class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-bold text-zinc-900" @click="open = open === {{ $i }} ? null : {{ $i }}" :aria-expanded="open === {{ $i }}">
-                    {{ $f->question }}<span class="text-xl text-honda" x-text="open === {{ $i }} ? '−' : '+'"></span>
-                </button>
-                <div x-show="open === {{ $i }}" @if($i !== 0) x-cloak @endif class="whitespace-pre-line px-5 pb-5 text-sm leading-relaxed text-zinc-600">{{ $f->answer }}</div>
+<section class="mx-auto max-w-7xl px-4 pt-10">
+    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div>
+            <h1 class="text-2xl font-extrabold text-zinc-900 md:text-4xl">Pertanyaan Seputar Beli Motor Honda di Garut</h1>
+            <div class="mt-3 h-1 w-14 rounded bg-honda"></div>
+            <div class="mt-8 space-y-3" x-data="{ open: 0 }">
+                @forelse($faqs as $i => $f)
+                    <div class="rounded-xl border border-zinc-200">
+                        <button class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-bold text-zinc-900" @click="open = open === {{ $i }} ? null : {{ $i }}" :aria-expanded="open === {{ $i }}">
+                            {{ $f->question }}<span class="text-xl text-honda" x-text="open === {{ $i }} ? '−' : '+'"></span>
+                        </button>
+                        <div x-show="open === {{ $i }}" @if($i !== 0) x-cloak @endif class="whitespace-pre-line px-5 pb-5 text-sm leading-relaxed text-zinc-600">{{ $f->answer }}</div>
+                    </div>
+                @empty
+                    <p class="rounded-2xl border border-dashed border-zinc-300 p-8 text-center text-sm text-zinc-500">FAQ belum tersedia.</p>
+                @endforelse
             </div>
-        @empty
-            <p class="rounded-2xl border border-dashed border-zinc-300 p-8 text-center text-sm text-zinc-500">FAQ belum tersedia.</p>
-        @endforelse
+        </div>
+
+        {{-- Gambar statis (hanya desktop). Letakkan file di public/images/faq.webp --}}
+        <div class="hidden lg:block">
+            <img src="{{ asset('images/faq.webp') }}" alt="Ilustrasi tanya jawab seputar beli motor Honda di Garut" loading="lazy" onerror="this.parentElement.remove()" class="mx-auto h-auto w-full max-w-md">
+        </div>
     </div>
 </section>
 @endsection

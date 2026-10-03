@@ -21,17 +21,19 @@ const firstError = (d) => (d.errors ? Object.values(d.errors)[0][0] : d.message)
 
 /* Tombol WhatsApp melayang: simpan nama + alamat sebagai prospek, lalu buka WhatsApp */
 Alpine.data('waLead', (url) => ({
-    open: false, loading: false, name: '', address: '', error: '',
+    open: false, loading: false, name: '', address: '', phone: '', error: '',
     async submit() {
         this.error = '';
         if (!this.name.trim() || !this.address.trim()) { this.error = 'Nama dan alamat wajib diisi.'; return; }
+        if (!this.phone.trim()) { this.error = 'Nomor WhatsApp wajib diisi.'; return; }
+        if (!/^[0-9+\-\s]{8,20}$/.test(this.phone.trim())) { this.error = 'Format nomor WhatsApp tidak valid (contoh: 08123456789).'; return; }
         this.loading = true;
         const win = window.open('', '_blank');
-        const r = await post(url, { name: this.name, address: this.address, page: location.href });
+        const r = await post(url, { name: this.name, address: this.address, phone: this.phone, page: location.href });
         this.loading = false;
         if (r.ok && r.data.url) {
             win ? (win.location.href = r.data.url) : (location.href = r.data.url);
-            this.open = false; this.name = ''; this.address = '';
+            this.open = false; this.name = ''; this.address = ''; this.phone = '';
         } else {
             if (win) win.close();
             this.error = firstError(r.data);
@@ -43,7 +45,7 @@ Alpine.data('waLead', (url) => ({
 Alpine.data('motorPage', (cfg) => ({
     colors: cfg.colors, mainImage: cfg.image,
     ci: 0,
-    open: false, loading: false, done: false, error: '',
+    open: false, loading: false, done: false, error: '', waUrl: '',
     form: { name: '', address: '', phone: '', purpose: '', dp: '', tenor: '' },
     rp: (n) => 'Rp ' + Number(n || 0).toLocaleString('id-ID'),
     get image() { return this.colors[this.ci]?.image || this.mainImage; },
@@ -61,11 +63,64 @@ Alpine.data('motorPage', (cfg) => ({
     async submit() {
         this.error = '';
         this.loading = true;
-        const r = await post(cfg.url, { ...this.form, motor_id: cfg.motorId, color_name: this.colors[this.ci]?.name });
+        // Buka tab WhatsApp langsung saat klik (agar tidak diblokir popup blocker), isi alamatnya setelah data tersimpan.
+        const win = window.open('', '_blank');
+        const r = await post(cfg.url, { ...this.form, motor_id: cfg.motorId, color_name: this.colors[this.ci]?.name, page: location.href });
         this.loading = false;
-        if (r.ok) { this.done = true; this.form = { name: '', address: '', phone: '', purpose: '', dp: '', tenor: '' }; }
-        else this.error = firstError(r.data);
+        if (r.ok) {
+            this.waUrl = r.data.url || '';
+            if (this.waUrl) { win ? (win.location.href = this.waUrl) : (location.href = this.waUrl); }
+            else if (win) win.close();
+            this.done = true;
+            this.form = { name: '', address: '', phone: '', purpose: '', dp: '', tenor: '' };
+        } else {
+            if (win) win.close();
+            this.error = firstError(r.data);
+        }
     },
+}));
+
+/* Petunjuk halaman detail motor: tampil otomatis SEKALI saja (kunjungan pertama ke halaman detail mana pun) */
+const GUIDE_KEY = 'dmhg_motor_guide_v1';
+Alpine.data('motorGuide', () => ({
+    active: false, i: 0, list: [], el: null,
+    steps: [
+        { key: 'colors', title: 'Pilih warna', text: 'Klik bulatan warna di bawah foto untuk melihat foto dan harga warna tersebut.' },
+        { key: 'types', title: 'Ganti tipe', text: 'Klik tombol tipe (misalnya CBS atau CBS ISS) untuk membuka tipe lain dari motor yang sama. Setiap tipe punya harga sendiri.' },
+        { key: 'price', title: 'Lihat harga', text: 'Harga OTR dan harga cash tampil di sini, dan berubah otomatis mengikuti warna yang Anda pilih.' },
+        { key: 'consult', title: 'Konsultasi pembelian', text: 'Klik tombol ini untuk tanya stok, minta simulasi kredit, atau pesan unit. Tim kami akan menghubungi Anda.' },
+    ],
+    init() {
+        let seen = true;
+        try { seen = localStorage.getItem(GUIDE_KEY) === '1'; } catch (e) { seen = true; }
+        if (!seen) setTimeout(() => this.start(true), 900);
+    },
+    build() {
+        this.list = this.steps.filter((s) => {
+            const e = document.querySelector('[data-tour="' + s.key + '"]');
+            return e && e.offsetParent !== null;
+        });
+    },
+    start(first) {
+        this.build();
+        if (!this.list.length) return;
+        if (first) { try { localStorage.setItem(GUIDE_KEY, '1'); } catch (e) {} }
+        this.i = 0; this.active = true; this.focus();
+    },
+    focus() {
+        this.clear();
+        const s = this.list[this.i];
+        const e = s && document.querySelector('[data-tour="' + s.key + '"]');
+        if (!e) return;
+        this.el = e;
+        e.classList.add('tour-hl');
+        window.scrollTo({ top: Math.max(e.getBoundingClientRect().top + window.scrollY - 150, 0), behavior: 'smooth' });
+    },
+    clear() { if (this.el) { this.el.classList.remove('tour-hl'); this.el = null; } },
+    next() { if (this.i < this.list.length - 1) { this.i++; this.focus(); } else this.finish(); },
+    prev() { if (this.i > 0) { this.i--; this.focus(); } },
+    finish() { this.clear(); this.active = false; },
+    get step() { return this.list[this.i] || {}; },
 }));
 
 /* Form motor di admin: warna (nama + foto + harga opsional), auto-pilih jenis jika seri sudah ada */

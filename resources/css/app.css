@@ -13,3 +13,7 @@ input:focus, select:focus, textarea:focus {
     border-color: #d6001c;
 }
 input[type="checkbox"] { accent-color: #d6001c; }
+
+/* Sorotan elemen pada petunjuk halaman detail motor */
+.tour-hl { outline: 3px solid #d6001c; outline-offset: 6px; border-radius: 1rem; animation: tourPulse 1.4s ease-in-out infinite; }
+@keyframes tourPulse { 0%, 100% { outline-color: rgba(214, 0, 28, 1); } 50% { outline-color: rgba(214, 0, 28, 0.3); } }

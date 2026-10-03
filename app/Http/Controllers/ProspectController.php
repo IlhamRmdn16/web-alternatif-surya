@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Motor;
 use App\Models\Prospect;
 use App\Models\Setting;
+use App\Support\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -23,7 +24,7 @@ class ProspectController extends Controller
             'motor_id'     => 'nullable|exists:motors,id',
             'variant_name' => 'nullable|string|max:100',
             'color_name'   => 'nullable|string|max:60',
-            'color_name'   => 'nullable|string|max:60',
+            'page'         => 'nullable|string|max:255',
             'dp'           => 'required_if:purpose,simulasi|nullable|numeric|min:0',
             'tenor'        => ['required_if:purpose,simulasi', 'nullable', Rule::in(Prospect::TENORS)],
         ], [
@@ -44,9 +45,31 @@ class ProspectController extends Controller
             $data['tenor'] = null;
         }
 
+        $page = $data['page'] ?? null;
+        unset($data['page']);
+
         Prospect::create($data + ['source' => 'form']);
 
-        return response()->json(['message' => 'Terima kasih! Data Anda sudah kami terima. Tim kami akan segera menghubungi Anda.']);
+        // Pesan WhatsApp otomatis berisi data formulir, supaya sales langsung paham kebutuhan konsumen.
+        $motor = ! empty($data['motor_id']) ? Motor::find($data['motor_id']) : null;
+        $lines = ["Halo Dealer Motor Honda Garut, saya {$data['name']} dari {$data['address']}."];
+        $lines[] = 'Keperluan: '.Prospect::PURPOSES[$data['purpose']];
+        if ($motor) {
+            $lines[] = 'Unit: '.$motor->full_name.(! empty($data['color_name']) ? ' warna '.$data['color_name'] : '');
+        }
+        if ($data['purpose'] === 'simulasi') {
+            $lines[] = 'DP: '.Helpers::rp($data['dp']);
+            $lines[] = 'Tenor: '.$data['tenor'].' bulan';
+        }
+        $lines[] = 'No. HP: '.$data['phone'];
+        if ($page) $lines[] = 'Halaman: '.$page;
+
+        $number = Setting::normalizeNumber(Setting::where('key', 'wa_number')->value('value'));
+
+        return response()->json([
+            'message' => 'Terima kasih! Data Anda sudah kami terima. Tim kami akan segera menghubungi Anda.',
+            'url'     => 'https://wa.me/'.$number.'?text='.rawurlencode(implode("\n", $lines)),
+        ]);
     }
 
     /** Klik tombol WhatsApp: simpan nama + alamat, lalu kembalikan link wa.me. */
@@ -55,13 +78,18 @@ class ProspectController extends Controller
         $data = $r->validate([
             'name'    => 'required|string|max:100',
             'address' => 'required|string|max:255',
+            'phone'   => ['required', 'string', 'regex:/^[0-9+\-\s]{8,20}$/'],
             'page'    => 'nullable|string|max:255',
-        ], ['required' => ':attribute wajib diisi.'], ['name' => 'Nama', 'address' => 'Alamat']);
+        ], [
+            'required'    => ':attribute wajib diisi.',
+            'phone.regex' => 'Format nomor WhatsApp tidak valid (contoh: 08123456789).',
+        ], ['name' => 'Nama', 'address' => 'Alamat', 'phone' => 'Nomor WhatsApp']);
 
         Prospect::create([
             'source'  => 'whatsapp',
             'name'    => $data['name'],
             'address' => $data['address'],
+            'phone'   => trim($data['phone']),
             'message' => $data['page'] ?? null,
         ]);
 
