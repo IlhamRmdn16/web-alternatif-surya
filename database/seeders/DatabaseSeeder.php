@@ -15,8 +15,8 @@ class DatabaseSeeder extends Seeder
    public function run(): void
     {
         User::updateOrCreate(
-            ['email' => 'admin@dealermotorhondagarut.id'],
-            ['name' => 'Admin', 'password' => Hash::make('ganti-password-ini')]
+            ['email' => 'ilhamrmdn700@gmail.com'],
+            ['name' => 'Admin', 'password' => Hash::make('ilham161102_*#')]
         );
 
         foreach (['Matic', 'Sport', 'EV', 'Cub'] as $i => $name) {
