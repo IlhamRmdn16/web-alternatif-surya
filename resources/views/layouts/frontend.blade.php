@@ -12,7 +12,7 @@
     $mapUrl = ! empty($settings['map_url']) ? $settings['map_url'] : 'https://www.google.com/maps/search/?api=1&query='.urlencode($dealerAddress);
     $nav = [
         ['home', 'Beranda', 'home'],
-        ['pricelist', 'Pricelist', 'pricelist'],
+        ['pricelist', 'Daftar Harga', 'pricelist'],
         ['promos.index', 'Promo', 'promos.*'],
         ['faq', 'FAQ', 'faq'],
     ];
