@@ -9,11 +9,10 @@ export default {
         './resources/**/*.js',
         './resources/**/*.vue',
     ],
-    theme: {
+     theme: {
         extend: {
-            fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-            },
+            fontFamily: { sans: ['"Plus Jakarta Sans"', ...defaultTheme.fontFamily.sans] },
+            colors: { honda: { DEFAULT: '#d6001c', dark: '#a80016' } },
         },
     },
     plugins: [],
