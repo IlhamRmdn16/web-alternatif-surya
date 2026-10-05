@@ -1,22 +1,33 @@
 <?php
 
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MotorController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProspectController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\StaticPageController;
+use App\Support\PageDefaults;
 use Illuminate\Support\Facades\Route;
 
 // ---------- Frontend ----------
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/pricelist', [PageController::class, 'pricelist'])->name('pricelist');
+Route::get('/daftar-harga', [PageController::class, 'pricelist'])->name('pricelist');
+Route::redirect('/pricelist', '/daftar-harga', 301);
+Route::redirect('/cara-beli-dan-syarat-kredit', '/syarat-kredit', 301);
 Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 Route::get('/promo', [PageController::class, 'promos'])->name('promos.index');
 Route::get('/promo/{promo}', [PageController::class, 'promo'])->name('promos.show');
+Route::get('/berita', [NewsController::class, 'index'])->name('news.index');
+Route::get('/berita/{post}', [NewsController::class, 'show'])->name('news.show');
 Route::get('/motor/{motor}', [MotorController::class, 'show'])->name('motor.show');
 Route::post('/prospek', [ProspectController::class, 'store'])->middleware('throttle:10,1')->name('prospect.store');
 Route::post('/prospek/wa', [ProspectController::class, 'wa'])->middleware('throttle:20,1')->name('prospect.wa');
+Route::get('/kontak', ContactController::class)->name('contact');
+// Halaman statis: /tentang-kami, /syarat-kredit, /kebijakan-privasi (isi diatur di Admin > Halaman)
+Route::get('/{page}', [StaticPageController::class, 'show'])->whereIn('page', array_keys(PageDefaults::all()))->name('page.show');
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
 // ---------- Backend ----------
@@ -33,6 +44,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('banners', Admin\BannerController::class)->except('show');
         Route::resource('promos', Admin\PromoController::class)->except('show');
         Route::resource('faqs', Admin\FaqController::class)->except('show');
+        Route::resource('sales', Admin\SalesContactController::class)->except('show');
+        Route::resource('pages', Admin\PageController::class)->only(['index', 'edit', 'update']);
+        Route::resource('posts', Admin\PostController::class)->except('show');
+        Route::post('uploads/image', [Admin\UploadController::class, 'image'])->name('uploads.image');
 
         Route::get('prospects', [Admin\ProspectController::class, 'index'])->name('prospects.index');
         Route::get('prospects/export', [Admin\ProspectController::class, 'export'])->name('prospects.export');

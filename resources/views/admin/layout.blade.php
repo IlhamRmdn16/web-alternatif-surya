@@ -18,6 +18,9 @@
         ['admin.banners.index', 'Banner', 'admin.banners.*'],
         ['admin.promos.index', 'Promo', 'admin.promos.*'],
         ['admin.faqs.index', 'FAQ', 'admin.faqs.*'],
+        ['admin.posts.index', 'Berita', 'admin.posts.*'],
+        ['admin.pages.index', 'Halaman', 'admin.pages.*'],
+        ['admin.sales.index', 'Sales Counter', 'admin.sales.*'],
         ['admin.settings.edit', 'Pengaturan', 'admin.settings.*'],
     ];
     $newProspects = \App\Models\Prospect::where('status', 'baru')->count();

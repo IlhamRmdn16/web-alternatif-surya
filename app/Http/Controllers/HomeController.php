@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Banner, Category, Faq, Motor, Promo};
+use App\Models\{Banner, Category, Faq, Motor, Post, Promo};
 use App\Support\Series;
 
 class HomeController extends Controller
@@ -21,7 +21,8 @@ class HomeController extends Controller
 
         $promos = Promo::active()->latest()->take(3)->get();
         $faqs = Faq::where('is_active', true)->orderBy('sort')->take(5)->get();
+        $posts = Post::published()->orderByDesc('published_at')->take(3)->get();
 
-        return view('home', compact('banners', 'categories', 'promos', 'faqs'));
+        return view('home', compact('banners', 'categories', 'promos', 'faqs', 'posts'));
     }
 }

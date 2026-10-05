@@ -44,7 +44,7 @@
     '@context' => 'https://schema.org', '@type' => 'BreadcrumbList',
     'itemListElement' => [
         ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => route('home')],
-        ['@type' => 'ListItem', 'position' => 2, 'name' => 'Pricelist', 'item' => route('pricelist')],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'Daftar Harga', 'item' => route('pricelist')],
         ['@type' => 'ListItem', 'position' => 3, 'name' => $motor->full_name],
     ],
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
@@ -55,13 +55,13 @@
 <div class="mx-auto max-w-7xl px-4 pt-8"
      x-data="motorPage({{ Js::from([
         'colors' => $colorsJs, 'base' => ['price' => $base['price'], 'discount' => $base['discount']],
-        'image' => $imgUrl, 'url' => route('prospect.store'), 'motorId' => $motor->id,
+        'image' => $imgUrl, 'url' => route('prospect.store'), 'motorId' => $motor->id, 'sales' => $salesList,
      ]) }})"
      @keydown.escape.window="open = false">
 
     <nav class="text-xs text-zinc-500" aria-label="Breadcrumb">
         <a href="{{ route('home') }}" class="hover:text-honda">Beranda</a> /
-        <a href="{{ route('pricelist') }}" class="hover:text-honda">Pricelist</a> /
+        <a href="{{ route('pricelist') }}" class="hover:text-honda">Daftar Harga</a> /
         <span class="text-zinc-800">{{ $motor->full_name }}</span>
     </nav>
 
@@ -121,9 +121,12 @@
 
                 <p x-show="offer.discount > 0" class="mt-3 inline-block rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-700" @if($first['discount'] <= 0) style="display:none" @endif>
                     Diskon pembelian cash <span x-text="rp(offer.discount)">{{ $rp($first['discount']) }}</span></p>
-                <p x-show="offer.discount > 0" class="mt-2 text-xs text-zinc-500" @if($first['discount'] <= 0) style="display:none" @endif>Harga coret adalah harga OTR normal. Harga setelah diskon berlaku untuk pembelian cash.</p>
-                @if($varied)<p class="mt-2 text-xs text-zinc-500">Harga dapat berbeda untuk warna tertentu. Pilih warna untuk melihat harganya.</p>@endif
-                <p class="mt-2 text-xs text-zinc-500">Harga dapat berubah sewaktu-waktu. Konfirmasi harga & stok ke sales kami.</p>
+                {{-- Catatan wajib: tampil di semua unit (dengan maupun tanpa diskon) --}}
+                <div class="mt-4 flex gap-2.5 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs leading-relaxed text-amber-900">
+                    <svg class="mt-0.5 h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <p>Harga di atas belum termasuk diskon khusus. Ingin tanya diskon atau penawaran terbaik?
+                        <button type="button" @click="$dispatch('open-wa')" class="font-bold underline underline-offset-2 hover:text-honda">Hubungi sales kami via WhatsApp</button>.</p>
+                </div>
             </div>
 
             <button type="button" data-tour="consult" @click="open = true; done = false" class="mt-6 w-full rounded-xl bg-honda py-4 text-base font-bold text-white shadow-lg shadow-red-200 transition hover:bg-honda-dark md:w-auto md:px-10">Konsultasi Pembelian</button>
@@ -213,7 +216,7 @@
             <template x-if="done">
                 <div class="text-center">
                     <p class="text-lg font-bold text-zinc-900">Data terkirim</p>
-                    <p class="mt-2 text-sm text-zinc-600">Terima kasih! Data Anda sudah kami terima dan WhatsApp sales kami dibuka di tab baru. Jika tidak terbuka, klik tombol di bawah.</p>
+                    <p class="mt-2 text-sm text-zinc-600">Terima kasih! Data Anda sudah kami terima dan WhatsApp sales counter dibuka di tab baru. Jika tidak terbuka, klik tombol di bawah.</p>
                     <a x-show="waUrl" :href="waUrl" target="_blank" rel="noopener" class="mt-5 block w-full rounded-xl bg-green-500 py-3 text-sm font-semibold text-white hover:bg-green-600">Buka WhatsApp</a>
                     <button @click="open = false" class="mt-3 w-full rounded-xl border border-zinc-300 py-3 text-sm font-semibold">Tutup</button>
                 </div>
@@ -222,10 +225,10 @@
                 <h2 class="text-lg font-bold text-zinc-900">Konsultasi pembelian</h2>
                 <p class="mt-1 text-sm text-zinc-500">{{ $motor->full_name }}<span x-show="colors[ci]?.name"> - <span x-text="colors[ci]?.name"></span></span></p>
 
+                @include('partials.sales-picker')
+
                 <label class="mt-4 block text-sm font-semibold">Nama
                     <input x-model="form.name" type="text" required class="mt-1 w-full rounded-xl border border-zinc-300 px-4 py-2.5"></label>
-                <label class="mt-3 block text-sm font-semibold">Alamat
-                    <input x-model="form.address" type="text" required class="mt-1 w-full rounded-xl border border-zinc-300 px-4 py-2.5"></label>
                 <label class="mt-3 block text-sm font-semibold">No. HP / WhatsApp
                     <input x-model="form.phone" type="tel" inputmode="tel" required class="mt-1 w-full rounded-xl border border-zinc-300 px-4 py-2.5"></label>
                 <label class="mt-3 block text-sm font-semibold">Keperluan
@@ -244,7 +247,7 @@
                         </select></label>
                 </div>
 
-                <p class="mt-3 text-xs text-zinc-500">Setelah dikirim, Anda akan diarahkan ke WhatsApp sales kami dengan pesan yang sudah terisi.</p>
+                <p class="mt-3 text-xs text-zinc-500">Setelah dikirim, Anda akan diarahkan ke WhatsApp sales counter pilihan Anda dengan pesan yang sudah terisi. Dengan mengirim, Anda menyetujui <a href="{{ route('page.show', 'kebijakan-privasi') }}" target="_blank" class="font-semibold text-honda underline">Kebijakan Privasi</a> kami.</p>
                 <p x-show="error" x-text="error" class="mt-3 text-sm text-red-600"></p>
                 <div class="mt-5 flex gap-3">
                     <button type="button" @click="open = false" class="flex-1 rounded-xl border border-zinc-300 py-3 text-sm font-semibold">Batal</button>

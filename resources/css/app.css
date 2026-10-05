@@ -17,3 +17,31 @@ input[type="checkbox"] { accent-color: #d6001c; }
 /* Sorotan elemen pada petunjuk halaman detail motor */
 .tour-hl { outline: 3px solid #d6001c; outline-offset: 6px; border-radius: 1rem; animation: tourPulse 1.4s ease-in-out infinite; }
 @keyframes tourPulse { 0%, 100% { outline-color: rgba(214, 0, 28, 1); } 50% { outline-color: rgba(214, 0, 28, 0.3); } }
+
+/* Isi halaman statis (hasil Markdown dari Admin > Halaman) */
+.page-content { color: #3f3f46; font-size: 0.95rem; line-height: 1.8; }
+.page-content > :first-child { margin-top: 0; }
+.page-content h2 { margin: 2rem 0 0.75rem; font-size: 1.35rem; font-weight: 800; line-height: 1.3; color: #18181b; }
+.page-content h3 { margin: 1.5rem 0 0.5rem; font-size: 1.1rem; font-weight: 700; color: #18181b; }
+.page-content p { margin: 0.9rem 0; }
+.page-content ul, .page-content ol { margin: 0.9rem 0; padding-left: 1.4rem; }
+.page-content ul { list-style: disc; }
+.page-content ol { list-style: decimal; }
+.page-content li { margin: 0.4rem 0; padding-left: 0.2rem; }
+.page-content li::marker { color: #d6001c; font-weight: 700; }
+.page-content a { color: #d6001c; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.page-content a:hover { color: #a80016; }
+.page-content strong { color: #18181b; }
+.page-content hr { margin: 2rem 0; border-color: #e4e4e7; }
+.page-content blockquote { margin: 1rem 0; border-left: 4px solid #d6001c; background: #fafafa; padding: 0.5rem 1rem; }
+
+/* Gambar, tabel, dan perataan dari editor (halaman statis & berita) */
+.page-content::after { content: ''; display: block; clear: both; }
+.page-content img { max-width: 100%; height: auto; border-radius: 0.75rem; }
+.page-content figure { margin: 1.25rem 0; }
+.page-content figcaption { margin-top: 0.4rem; font-size: 0.8rem; color: #71717a; text-align: center; }
+.page-content table { width: 100%; margin: 1.25rem 0; border-collapse: collapse; font-size: 0.9rem; display: block; overflow-x: auto; }
+.page-content th, .page-content td { border: 1px solid #e4e4e7; padding: 0.55rem 0.8rem; text-align: left; vertical-align: top; }
+.page-content th { background: #fafafa; font-weight: 700; color: #18181b; }
+.page-content h4 { margin: 1.25rem 0 0.4rem; font-weight: 700; color: #18181b; }
+@media (max-width: 640px) { .page-content img { float: none !important; display: block; margin-left: auto !important; margin-right: auto !important; } }

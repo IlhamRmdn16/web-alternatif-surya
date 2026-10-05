@@ -13,13 +13,15 @@ class ProspectController extends Controller
         return Prospect::with('motor')
             ->when($r->source, fn ($q, $v) => $q->where('source', $v))
             ->when($r->status, fn ($q, $v) => $q->where('status', $v))
+            ->when($r->sales, fn ($q, $v) => $q->where('sales_name', $v))
             ->when($r->q, fn ($q, $v) => $q->where(fn ($w) => $w->where('name', 'like', "%$v%")->orWhere('phone', 'like', "%$v%")));
     }
 
     public function index(Request $r)
     {
         $prospects = $this->filtered($r)->latest()->paginate(20)->withQueryString();
-        return view('admin.prospects.index', compact('prospects'));
+        $salesNames = Prospect::whereNotNull('sales_name')->distinct()->orderBy('sales_name')->pluck('sales_name');
+        return view('admin.prospects.index', compact('prospects', 'salesNames'));
     }
 
     /** Export CSV (mengikuti filter yang sedang dipilih). Pemisah titik koma agar langsung rapi di Excel Indonesia. */
@@ -30,12 +32,12 @@ class ProspectController extends Controller
         return response()->streamDownload(function () use ($rows) {
             $out = fopen('php://output', 'w');
             fwrite($out, "\xEF\xBB\xBF"); // BOM agar Excel membaca UTF-8
-            fputcsv($out, ['Tanggal', 'Sumber', 'Nama', 'Alamat', 'No. HP', 'Keperluan', 'Motor', 'Tipe', 'Warna', 'DP', 'Tenor (bulan)', 'Status', 'Catatan'], ';');
+            fputcsv($out, ['Tanggal', 'Sumber', 'Nama', 'No. HP', 'Keperluan', 'Motor', 'Tipe', 'Warna', 'DP', 'Tenor (bulan)', 'Menghubungi', 'Status', 'Catatan'], ';');
             foreach ($rows as $p) {
                 fputcsv($out, [
-                    $p->created_at->format('Y-m-d H:i'), $p->source === 'form' ? 'Form' : 'WhatsApp', $p->name, $p->address, $p->phone,
+                    $p->created_at->format('Y-m-d H:i'), $p->source === 'form' ? 'Form' : 'WhatsApp', $p->name, $p->phone,
                     $p->purpose ? $p->purpose_label : '', $p->motor?->name, $p->variant_name, $p->color_name,
-                    $p->dp, $p->tenor, Prospect::STATUSES[$p->status] ?? $p->status, $p->notes,
+                    $p->dp, $p->tenor, $p->sales_name, Prospect::STATUSES[$p->status] ?? $p->status, $p->notes,
                 ], ';');
             }
             fclose($out);

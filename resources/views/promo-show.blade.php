@@ -14,6 +14,6 @@
     @endif
     @if($promo->image)<img src="{{ asset('storage/'.$promo->image) }}" alt="{{ $promo->title }}" class="mt-6 w-full rounded-2xl">@endif
     @if($promo->description)<div class="mt-6 whitespace-pre-line text-sm leading-relaxed text-zinc-700 md:text-base">{{ $promo->description }}</div>@endif
-    <a href="https://wa.me/{{ $waNumber }}?text={{ rawurlencode('Halo, saya tertarik dengan promo: '.$promo->title) }}" target="_blank" rel="noopener" class="mt-8 inline-block rounded-xl bg-green-500 px-8 py-3 text-sm font-bold text-white hover:bg-green-600">Tanya promo ini via WhatsApp</a>
+    <button type="button" x-data @click="$dispatch('open-wa', {{ Js::from(['topic' => 'Promo: '.$promo->title]) }})" class="mt-8 inline-block rounded-xl bg-green-500 px-8 py-3 text-sm font-bold text-white hover:bg-green-600">Tanya promo ini ke Sales Counter</button>
 </article>
 @endsection

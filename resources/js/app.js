@@ -20,20 +20,35 @@ async function post(url, data) {
 const firstError = (d) => (d.errors ? Object.values(d.errors)[0][0] : d.message) || 'Terjadi kesalahan, coba lagi.';
 
 /* Tombol WhatsApp melayang: simpan nama + alamat sebagai prospek, lalu buka WhatsApp */
-Alpine.data('waLead', (url) => ({
-    open: false, loading: false, name: '', address: '', phone: '', error: '',
+Alpine.data('waLead', (url, sales) => ({
+    sales, open: false, loading: false, name: '', phone: '', error: '',
+    target: null,        // id sales counter terpilih
+    callCenter: false,   // true = tujuan call center (dari halaman Kontak)
+    topic: '',
+    openFor(d) {
+        d = d || {};
+        this.error = ''; this.topic = d.topic || ''; this.callCenter = !!d.callCenter;
+        if (this.callCenter) this.target = null;
+        else if (d.salesId) this.target = d.salesId;
+        else this.target = this.sales.length === 1 ? this.sales[0].id : null;
+        this.open = true;
+    },
     async submit() {
         this.error = '';
-        if (!this.name.trim() || !this.address.trim()) { this.error = 'Nama dan alamat wajib diisi.'; return; }
+        if (!this.callCenter && !this.target) { this.error = 'Pilih sales counter yang akan dihubungi.'; return; }
+        if (!this.name.trim()) { this.error = 'Nama wajib diisi.'; return; }
         if (!this.phone.trim()) { this.error = 'Nomor WhatsApp wajib diisi.'; return; }
         if (!/^[0-9+\-\s]{8,20}$/.test(this.phone.trim())) { this.error = 'Format nomor WhatsApp tidak valid (contoh: 08123456789).'; return; }
         this.loading = true;
         const win = window.open('', '_blank');
-        const r = await post(url, { name: this.name, address: this.address, phone: this.phone, page: location.href });
+        const r = await post(url, {
+            name: this.name, phone: this.phone, page: location.href, topic: this.topic,
+            sales_id: this.callCenter ? null : this.target, call_center: this.callCenter,
+        });
         this.loading = false;
         if (r.ok && r.data.url) {
             win ? (win.location.href = r.data.url) : (location.href = r.data.url);
-            this.open = false; this.name = ''; this.address = ''; this.phone = '';
+            this.open = false; this.name = ''; this.phone = '';
         } else {
             if (win) win.close();
             this.error = firstError(r.data);
@@ -43,10 +58,11 @@ Alpine.data('waLead', (url) => ({
 
 /* Halaman detail motor: warna menentukan harga + form konsultasi pembelian */
 Alpine.data('motorPage', (cfg) => ({
-    colors: cfg.colors, mainImage: cfg.image,
+    colors: cfg.colors, mainImage: cfg.image, sales: cfg.sales || [],
+    target: (cfg.sales && cfg.sales.length === 1) ? cfg.sales[0].id : null,
     ci: 0,
     open: false, loading: false, done: false, error: '', waUrl: '',
-    form: { name: '', address: '', phone: '', purpose: '', dp: '', tenor: '' },
+    form: { name: '', phone: '', purpose: '', dp: '', tenor: '' },
     rp: (n) => 'Rp ' + Number(n || 0).toLocaleString('id-ID'),
     get image() { return this.colors[this.ci]?.image || this.mainImage; },
     get offer() {
@@ -62,17 +78,18 @@ Alpine.data('motorPage', (cfg) => ({
     },
     async submit() {
         this.error = '';
+        if (!this.target) { this.error = 'Pilih sales counter yang akan dihubungi.'; return; }
         this.loading = true;
         // Buka tab WhatsApp langsung saat klik (agar tidak diblokir popup blocker), isi alamatnya setelah data tersimpan.
         const win = window.open('', '_blank');
-        const r = await post(cfg.url, { ...this.form, motor_id: cfg.motorId, color_name: this.colors[this.ci]?.name, page: location.href });
+        const r = await post(cfg.url, { ...this.form, sales_id: this.target, motor_id: cfg.motorId, color_name: this.colors[this.ci]?.name, page: location.href });
         this.loading = false;
         if (r.ok) {
             this.waUrl = r.data.url || '';
             if (this.waUrl) { win ? (win.location.href = this.waUrl) : (location.href = this.waUrl); }
             else if (win) win.close();
             this.done = true;
-            this.form = { name: '', address: '', phone: '', purpose: '', dp: '', tenor: '' };
+            this.form = { name: '', phone: '', purpose: '', dp: '', tenor: '' };
         } else {
             if (win) win.close();
             this.error = firstError(r.data);

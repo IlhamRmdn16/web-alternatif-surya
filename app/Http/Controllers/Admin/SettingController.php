@@ -16,11 +16,12 @@ class SettingController extends Controller
             'og_image'  => ['Gambar share sosmed / OG (JPG 1200x630)', 'image'],
         ],
         'Kontak' => [
-            'wa_number' => ['Nomor WhatsApp (format 62xxxxxxxxxx)', 'text'],
+            'call_center' => ['Nomor WhatsApp Call Center (tampil di halaman Kontak; mis. 08123456789)', 'text'],
             'phone'     => ['Telepon', 'text'],
             'email'     => ['Email', 'text'],
             'address'   => ['Alamat dealer', 'textarea'],
             'map_url'   => ['Link Google Maps', 'text'],
+            'map_embed' => ['Link embed peta (opsional; Google Maps > Bagikan > Sematkan peta, salin isi src="...")', 'text'],
             'hours'     => ['Jam operasional (satu baris per hari)', 'textarea'],
         ],
         'Sosial media' => [

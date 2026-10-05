@@ -9,12 +9,12 @@
                 'Sumber' => $prospect->source === 'form' ? 'Form konsultasi' : 'Klik WhatsApp',
                 'Tanggal' => $prospect->created_at->format('d M Y H:i'),
                 'Nama' => $prospect->name,
-                'Alamat' => $prospect->address ?: '-',
                 'No. HP' => $prospect->phone ?: '-',
                 'Keperluan' => $prospect->purpose ? $prospect->purpose_label : '-',
                 'Motor' => $prospect->motor?->name ?: '-',
                 'Tipe' => $prospect->variant_name ?: '-',
                 'Warna' => $prospect->color_name ?: '-',
+                'Menghubungi' => $prospect->sales_name ?: '-',
             ] as $k => $v)
                 <div class="flex gap-3"><dt class="w-24 shrink-0 text-zinc-500">{{ $k }}</dt><dd class="font-semibold">{{ $v }}</dd></div>
             @endforeach

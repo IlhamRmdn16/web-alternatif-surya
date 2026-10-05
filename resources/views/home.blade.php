@@ -27,7 +27,7 @@
 <section class="mx-auto max-w-7xl px-4 pt-10 md:pt-14">
     <h1 class="text-2xl font-extrabold tracking-tight text-zinc-900 md:text-4xl">{{ $settings['home_h1'] ?? 'Dealer Motor Honda Garut Resmi' }}</h1>
     <div class="mt-3 h-1 w-14 rounded bg-honda"></div>
-    <p class="mt-4 text-sm leading-relaxed text-zinc-600 md:text-base">{{ $settings['home_intro'] ?? '' }}</p>
+    <p class="mt-4 max-w-3xl text-sm leading-relaxed text-zinc-600 md:text-base">{{ $settings['home_intro'] ?? '' }}</p>
 </section>
 
 {{-- Katalog per jenis --}}
@@ -39,7 +39,7 @@
             <h2 class="text-xl font-extrabold text-zinc-900 md:text-2xl">Motor Honda Pilihan</h2>
             <p class="mt-1 text-sm text-zinc-500">Pilih jenis motor, lalu lihat tipe, harga OTR, dan diskon pembelian cash.</p>
         </div>
-        <a href="{{ route('pricelist') }}" class="text-sm font-bold text-honda hover:text-zinc-900">Lihat semua pricelist</a>
+        <a href="{{ route('pricelist') }}" class="text-sm font-bold text-honda hover:text-zinc-900">Lihat semua daftar harga</a>
     </div>
 
     <div class="no-scrollbar mt-6 flex gap-2 overflow-x-auto border-b border-zinc-200" role="tablist">
@@ -80,6 +80,22 @@
         </div>
     @endif
 </section>
+
+{{-- Berita terbaru --}}
+@if($posts->isNotEmpty())
+<section class="mx-auto max-w-7xl px-4 pt-16">
+    <div class="flex items-end justify-between gap-3">
+        <div>
+            <h2 class="text-xl font-extrabold text-zinc-900 md:text-2xl">Berita & Tips Terbaru</h2>
+            <p class="mt-1 text-sm text-zinc-500">Informasi dan panduan seputar motor Honda.</p>
+        </div>
+        <a href="{{ route('news.index') }}" class="text-sm font-bold text-honda hover:text-zinc-900">Semua berita</a>
+    </div>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+        @foreach($posts as $post) @include('partials.post-card') @endforeach
+    </div>
+</section>
+@endif
 
 {{-- FAQ --}}
 @if($faqs->isNotEmpty())

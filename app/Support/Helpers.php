@@ -6,6 +6,8 @@ use Illuminate\Support\Str;
 
 class Helpers
 {
+    public const DEALER_ADDRESS = 'Jl. Papandayan No.112, Kota Kulon, Kec. Garut Kota, Kabupaten Garut, Jawa Barat 44114';
+
     public static function uniqueSlug(string $model, string $text, ?int $ignoreId = null): string
     {
         $base = Str::slug($text) ?: Str::lower(Str::random(6));

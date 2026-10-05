@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
-@section('title', 'Pricelist Motor Honda Garut Terbaru: Harga OTR & Diskon Cash | DealerMotorHondaGarut.id')
-@section('meta_description', 'Pricelist motor Honda Garut terbaru semua seri dan tipe: Matic, Sport, EV, dan Cub. Cek harga OTR, diskon pembelian cash, dan konsultasi kredit di DealerMotorHondaGarut.id.')
+@section('title', 'Daftar Harga Motor Honda Garut Terbaru: Harga OTR & Diskon Cash | DealerMotorHondaGarut.id')
+@section('meta_description', 'Daftar harga motor Honda Garut terbaru semua seri dan tipe: Matic, Sport, EV, dan Cub. Cek harga OTR, diskon pembelian cash, dan konsultasi kredit di DealerMotorHondaGarut.id.')
 
 @section('content')
 @php
@@ -13,7 +13,7 @@
 <section class="mx-auto max-w-7xl px-4 pt-10"
          x-data="{ cat: 'all', q: {{ Js::from($qInit) }}, all: {{ Js::from($allHay) }},
                    get none() { return this.q.trim() !== '' && !this.all.some(h => h.includes(this.q.trim().toLowerCase())) } }">
-    <h1 class="text-2xl font-extrabold text-zinc-900 md:text-4xl">Pricelist Motor Honda Garut</h1>
+    <h1 class="text-2xl font-extrabold text-zinc-900 md:text-4xl">Daftar Harga Motor Honda Garut</h1>
     <div class="mt-3 h-1 w-14 rounded bg-honda"></div>
     <p class="mt-4 max-w-3xl text-sm leading-relaxed text-zinc-600 md:text-base">Harga OTR setiap tipe motor Honda di dealer kami, termasuk potongan untuk pembelian cash. Harga dapat berubah sewaktu-waktu, hubungi kami untuk konfirmasi harga dan stok terbaru.</p>
 
@@ -56,7 +56,7 @@
             </div>
         </div>
     @empty
-        <p class="mt-10 rounded-2xl border border-dashed border-zinc-300 p-8 text-center text-sm text-zinc-500">Pricelist belum tersedia.</p>
+        <p class="mt-10 rounded-2xl border border-dashed border-zinc-300 p-8 text-center text-sm text-zinc-500">Daftar harga belum tersedia.</p>
     @endforelse
 </section>
 @endsection
