@@ -16,20 +16,29 @@
 @endpush
 
 @section('content')
-{{-- Banner: gambar sebagai latar, judul halaman statis di depannya (diatur di Admin > Halaman) --}}
-<section class="relative isolate w-full overflow-hidden {{ $page->banner ? 'bg-zinc-900' : 'bg-gradient-to-br from-zinc-900 via-zinc-800 to-red-900' }}">
+{{-- Banner: gambar sebagai latar, judul halaman statis di depannya (diatur di Admin > Halaman).
+     Lebar maks. 1240px di tengah, selaras dengan banner beranda. --}}
+<div class="md:px-4 md:pt-6">
+<section class="relative isolate mx-auto w-full overflow-hidden md:max-w-[1240px] md:rounded-2xl {{ $page->banner ? 'bg-zinc-900' : 'bg-gradient-to-br from-zinc-900 via-zinc-800 to-red-900' }}">
     @if($page->banner)
-        <img src="{{ asset('storage/'.$page->banner) }}" alt="Banner {{ $page->title }}" class="absolute inset-0 -z-10 h-full w-full object-cover">
-        <div class="absolute inset-0 -z-10 bg-gradient-to-r from-black/75 via-black/55 to-black/25"></div>
+        <picture>
+            @if($m = \App\Support\BannerImage::mobileUrl($page->banner))
+                <source media="(max-width: 767px)" srcset="{{ $m }}">
+            @endif
+            <img src="{{ asset('storage/'.$page->banner) }}" alt="Banner {{ $page->title }}" width="1240" height="520"
+                 class="absolute inset-0 -z-10 h-full w-full object-cover" decoding="async" fetchpriority="high">
+        </picture>
+        <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/75 via-black/20 to-transparent md:bg-gradient-to-r md:from-black/70 md:via-black/25"></div>
     @endif
-    <div class="mx-auto flex min-h-[220px] max-w-7xl flex-col justify-center px-4 py-12 md:min-h-[320px] md:py-16">
+    <div class="flex min-h-[180px] flex-col justify-center px-5 py-10 md:min-h-[260px] md:px-12 md:py-12">
         <nav class="text-xs text-white/70" aria-label="Breadcrumb">
             <a href="{{ route('home') }}" class="hover:text-white">Beranda</a> / <span class="text-white">{{ $page->title }}</span>
         </nav>
-        <h1 class="mt-3 max-w-4xl text-3xl font-extrabold leading-tight tracking-tight text-white drop-shadow md:text-5xl">{{ $page->title }}</h1>
-        <div class="mt-4 h-1 w-16 rounded bg-honda"></div>
+        <h1 class="mt-3 max-w-3xl text-2xl font-extrabold leading-tight tracking-tight text-white drop-shadow md:text-4xl">{{ $page->title }}</h1>
+        <div class="mt-3 h-1 w-12 rounded bg-honda md:w-16"></div>
     </div>
 </section>
+</div>
 
 <article class="mx-auto max-w-7xl px-4 pt-10">
     <div class="page-content">{!! $page->content !!}</div>

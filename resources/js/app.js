@@ -169,12 +169,14 @@ Alpine.data('motorForm', (colors, seriesMap, init) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('.hero-swiper')) {
+        const multi = document.querySelectorAll('.hero-swiper .swiper-slide').length > 1;
         new Swiper('.hero-swiper', {
-            loop: document.querySelectorAll('.hero-swiper .swiper-slide').length > 1,
-            autoplay: { delay: 2500, disableOnInteraction: false },
-            speed: 700,
+            loop: multi,
+            allowTouchMove: multi,
+            autoplay: multi ? { delay: 4500, disableOnInteraction: false, pauseOnMouseEnter: true } : false,
+            speed: 600,
             pagination: { el: '.swiper-pagination', clickable: true },
-            grabCursor: true,
+            grabCursor: multi,
         });
     }
 });

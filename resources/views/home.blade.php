@@ -5,37 +5,53 @@
 
 @section('content')
 
-{{-- Hero: banner bergerak otomatis (latar), teks statis di depannya --}}
-<section class="relative isolate w-full overflow-hidden bg-zinc-900" aria-label="Banner utama">
-    @if($banners->isNotEmpty())
-        <div class="swiper hero-swiper absolute inset-0 h-full w-full">
-            <div class="swiper-wrapper">
-                @foreach($banners as $b)
-                    <div class="swiper-slide">
-                        @if($b->link)<a href="{{ $b->link }}" class="block h-full w-full">@endif
-                            <img src="{{ asset('storage/'.$b->image) }}" alt="{{ $b->title ?: 'Promo Motor Honda Garut' }}" class="h-full w-full object-cover" @if(! $loop->first) loading="lazy" @endif>
-                        @if($b->link)</a>@endif
-                    </div>
-                @endforeach
+{{-- Hero: banner bergerak otomatis (latar), teks statis di depannya.
+     Ukuran: mobile rasio 5:4, desktop 1240x520 (maks. lebar 1240px, di tengah).
+     Ringan: slide pertama dimuat prioritas, sisanya lazy; versi mobile (WebP 750px) dipakai bila tersedia.
+     Jelas: gradasi gelap hanya di sisi tulisan (bawah di mobile, kiri di desktop). --}}
+<div class="md:px-4 md:pt-6">
+<section class="relative isolate mx-auto aspect-[5/4] w-full overflow-hidden bg-zinc-900 md:aspect-[1240/520] md:max-w-[1240px] md:rounded-2xl" aria-label="Banner utama">
+    {{-- Pembungkus absolut: class .swiper (CSS Swiper) memaksa position:relative sehingga
+         tidak boleh dipasang bersamaan dengan "absolute" pada elemen yang sama --}}
+    <div class="absolute inset-0 z-0">
+        @if($banners->isNotEmpty())
+            <div class="swiper hero-swiper h-full w-full">
+                <div class="swiper-wrapper">
+                    @foreach($banners as $b)
+                        <div class="swiper-slide !h-full">
+                            @if($b->link)<a href="{{ $b->link }}" class="block h-full w-full">@endif
+                                <picture>
+                                    @if($m = \App\Support\BannerImage::mobileUrl($b->image))
+                                        <source media="(max-width: 767px)" srcset="{{ $m }}">
+                                    @endif
+                                    <img src="{{ asset('storage/'.$b->image) }}" alt="{{ $b->title ?: 'Promo Motor Honda Garut' }}"
+                                         class="h-full w-full object-cover" width="1240" height="520" decoding="async"
+                                         @if($loop->first) fetchpriority="high" @else loading="lazy" @endif>
+                                </picture>
+                            @if($b->link)</a>@endif
+                        </div>
+                    @endforeach
+                </div>
+                <div class="swiper-pagination"></div>
             </div>
-            <div class="swiper-pagination"></div>
-        </div>
-    @else
-        <div class="absolute inset-0 bg-gradient-to-br from-zinc-900 via-zinc-800 to-red-900"></div>
-    @endif
+        @else
+            <div class="h-full w-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-red-900"></div>
+        @endif
+    </div>
 
-    {{-- Lapisan gelap agar tulisan terbaca di atas foto banner --}}
-    <div class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-black/75 via-black/55 to-black/25"></div>
+    {{-- Gradasi tipis: banner tetap jelas, hanya area tulisan yang digelapkan --}}
+    <div class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/15 to-transparent md:bg-gradient-to-r md:from-black/70 md:via-black/25 md:to-transparent"></div>
 
-    {{-- Teks statis (tidak ikut bergerak) --}}
-    <div class="pointer-events-none relative z-20 mx-auto flex min-h-[360px] max-w-7xl items-center px-4 py-14 md:min-h-[480px] md:py-24">
-        <div>
-            <h1 class="text-3xl font-extrabold leading-tight tracking-tight text-white drop-shadow md:text-5xl">{{ $settings['home_h1'] ?? 'Dealer Motor Honda Garut Resmi' }}</h1>
-            <div class="mt-4 h-1 w-16 rounded bg-honda"></div>
-            <p class="mt-5 text-sm leading-relaxed text-white/90 drop-shadow md:text-lg">{{ $settings['home_intro'] ?? '' }}</p>
+    {{-- Teks statis (tidak ikut bergerak), tepat di depan banner --}}
+    <div class="pointer-events-none absolute inset-0 z-20 flex items-end px-5 pb-9 md:items-center md:px-12 md:pb-0">
+        <div class="max-w-full md:max-w-md lg:max-w-xl">
+            <h1 class="text-lg font-extrabold leading-tight tracking-tight text-white drop-shadow sm:text-2xl md:text-4xl">{{ $settings['home_h1'] ?? 'Dealer Motor Honda Garut Resmi' }}</h1>
+            <div class="mt-2 h-1 w-10 rounded bg-honda md:mt-3 md:w-16"></div>
+            <p class="mt-2 line-clamp-3 text-xs leading-relaxed text-white/90 drop-shadow sm:text-sm md:mt-3 md:line-clamp-none md:text-base">{{ $settings['home_intro'] ?? '' }}</p>
         </div>
     </div>
 </section>
+</div>
 
 {{-- Katalog per jenis --}}
 @php($tabs = $categories->filter(fn ($c) => $c->homeSeries->isNotEmpty())->values())
