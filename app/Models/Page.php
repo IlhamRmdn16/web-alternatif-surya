@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Page extends Model
 {
     protected $guarded = [];
-    protected $casts = ['images' => 'array'];
 
     public function getRouteKeyName(): string { return 'slug'; }
 }

@@ -5,29 +5,36 @@
 
 @section('content')
 
-{{-- Banner slider --}}
-@if($banners->isNotEmpty())
-<section class="swiper hero-swiper relative w-full bg-zinc-100" aria-label="Banner promo">
-    <div class="swiper-wrapper">
-        @foreach($banners as $b)
-            <div class="swiper-slide">
-                @if($b->link)<a href="{{ $b->link }}">@endif
-                    <img src="{{ asset('storage/'.$b->image) }}" alt="{{ $b->title ?: 'Promo Motor Honda Garut' }}" class="aspect-[16/9] w-full object-cover md:aspect-[8/3]" @if(! $loop->first) loading="lazy" @endif>
-                @if($b->link)</a>@endif
+{{-- Hero: banner bergerak otomatis (latar), teks statis di depannya --}}
+<section class="relative isolate w-full overflow-hidden bg-zinc-900" aria-label="Banner utama">
+    @if($banners->isNotEmpty())
+        <div class="swiper hero-swiper absolute inset-0 h-full w-full">
+            <div class="swiper-wrapper">
+                @foreach($banners as $b)
+                    <div class="swiper-slide">
+                        @if($b->link)<a href="{{ $b->link }}" class="block h-full w-full">@endif
+                            <img src="{{ asset('storage/'.$b->image) }}" alt="{{ $b->title ?: 'Promo Motor Honda Garut' }}" class="h-full w-full object-cover" @if(! $loop->first) loading="lazy" @endif>
+                        @if($b->link)</a>@endif
+                    </div>
+                @endforeach
             </div>
-        @endforeach
-    </div>
-    <div class="swiper-button-prev !hidden md:!flex"></div>
-    <div class="swiper-button-next !hidden md:!flex"></div>
-    <div class="swiper-pagination"></div>
-</section>
-@endif
+            <div class="swiper-pagination"></div>
+        </div>
+    @else
+        <div class="absolute inset-0 bg-gradient-to-br from-zinc-900 via-zinc-800 to-red-900"></div>
+    @endif
 
-{{-- Pengantar --}}
-<section class="mx-auto max-w-7xl px-4 pt-10 md:pt-14">
-    <h1 class="text-2xl font-extrabold tracking-tight text-zinc-900 md:text-4xl">{{ $settings['home_h1'] ?? 'Dealer Motor Honda Garut Resmi' }}</h1>
-    <div class="mt-3 h-1 w-14 rounded bg-honda"></div>
-    <p class="mt-4 text-sm leading-relaxed text-zinc-600 md:text-base">{{ $settings['home_intro'] ?? '' }}</p>
+    {{-- Lapisan gelap agar tulisan terbaca di atas foto banner --}}
+    <div class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-black/75 via-black/55 to-black/25"></div>
+
+    {{-- Teks statis (tidak ikut bergerak) --}}
+    <div class="pointer-events-none relative z-20 mx-auto flex min-h-[360px] max-w-7xl items-center px-4 py-14 md:min-h-[480px] md:py-24">
+        <div>
+            <h1 class="text-3xl font-extrabold leading-tight tracking-tight text-white drop-shadow md:text-5xl">{{ $settings['home_h1'] ?? 'Dealer Motor Honda Garut Resmi' }}</h1>
+            <div class="mt-4 h-1 w-16 rounded bg-honda"></div>
+            <p class="mt-5 text-sm leading-relaxed text-white/90 drop-shadow md:text-lg">{{ $settings['home_intro'] ?? '' }}</p>
+        </div>
+    </div>
 </section>
 
 {{-- Katalog per jenis --}}

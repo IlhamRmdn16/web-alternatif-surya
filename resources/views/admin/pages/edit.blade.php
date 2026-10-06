@@ -2,7 +2,6 @@
 @section('title', 'Edit: '.$page->title)
 @section('actions')<a href="{{ route('page.show', $page->slug) }}" target="_blank" class="text-sm font-bold text-honda">Lihat halaman</a>@endsection
 @section('content')
-@php($current = collect($page->images ?? [])->filter()->values())
 <form method="POST" enctype="multipart/form-data" action="{{ route('admin.pages.update', $page) }}" class="max-w-4xl space-y-6">
     @csrf @method('PUT')
 
@@ -24,22 +23,16 @@
     </div>
 
     <div class="rounded-2xl bg-white p-6 shadow-sm">
-        <h2 class="font-bold">Foto di sebelah kanan tulisan</h2>
-        <p class="mt-1 text-xs text-zinc-500">Maksimal 6 foto. Di layar lebar foto tampil di samping kanan tulisan; di HP tampil di bawah tulisan.</p>
+        <h2 class="font-bold">Banner halaman</h2>
+        <p class="mt-1 text-xs text-zinc-500">Satu gambar banner (disarankan 1600x500 px, boleh webp). Judul halaman tampil di depan banner sebagai tulisan statis. Tanpa banner, judul tampil di atas latar gelap.</p>
 
-        @if($current->isNotEmpty())
-            <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                @foreach($current as $img)
-                    <label class="block rounded-xl border border-zinc-200 p-2 text-xs">
-                        <img src="{{ asset('storage/'.$img) }}" class="h-28 w-full rounded-lg object-cover" alt="">
-                        <span class="mt-2 flex items-center gap-2 font-semibold text-red-600"><input type="checkbox" name="remove_images[]" value="{{ $img }}"> Hapus foto ini</span>
-                    </label>
-                @endforeach
-            </div>
+        @if($page->banner)
+            <img src="{{ asset('storage/'.$page->banner) }}" class="mt-4 h-32 w-full max-w-xl rounded-xl object-cover" alt="Banner saat ini">
+            <label class="mt-3 flex items-center gap-2 text-sm font-semibold text-red-600"><input type="checkbox" name="remove_banner" value="1"> Hapus banner ini</label>
         @endif
 
-        <label class="mt-4 block text-sm font-semibold">Tambah foto (bisa pilih beberapa sekaligus)
-            <input type="file" name="new_images[]" accept="image/*" multiple class="mt-2 block w-full text-sm"></label>
+        <label class="mt-4 block text-sm font-semibold">{{ $page->banner ? 'Ganti banner' : 'Upload banner' }}
+            <input type="file" name="banner" accept="image/*" class="mt-2 block w-full text-sm"></label>
     </div>
 
     <div class="flex gap-3">

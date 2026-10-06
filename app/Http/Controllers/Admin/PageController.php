@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Storage;
 
 class PageController extends Controller
 {
-    private const MAX_IMAGES = 6;
-
     public function index()
     {
         foreach (PageDefaults::all() as $slug => $defaults) {
@@ -34,28 +32,22 @@ class PageController extends Controller
             'meta_title'       => 'nullable|string|max:150',
             'meta_description' => 'nullable|string|max:300',
             'content'          => 'required|string',
-            'new_images'       => 'nullable|array',
-            'new_images.*'     => 'image|max:4096',
-            'remove_images'    => 'nullable|array',
-            'remove_images.*'  => 'string',
-        ], [], ['title' => 'Judul', 'content' => 'Isi halaman', 'new_images.*' => 'Foto']);
+            'banner'           => 'nullable|image|max:5120',
+        ], [], ['title' => 'Judul', 'content' => 'Isi halaman', 'banner' => 'Banner']);
 
         $content = Html::clean($data['content']);
         if ($content === '') {
             return back()->withInput()->withErrors(['content' => 'Isi halaman wajib diisi.']);
         }
 
-        // Foto di sebelah kanan teks
-        $images = collect($page->images ?? []);
-        $remove = $r->input('remove_images', []);
-        foreach ($images->filter(fn ($img) => in_array($img, $remove, true)) as $gone) {
-            Storage::disk('public')->delete($gone);
-        }
-        $images = $images->reject(fn ($img) => in_array($img, $remove, true))->values();
-
-        foreach ((array) $r->file('new_images', []) as $file) {
-            if ($images->count() >= self::MAX_IMAGES) break;
-            $images->push($file->store('pages', 'public'));
+        // Banner (1 gambar): ganti, hapus, atau biarkan
+        $banner = $page->banner;
+        if ($r->hasFile('banner')) {
+            if ($banner) Storage::disk('public')->delete($banner);
+            $banner = $r->file('banner')->store('pages', 'public');
+        } elseif ($r->boolean('remove_banner') && $banner) {
+            Storage::disk('public')->delete($banner);
+            $banner = null;
         }
 
         $page->update([
@@ -63,7 +55,7 @@ class PageController extends Controller
             'meta_title'       => $data['meta_title'] ?? null,
             'meta_description' => $data['meta_description'] ?? null,
             'content'          => $content,
-            'images'           => $images->all(),
+            'banner'           => $banner,
         ]);
 
         return redirect()->route('admin.pages.index')->with('ok', 'Halaman "'.$page->title.'" berhasil diperbarui.');

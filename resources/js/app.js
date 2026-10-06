@@ -171,9 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('.hero-swiper')) {
         new Swiper('.hero-swiper', {
             loop: document.querySelectorAll('.hero-swiper .swiper-slide').length > 1,
-            autoplay: { delay: 5000, disableOnInteraction: false },
+            autoplay: { delay: 2500, disableOnInteraction: false },
+            speed: 700,
             pagination: { el: '.swiper-pagination', clickable: true },
-            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
             grabCursor: true,
         });
     }
