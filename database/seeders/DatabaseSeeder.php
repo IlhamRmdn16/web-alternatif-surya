@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             ['Bagaimana cara membeli motor Honda di sini?', 'Pilih motor di halaman Daftar Harga, klik tombol Konsultasi Pembelian, isi data Anda, dan tim sales kami akan menghubungi untuk proses selanjutnya.'],
             ['Apakah bisa membeli secara kredit?', 'Bisa. Gunakan menu Konsultasi Pembelian lalu pilih "Minta hitungan kredit (simulasi)", masukkan DP dan tenor yang diinginkan.'],
             ['Apakah harga di website sudah pasti?', 'Harga dapat berubah sewaktu-waktu mengikuti kebijakan dealer. Hubungi kami via WhatsApp untuk konfirmasi harga dan stok terbaru.'],
-            ['Apakah tersedia layanan servis dan suku cadang asli?', 'Silakan hubungi kami via WhatsApp untuk informasi layanan servis (AHASS) dan suku cadang asli Honda.'],
+            ['Apakah tersedia layanan servis dan suku cadang asli?', 'Ya, Silakan hubungi kami via WhatsApp untuk informasi layanan servis (AHASS) dan suku cadang asli Honda.'],
         ];
         foreach ($faqs as $i => [$q, $a]) {
             Faq::firstOrCreate(['question' => $q], ['answer' => $a, 'sort' => $i + 1]);

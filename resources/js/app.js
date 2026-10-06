@@ -104,7 +104,7 @@ Alpine.data('motorGuide', () => ({
     steps: [
         { key: 'colors', title: 'Pilih warna', text: 'Klik bulatan warna di bawah foto untuk melihat foto dan harga warna tersebut.' },
         { key: 'types', title: 'Ganti tipe', text: 'Klik tombol tipe (misalnya CBS atau CBS ISS) untuk membuka tipe lain dari motor yang sama. Setiap tipe punya harga sendiri.' },
-        { key: 'price', title: 'Lihat harga', text: 'Harga OTR dan harga cash tampil di sini, dan berubah otomatis mengikuti warna yang Anda pilih.' },
+        { key: 'price', title: 'Lihat harga', text: 'Harga OTR (dan harga setelah diskon, jika ada) tampil di sini, dan berubah otomatis mengikuti warna yang Anda pilih.' },
         { key: 'consult', title: 'Konsultasi pembelian', text: 'Klik tombol ini untuk tanya stok, minta simulasi kredit, atau pesan unit. Tim kami akan menghubungi Anda.' },
     ],
     init() {

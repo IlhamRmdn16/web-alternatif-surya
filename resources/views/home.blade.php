@@ -27,7 +27,7 @@
 <section class="mx-auto max-w-7xl px-4 pt-10 md:pt-14">
     <h1 class="text-2xl font-extrabold tracking-tight text-zinc-900 md:text-4xl">{{ $settings['home_h1'] ?? 'Dealer Motor Honda Garut Resmi' }}</h1>
     <div class="mt-3 h-1 w-14 rounded bg-honda"></div>
-    <p class="mt-4 max-w-3xl text-sm leading-relaxed text-zinc-600 md:text-base">{{ $settings['home_intro'] ?? '' }}</p>
+    <p class="mt-4 text-sm leading-relaxed text-zinc-600 md:text-base">{{ $settings['home_intro'] ?? '' }}</p>
 </section>
 
 {{-- Katalog per jenis --}}

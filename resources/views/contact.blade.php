@@ -32,7 +32,7 @@
     </nav>
     <h1 class="mt-4 text-2xl font-extrabold text-zinc-900 md:text-4xl">Kontak & Lokasi Dealer Motor Honda Garut</h1>
     <div class="mt-3 h-1 w-14 rounded bg-honda"></div>
-    <p class="mt-4 max-w-3xl text-sm leading-relaxed text-zinc-600 md:text-base">Kunjungi showroom kami atau hubungi sales counter resmi untuk menanyakan stok, harga, promo, dan simulasi kredit motor Honda.</p>
+    <p class="mt-4 text-sm leading-relaxed text-zinc-600 md:text-base">Kunjungi showroom kami atau hubungi sales counter resmi untuk menanyakan stok, harga, promo, dan simulasi kredit motor Honda.</p>
 
     {{-- Info + peta --}}
     <div class="mt-8 grid gap-6 lg:grid-cols-5 lg:gap-8">

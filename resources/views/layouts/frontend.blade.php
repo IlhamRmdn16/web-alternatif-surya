@@ -13,7 +13,7 @@
     // Menu utama (header). FAQ & Kebijakan Privasi hanya di footer.
     $nav = [
         ['url' => route('home'), 'label' => 'Beranda', 'active' => request()->routeIs('home')],
-        ['url' => route('pricelist'), 'label' => 'Daftar Harga', 'active' => request()->routeIs('pricelist')],
+        ['url' => route('pricelist'), 'label' => 'Daftar Harga', 'active' => request()->routeIs('pricelist', 'motor.show')],
         ['url' => route('promos.index'), 'label' => 'Promo', 'active' => request()->routeIs('promos.*')],
         ['url' => route('news.index'), 'label' => 'Berita', 'active' => request()->routeIs('news.*')],
         ['url' => route('page.show', 'syarat-kredit'), 'label' => 'Syarat Kredit', 'active' => request()->is('syarat-kredit')],

@@ -16,6 +16,8 @@
                 'price' => $o['price'], 'discount' => $o['discount'], 'custom' => $o['custom']];
     })->values();
     $cashes = $motor->offers->filter(fn ($o) => $o['price'] > 0)->pluck('cash');
+    $anyColorDiscount = $motor->offers->contains(fn ($o) => $o['discount'] > 0);
+    $anyTypeDiscount = $siblings->contains(fn ($t) => $t->lowest_offer['discount'] > 0);
 @endphp
 
 @section('title', $motor->full_name.' Garut: Harga OTR & Diskon Cash | DealerMotorHondaGarut.id')
@@ -99,23 +101,28 @@
                 </div>
             @endif
 
-            {{-- Harga: berubah otomatis sesuai warna. Harga OTR & harga cash SELALU tampil (tanpa diskon, nilainya sama). --}}
+            {{-- Harga: berubah otomatis sesuai warna. Tanpa diskon (0) hanya "Harga OTR"; dengan diskon tampil "Harga Setelah Diskon". --}}
             <div class="mt-6 rounded-2xl bg-zinc-50 p-5" data-tour="price">
                 <p class="text-xs text-zinc-500">Harga Garut tipe {{ $motor->variant }}<span x-show="colors[ci]?.name"> - warna <span x-text="colors[ci]?.name">{{ $motor->colors->first()?->name }}</span></span></p>
 
                 <p x-show="offer.price <= 0" class="mt-2 text-2xl font-extrabold text-honda" @if($first['price'] > 0) style="display:none" @endif>Hubungi kami</p>
 
-                <div x-show="offer.price > 0" class="mt-3 grid grid-cols-2 gap-4" @if($first['price'] <= 0) style="display:none" @endif>
-                    <div>
+                <div x-show="offer.price > 0" class="mt-3" @if($first['price'] <= 0) style="display:none" @endif>
+                    {{-- Tanpa diskon: hanya harga OTR --}}
+                    <div x-show="offer.discount <= 0" @if($first['discount'] > 0) style="display:none" @endif>
                         <p class="text-xs font-semibold text-zinc-500">Harga OTR</p>
-                        <p class="mt-1 text-lg font-bold text-zinc-900 md:text-xl"
-                           x-text="rp(offer.price)"
-                           :style="offer.discount > 0 ? 'text-decoration:line-through;color:#a1a1aa' : ''"
-                           @if($first['discount'] > 0) style="text-decoration:line-through;color:#a1a1aa" @endif>{{ $rp($first['price']) }}</p>
+                        <p class="mt-1 text-3xl font-extrabold text-honda" x-text="rp(offer.price)">{{ $rp($first['price']) }}</p>
                     </div>
-                    <div>
-                        <p class="text-xs font-semibold text-zinc-500">Harga cash</p>
-                        <p class="mt-1 text-2xl font-extrabold text-honda md:text-3xl" x-text="rp(offer.cash)">{{ $rp($first['cash']) }}</p>
+                    {{-- Ada diskon: OTR dicoret + harga setelah diskon --}}
+                    <div x-show="offer.discount > 0" class="grid grid-cols-2 gap-4" @if($first['discount'] <= 0) style="display:none" @endif>
+                        <div>
+                            <p class="text-xs font-semibold text-zinc-500">Harga OTR</p>
+                            <p class="mt-1 text-lg font-bold md:text-xl" style="text-decoration:line-through;color:#a1a1aa" x-text="rp(offer.price)">{{ $rp($first['price']) }}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-zinc-500">Harga Setelah Diskon</p>
+                            <p class="mt-1 text-2xl font-extrabold text-honda md:text-3xl" x-text="rp(offer.cash)">{{ $rp($first['cash']) }}</p>
+                        </div>
                     </div>
                 </div>
 
@@ -147,14 +154,14 @@
                     <h2 class="text-lg font-bold text-zinc-900">Harga {{ $motor->full_name }} per warna</h2>
                     <div class="mt-3 overflow-x-auto rounded-xl border border-zinc-200">
                         <table class="w-full text-sm">
-                            <thead class="bg-zinc-50 text-left text-xs text-zinc-500"><tr><th class="px-4 py-2.5">Warna</th><th class="px-4 py-2.5 text-right">Harga OTR</th><th class="px-4 py-2.5 text-right">Harga cash</th></tr></thead>
+                            <thead class="bg-zinc-50 text-left text-xs text-zinc-500"><tr><th class="px-4 py-2.5">Warna</th><th class="px-4 py-2.5 text-right">Harga OTR</th>@if($anyColorDiscount)<th class="px-4 py-2.5 text-right">Harga Setelah Diskon</th>@endif</tr></thead>
                             <tbody class="divide-y divide-zinc-100">
                                 @foreach($motor->colors as $c)
                                     @php($o = $motor->offerFor($c))
                                     <tr>
                                         <td class="px-4 py-3 font-medium"><span class="mr-2 inline-block h-3 w-3 rounded-full ring-1 ring-zinc-300" style="background:{{ $c->hex }}"></span>{{ $c->name }}</td>
                                         <td class="px-4 py-3 text-right {{ $o['discount'] > 0 ? 'text-zinc-400 line-through' : 'font-bold text-honda' }}">{{ $o['price'] > 0 ? $rp($o['price']) : '-' }}</td>
-                                        <td class="px-4 py-3 text-right font-bold text-honda">{{ $o['price'] > 0 ? $rp($o['cash']) : '-' }}</td>
+                                        @if($anyColorDiscount)<td class="px-4 py-3 text-right font-bold text-honda">{{ $o['discount'] > 0 ? $rp($o['cash']) : '-' }}</td>@endif
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -167,14 +174,14 @@
                 <h2 class="text-lg font-bold text-zinc-900">Daftar harga {{ $motor->display_name }} Garut</h2>
                 <div class="mt-3 overflow-x-auto rounded-xl border border-zinc-200">
                     <table class="w-full text-sm">
-                        <thead class="bg-zinc-50 text-left text-xs text-zinc-500"><tr><th class="px-4 py-2.5">Tipe</th><th class="px-4 py-2.5 text-right">Harga OTR</th><th class="px-4 py-2.5 text-right">Harga cash</th></tr></thead>
+                        <thead class="bg-zinc-50 text-left text-xs text-zinc-500"><tr><th class="px-4 py-2.5">Tipe</th><th class="px-4 py-2.5 text-right">Harga OTR</th>@if($anyTypeDiscount)<th class="px-4 py-2.5 text-right">Harga Setelah Diskon</th>@endif</tr></thead>
                         <tbody class="divide-y divide-zinc-100">
                             @foreach($siblings as $t)
                                 @php($o = $t->lowest_offer)
                                 <tr class="{{ $t->id === $motor->id ? 'bg-red-50/50' : '' }}">
                                     <td class="px-4 py-3 font-medium"><a href="{{ route('motor.show', $t) }}" class="hover:text-honda">{{ $t->variant }}</a></td>
                                     <td class="px-4 py-3 text-right {{ $o['discount'] > 0 ? 'text-zinc-400 line-through' : 'font-bold text-honda' }}">{{ $o['price'] > 0 ? $rp($o['price']) : '-' }}</td>
-                                    <td class="px-4 py-3 text-right font-bold text-honda">{{ $o['price'] > 0 ? $rp($o['cash']) : '-' }}</td>
+                                    @if($anyTypeDiscount)<td class="px-4 py-3 text-right font-bold text-honda">{{ $o['discount'] > 0 ? $rp($o['cash']) : '-' }}</td>@endif
                                 </tr>
                             @endforeach
                         </tbody>

@@ -15,7 +15,7 @@
                    get none() { return this.q.trim() !== '' && !this.all.some(h => h.includes(this.q.trim().toLowerCase())) } }">
     <h1 class="text-2xl font-extrabold text-zinc-900 md:text-4xl">Daftar Harga Motor Honda Garut</h1>
     <div class="mt-3 h-1 w-14 rounded bg-honda"></div>
-    <p class="mt-4 max-w-3xl text-sm leading-relaxed text-zinc-600 md:text-base">Harga OTR setiap tipe motor Honda di dealer kami, termasuk potongan untuk pembelian cash. Harga dapat berubah sewaktu-waktu, hubungi kami untuk konfirmasi harga dan stok terbaru.</p>
+    <p class="mt-4 text-sm leading-relaxed text-zinc-600 md:text-base">Harga OTR setiap tipe motor Honda di dealer kami, termasuk potongan untuk pembelian cash. Harga dapat berubah sewaktu-waktu, hubungi kami untuk konfirmasi harga dan stok terbaru.</p>
 
     <div class="mt-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div class="no-scrollbar flex gap-2 overflow-x-auto">
