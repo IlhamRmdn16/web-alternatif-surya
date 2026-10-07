@@ -16,29 +16,28 @@
 @endpush
 
 @section('content')
-{{-- Banner: gambar sebagai latar, judul halaman statis di depannya (diatur di Admin > Halaman).
-     Lebar maks. 1240px di tengah, selaras dengan banner beranda. --}}
-<div class="md:px-4 md:pt-6">
-<section class="relative isolate mx-auto w-full overflow-hidden md:max-w-[1240px] md:rounded-2xl {{ $page->banner ? 'bg-zinc-900' : 'bg-gradient-to-br from-zinc-900 via-zinc-800 to-red-900' }}">
-    @if($page->banner)
-        <picture>
-            @if($m = \App\Support\BannerImage::mobileUrl($page->banner))
-                <source media="(max-width: 767px)" srcset="{{ $m }}">
-            @endif
-            <img src="{{ asset('storage/'.$page->banner) }}" alt="Banner {{ $page->title }}" width="1240" height="520"
-                 class="absolute inset-0 -z-10 h-full w-full object-cover" decoding="async" fetchpriority="high">
-        </picture>
-        <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/75 via-black/20 to-transparent md:bg-gradient-to-r md:from-black/70 md:via-black/25"></div>
-    @endif
-    <div class="flex min-h-[180px] flex-col justify-center px-5 py-10 md:min-h-[260px] md:px-12 md:py-12">
-        <nav class="text-xs text-white/70" aria-label="Breadcrumb">
-            <a href="{{ route('home') }}" class="hover:text-white">Beranda</a> / <span class="text-white">{{ $page->title }}</span>
-        </nav>
-        <h1 class="mt-3 max-w-3xl text-2xl font-extrabold leading-tight tracking-tight text-white drop-shadow md:text-4xl">{{ $page->title }}</h1>
-        <div class="mt-3 h-1 w-12 rounded bg-honda md:w-16"></div>
+{{-- Hero: latar putih, judul di kiri, foto (latar transparan) di kanan. Foto diatur di Admin > Halaman. --}}
+<section class="relative isolate overflow-hidden border-b border-zinc-100 bg-white">
+    <div class="pointer-events-none absolute -left-20 -top-20 -z-10 h-64 w-64 rounded-full bg-red-50 blur-2xl md:h-80 md:w-80"></div>
+
+    <div class="mx-auto grid max-w-7xl items-center gap-6 px-4 py-10 md:py-14 {{ $page->banner ? 'lg:grid-cols-2 lg:gap-10' : '' }}">
+        <div>
+            <nav class="text-xs text-zinc-500" aria-label="Breadcrumb">
+                <a href="{{ route('home') }}" class="hover:text-honda">Beranda</a> / <span class="text-zinc-800">{{ $page->title }}</span>
+            </nav>
+            <h1 class="mt-4 font-display text-3xl font-bold leading-tight tracking-tight text-zinc-900 sm:text-4xl lg:text-5xl">{{ $page->title }}</h1>
+            <div class="mt-5 h-1 w-16 rounded bg-honda"></div>
+        </div>
+
+        @if($page->banner)
+            <div class="relative mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
+                <div class="pointer-events-none absolute left-1/2 top-1/2 aspect-square h-[82%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-red-100 via-rose-50 to-orange-100"></div>
+                <div class="pointer-events-none absolute right-3 top-1 h-10 w-10 rounded-full bg-honda/20 lg:h-14 lg:w-14"></div>
+                <img src="{{ asset('storage/'.$page->banner) }}" alt="{{ $page->title }}" class="relative z-10 mx-auto h-[240px] w-full object-contain drop-shadow-xl sm:h-[300px] lg:h-[360px]">
+            </div>
+        @endif
     </div>
 </section>
-</div>
 
 <article class="mx-auto max-w-7xl px-4 pt-10">
     <div class="page-content">{!! $page->content !!}</div>
@@ -52,7 +51,6 @@
             <div class="mt-5 flex flex-wrap gap-3">
                 <button type="button" x-data @click="$dispatch('open-wa')" class="rounded-xl bg-green-500 px-6 py-3 text-sm font-bold text-white hover:bg-green-600">Chat Sales Counter</button>
                 <a href="{{ route('contact') }}" class="rounded-xl border border-zinc-600 px-6 py-3 text-sm font-bold hover:border-white">Kontak & Lokasi</a>
-                <a href="{{ route('faq') }}" class="rounded-xl border border-zinc-600 px-6 py-3 text-sm font-bold hover:border-white">Lihat FAQ</a>
             </div>
         </div>
     @endif

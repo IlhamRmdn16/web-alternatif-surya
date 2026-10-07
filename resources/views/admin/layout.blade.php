@@ -15,7 +15,7 @@
         ['admin.prospects.index', 'Prospek', 'admin.prospects.*'],
         ['admin.motors.index', 'Motor & Harga', 'admin.motors.*'],
         ['admin.categories.index', 'Jenis Motor', 'admin.categories.*'],
-        ['admin.banners.index', 'Banner', 'admin.banners.*'],
+        ['admin.banners.index', 'Foto Beranda', 'admin.banners.*'],
         ['admin.promos.index', 'Promo', 'admin.promos.*'],
         ['admin.faqs.index', 'FAQ', 'admin.faqs.*'],
         ['admin.posts.index', 'Berita', 'admin.posts.*'],
@@ -27,7 +27,7 @@
 @endphp
 <body class="bg-zinc-100 font-sans text-zinc-800" x-data="{ side: false }">
 <div class="flex min-h-screen">
-    <aside :class="side ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-40 w-64 transform bg-zinc-900 p-5 transition md:static md:translate-x-0">
+    <aside :class="side ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-40 w-64 transform overflow-y-auto bg-zinc-900 p-5 transition md:sticky md:top-0 md:h-screen md:shrink-0 md:translate-x-0 md:self-start">
         <p class="text-lg font-extrabold text-white">Admin <span class="text-red-500">Dealer</span></p>
         <nav class="mt-8 space-y-1">
             @foreach($menu as [$route, $label, $pattern])

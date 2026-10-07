@@ -137,7 +137,6 @@
                     </div>
                 @endforeach
             </div>
-            <p class="mt-5"><a href="{{ route('faq') }}" class="text-sm font-bold text-honda hover:text-zinc-900">Lihat semua FAQ</a></p>
         </div>
 
         {{-- Gambar statis (hanya desktop). Letakkan file di public/images/faq.webp --}}

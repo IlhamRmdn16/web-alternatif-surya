@@ -16,6 +16,7 @@
         <option value="">Semua sales / call center</option>
         @foreach($salesNames as $n)<option value="{{ $n }}" @selected(request('sales') === $n)>{{ $n }}</option>@endforeach
     </select>
+    @include('admin.partials.per-page', ['default' => 20])
     <button class="rounded-xl bg-zinc-900 px-5 py-2 text-sm font-semibold text-white">Filter</button>
     <a href="{{ route('admin.prospects.export', request()->query()) }}" class="rounded-xl bg-green-600 px-5 py-2 text-sm font-semibold text-white hover:bg-green-700">Export CSV</a>
 </form>

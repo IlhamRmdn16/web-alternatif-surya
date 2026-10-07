@@ -2,6 +2,8 @@
 
 namespace App\Support;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Helpers
@@ -17,6 +19,26 @@ class Helpers
             $slug = $base.'-'.$i++;
         }
         return $slug;
+    }
+
+    /** Rasio asli gambar di storage publik ("lebar / tinggi") untuk CSS aspect-ratio; default 4000 / 1667. */
+    public static function imageRatio(?string $path, string $default = '4000 / 1667'): string
+    {
+        if (! $path) return $default;
+        try {
+            $size = @getimagesize(Storage::disk('public')->path($path));
+            if ($size && $size[0] > 0 && $size[1] > 0) return $size[0].' / '.$size[1];
+        } catch (\Throwable $e) {
+            // abaikan, pakai default
+        }
+        return $default;
+    }
+
+    /** Jumlah data per halaman dari ?per_page= (hanya 10, 20, 50, 100). */
+    public static function perPage(Request $r, int $default = 10): int
+    {
+        $n = (int) $r->query('per_page');
+        return in_array($n, [10, 20, 50, 100], true) ? $n : $default;
     }
 
     public static function rp($n): string

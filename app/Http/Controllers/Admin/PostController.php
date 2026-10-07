@@ -12,9 +12,16 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $r)
     {
-        $posts = Post::orderByDesc('id')->paginate(10)->onEachSide(1);
+        $posts = Post::query()
+            ->when($r->query('q'), fn ($q, $v) => $q->where('title', 'like', "%$v%"))
+            ->when($r->query('status') === 'terbit', fn ($q) => $q->published())
+            ->when($r->query('status') === 'draft', fn ($q) => $q->where('is_published', false))
+            ->when($r->query('status') === 'terjadwal', fn ($q) => $q->where('is_published', true)->where('published_at', '>', now()))
+            ->orderByDesc('id')
+            ->paginate(Helpers::perPage($r, 10))->onEachSide(1)->withQueryString();
+
         return view('admin.posts.index', compact('posts'));
     }
 

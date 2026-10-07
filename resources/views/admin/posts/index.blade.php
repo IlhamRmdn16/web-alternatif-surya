@@ -2,6 +2,19 @@
 @section('title', 'Berita')
 @section('actions')<a href="{{ route('admin.posts.create') }}" class="rounded-xl bg-honda px-5 py-2.5 text-sm font-bold text-white hover:bg-honda-dark">+ Tulis berita</a>@endsection
 @section('content')
+<form method="GET" class="mb-5 flex flex-wrap items-center gap-3">
+    <input type="search" name="q" value="{{ request('q') }}" placeholder="Cari judul berita" class="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
+    <select name="status" onchange="this.form.submit()" class="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
+        <option value="">Semua status</option>
+        <option value="terbit" @selected(request('status') === 'terbit')>Terbit</option>
+        <option value="terjadwal" @selected(request('status') === 'terjadwal')>Terjadwal</option>
+        <option value="draft" @selected(request('status') === 'draft')>Draft</option>
+    </select>
+    @include('admin.partials.per-page', ['default' => 10])
+    <button class="rounded-xl bg-zinc-900 px-5 py-2 text-sm font-semibold text-white">Filter</button>
+    @if(request()->hasAny(['q', 'status', 'per_page']))<a href="{{ route('admin.posts.index') }}" class="text-sm font-semibold text-zinc-500 hover:text-honda">Reset</a>@endif
+</form>
+
 <div class="overflow-x-auto rounded-2xl bg-white shadow-sm">
     <table class="w-full text-sm">
         <thead class="bg-zinc-50 text-left text-xs text-zinc-500"><tr>

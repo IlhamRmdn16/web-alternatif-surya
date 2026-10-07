@@ -205,12 +205,12 @@
 
     {{-- Tombol petunjuk (?) di atas tombol WhatsApp. Klik untuk membuka tutorial halaman. --}}
     <button type="button" x-data @click="$dispatch('open-guide')" title="Petunjuk penggunaan halaman" aria-label="Petunjuk penggunaan halaman"
-            class="fixed bottom-[88px] right-[26px] z-40 flex h-11 w-11 items-center justify-center rounded-full bg-white text-honda shadow-lg ring-1 ring-zinc-200 transition hover:scale-110 hover:bg-honda hover:text-white md:bottom-[108px] md:right-[42px]">
+            class="fixed bottom-[88px] right-[26px] z-40 flex h-11 w-11 items-center justify-center rounded-full bg-white text-honda border-2 border-honda shadow-lg transition hover:scale-110 hover:bg-honda hover:text-white md:bottom-[108px] md:right-[42px]">
         <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
     </button>
 
     {{-- Petunjuk penggunaan halaman: otomatis tampil sekali saja (lihat motorGuide di app.js) --}}
-    <div x-data="motorGuide" @open-guide.window="start(false)" x-cloak>
+    <div x-data="motorGuide" @open-guide.window="start()" x-cloak>
         <div x-show="active" x-transition.opacity class="fixed inset-x-4 bottom-4 z-[70] mx-auto max-w-md rounded-2xl bg-zinc-900 p-5 text-white shadow-2xl sm:bottom-6" role="dialog" aria-live="polite" aria-label="Petunjuk halaman">
             <div class="flex items-start justify-between gap-3">
                 <p class="text-xs font-bold uppercase tracking-widest text-red-400" x-text="'Petunjuk ' + (i + 1) + ' dari ' + list.length"></p>

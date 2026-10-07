@@ -3,6 +3,26 @@
 @section('actions')<a href="{{ route('admin.motors.create') }}" class="rounded-xl bg-honda px-5 py-2.5 text-sm font-bold text-white hover:bg-honda-dark">+ Tambah motor</a>@endsection
 @section('content')
 <p class="mb-4 text-sm text-zinc-600">Setiap baris adalah satu tipe. Tipe dengan <b>nama motor yang sama</b> otomatis digabung menjadi satu seri (mis. "Beat Series") di website.</p>
+<form method="GET" class="mb-5 flex flex-wrap items-center gap-3">
+    <input type="search" name="q" value="{{ request('q') }}" placeholder="Cari nama / tipe motor" class="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
+    <select name="category" onchange="this.form.submit()" class="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
+        <option value="">Semua jenis</option>
+        @foreach($categories as $c)<option value="{{ $c->id }}" @selected(request('category') == $c->id)>{{ $c->name }}</option>@endforeach
+    </select>
+    <select name="status" onchange="this.form.submit()" class="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
+        <option value="">Semua status</option>
+        <option value="aktif" @selected(request('status') === 'aktif')>Aktif</option>
+        <option value="nonaktif" @selected(request('status') === 'nonaktif')>Nonaktif</option>
+    </select>
+    <select name="home" onchange="this.form.submit()" class="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
+        <option value="">Semua (beranda)</option>
+        <option value="1" @selected(request('home') === '1')>Tampil di beranda</option>
+    </select>
+    @include('admin.partials.per-page', ['default' => 10])
+    <button class="rounded-xl bg-zinc-900 px-5 py-2 text-sm font-semibold text-white">Filter</button>
+    @if(request()->hasAny(['q', 'category', 'status', 'home', 'per_page']))<a href="{{ route('admin.motors.index') }}" class="text-sm font-semibold text-zinc-500 hover:text-honda">Reset</a>@endif
+</form>
+
 <div class="overflow-x-auto rounded-2xl bg-white shadow-sm">
     <table class="w-full text-sm">
         <thead class="bg-zinc-50 text-left text-xs text-zinc-500"><tr>
@@ -25,7 +45,7 @@
                 </td>
             </tr>
         @empty
-            <tr><td colspan="9" class="px-4 py-10 text-center text-zinc-500">Belum ada motor. Klik "Tambah motor".</td></tr>
+            <tr><td colspan="9" class="px-4 py-10 text-center text-zinc-500">{{ request()->hasAny(['q', 'category', 'status', 'home']) ? 'Tidak ada motor yang cocok dengan filter.' : 'Belum ada motor. Klik "Tambah motor".' }}</td></tr>
         @endforelse
         </tbody>
     </table>

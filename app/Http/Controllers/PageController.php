@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Category, Faq, Motor, Promo};
+use App\Models\{Category, Motor, Promo};
 use App\Support\Series;
 
 class PageController extends Controller
@@ -16,12 +16,6 @@ class PageController extends Controller
         })->filter(fn ($c) => $c->series->isNotEmpty())->values();
 
         return view('pricelist', compact('categories'));
-    }
-
-    public function faq()
-    {
-        $faqs = Faq::where('is_active', true)->orderBy('sort')->get();
-        return view('faq', compact('faqs'));
     }
 
     public function promos()

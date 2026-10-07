@@ -11,10 +11,20 @@ use Illuminate\Support\Str;
 
 class MotorController extends Controller
 {
-    public function index()
+    public function index(Request $r)
     {
-        $motors = Motor::with(['category', 'colors'])->orderBy('name')->orderBy('price')->paginate(10)->onEachSide(1);
-        return view('admin.motors.index', compact('motors'));
+        $motors = Motor::with(['category', 'colors'])
+            ->when($r->query('q'), fn ($q, $v) => $q->where(fn ($w) => $w->where('name', 'like', "%$v%")->orWhere('variant', 'like', "%$v%")))
+            ->when($r->query('category'), fn ($q, $v) => $q->where('category_id', $v))
+            ->when($r->query('status') === 'aktif', fn ($q) => $q->where('is_active', true))
+            ->when($r->query('status') === 'nonaktif', fn ($q) => $q->where('is_active', false))
+            ->when($r->query('home') === '1', fn ($q) => $q->where('show_on_home', true))
+            ->orderBy('name')->orderBy('price')
+            ->paginate(Helpers::perPage($r, 10))->onEachSide(1)->withQueryString();
+
+        $categories = Category::orderBy('sort')->get();
+
+        return view('admin.motors.index', compact('motors', 'categories'));
     }
 
     /** /admin/motors/create?series=Beat -> nama & jenis terisi otomatis untuk menambah tipe baru di seri yang sama. */

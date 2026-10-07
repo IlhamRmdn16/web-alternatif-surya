@@ -36,36 +36,6 @@ class PageDefaults
 HTML,
             ],
 
-            'syarat-kredit' => [
-                'title' => 'Syarat Kredit Motor Honda',
-                'meta_title' => 'Syarat Kredit Motor Honda di Garut',
-                'meta_description' => 'Syarat dan dokumen pengajuan kredit motor Honda di dealer Garut, proses pengajuan, serta cara meminta simulasi cicilan dengan DP dan tenor pilihan Anda.',
-                'content' => <<<'HTML'
-<h2>Syarat pengajuan kredit motor Honda</h2>
-<p>Pembelian motor Honda secara kredit diproses melalui perusahaan pembiayaan (leasing) mitra dealer. Dokumen yang umumnya dibutuhkan:</p>
-<ul>
-<li>KTP pemohon (dan pasangan jika sudah menikah)</li>
-<li>Kartu Keluarga</li>
-<li>Bukti penghasilan: slip gaji atau surat keterangan kerja untuk karyawan, atau dokumen usaha untuk wiraswasta</li>
-<li>Dokumen pendukung lain sesuai permintaan perusahaan pembiayaan</li>
-</ul>
-<p><em>Syarat dan ketentuan dapat berbeda tergantung perusahaan pembiayaan (leasing) dan hasil survei. Hubungi sales counter kami untuk syarat terbaru.</em></p>
-<h2>Proses pengajuan kredit</h2>
-<ol>
-<li><strong>Pilih motor</strong> di halaman <a href="/daftar-harga">Daftar Harga</a>.</li>
-<li><strong>Minta simulasi cicilan</strong> lewat tombol <em>Konsultasi Pembelian</em> di halaman detail motor.</li>
-<li><strong>Siapkan dokumen</strong> persyaratan dan serahkan kepada sales counter kami.</li>
-<li><strong>Survei dan verifikasi</strong> oleh perusahaan pembiayaan.</li>
-<li><strong>Persetujuan kredit</strong> dari perusahaan pembiayaan.</li>
-<li><strong>Pembayaran DP dan serah terima unit.</strong></li>
-</ol>
-<h2>Simulasi cicilan</h2>
-<p>Buka halaman detail motor, klik <em>Konsultasi Pembelian</em>, pilih sales counter, lalu pilih keperluan <em>Minta hitungan kredit (simulasi)</em>. Isi nominal DP dan pilih tenor (11, 17, 23, 29, 33, atau 35 bulan). Sales counter akan menghubungi Anda dengan hasil simulasinya.</p>
-<h2>Masih ada pertanyaan?</h2>
-<p>Baca juga <a href="/faq">pertanyaan yang sering diajukan</a>, atau hubungi sales counter kami di halaman <a href="/kontak">Kontak &amp; Lokasi</a>.</p>
-HTML,
-            ],
-
             'kebijakan-privasi' => [
                 'title' => 'Kebijakan Privasi',
                 'meta_title' => 'Kebijakan Privasi',
@@ -89,7 +59,7 @@ HTML,
 <h2>WhatsApp dan layanan pihak ketiga</h2>
 <p>Saat Anda diarahkan ke WhatsApp, percakapan berlangsung di platform WhatsApp dan tunduk pada kebijakan privasi WhatsApp. Website ini juga memuat font dari Google Fonts dan peta dari Google Maps.</p>
 <h2>Cookie dan penyimpanan di browser</h2>
-<p>Website menggunakan cookie yang diperlukan untuk keamanan dan fungsi dasar, misalnya sesi dan perlindungan formulir. Browser Anda juga menyimpan penanda kecil agar petunjuk penggunaan halaman motor tidak ditampilkan berulang. Jika di kemudian hari kami menambahkan layanan analitik, kebijakan ini akan diperbarui.</p>
+<p>Website menggunakan cookie yang diperlukan untuk keamanan dan fungsi dasar, misalnya sesi dan perlindungan formulir. Jika di kemudian hari kami menambahkan layanan analitik, kebijakan ini akan diperbarui.</p>
 <h2>Penyimpanan dan keamanan</h2>
 <p>Kami menyimpan data selama diperlukan untuk menindaklanjuti permintaan Anda dan keperluan administrasi dealer, serta berupaya menjaga keamanannya. Namun, tidak ada sistem yang sepenuhnya bebas risiko.</p>
 <h2>Hak Anda</h2>

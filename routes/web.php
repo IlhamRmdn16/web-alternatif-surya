@@ -16,8 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/daftar-harga', [PageController::class, 'pricelist'])->name('pricelist');
 Route::redirect('/pricelist', '/daftar-harga', 301);
-Route::redirect('/cara-beli-dan-syarat-kredit', '/syarat-kredit', 301);
-Route::get('/faq', [PageController::class, 'faq'])->name('faq');
+// Halaman FAQ & Syarat Kredit sudah dihapus (FAQ hanya di beranda): alamat lama dialihkan ke beranda.
+Route::redirect('/cara-beli-dan-syarat-kredit', '/', 301);
+Route::redirect('/syarat-kredit', '/', 301);
+Route::redirect('/faq', '/', 301)->name('faq');
 Route::get('/promo', [PageController::class, 'promos'])->name('promos.index');
 Route::get('/promo/{promo}', [PageController::class, 'promo'])->name('promos.show');
 Route::get('/berita', [NewsController::class, 'index'])->name('news.index');
@@ -26,7 +28,7 @@ Route::get('/motor/{motor}', [MotorController::class, 'show'])->name('motor.show
 Route::post('/prospek', [ProspectController::class, 'store'])->middleware('throttle:10,1')->name('prospect.store');
 Route::post('/prospek/wa', [ProspectController::class, 'wa'])->middleware('throttle:20,1')->name('prospect.wa');
 Route::get('/kontak', ContactController::class)->name('contact');
-// Halaman statis: /tentang-kami, /syarat-kredit, /kebijakan-privasi (isi diatur di Admin > Halaman)
+// Halaman statis: /tentang-kami, /kebijakan-privasi (isi diatur di Admin > Halaman)
 Route::get('/{page}', [StaticPageController::class, 'show'])->whereIn('page', array_keys(PageDefaults::all()))->name('page.show');
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 

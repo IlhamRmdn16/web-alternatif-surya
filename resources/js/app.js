@@ -97,8 +97,7 @@ Alpine.data('motorPage', (cfg) => ({
     },
 }));
 
-/* Petunjuk halaman detail motor: tampil otomatis SEKALI saja (kunjungan pertama ke halaman detail mana pun) */
-const GUIDE_KEY = 'dmhg_motor_guide_v1';
+/* Petunjuk halaman detail motor: hanya tampil saat tombol tanda tanya (?) diklik */
 Alpine.data('motorGuide', () => ({
     active: false, i: 0, list: [], el: null,
     steps: [
@@ -107,21 +106,15 @@ Alpine.data('motorGuide', () => ({
         { key: 'price', title: 'Lihat harga', text: 'Harga OTR (dan harga setelah diskon, jika ada) tampil di sini, dan berubah otomatis mengikuti warna yang Anda pilih.' },
         { key: 'consult', title: 'Konsultasi pembelian', text: 'Klik tombol ini untuk tanya stok, minta simulasi kredit, atau pesan unit. Tim kami akan menghubungi Anda.' },
     ],
-    init() {
-        let seen = true;
-        try { seen = localStorage.getItem(GUIDE_KEY) === '1'; } catch (e) { seen = true; }
-        if (!seen) setTimeout(() => this.start(true), 900);
-    },
     build() {
         this.list = this.steps.filter((s) => {
             const e = document.querySelector('[data-tour="' + s.key + '"]');
             return e && e.offsetParent !== null;
         });
     },
-    start(first) {
+    start() {
         this.build();
         if (!this.list.length) return;
-        if (first) { try { localStorage.setItem(GUIDE_KEY, '1'); } catch (e) {} }
         this.i = 0; this.active = true; this.focus();
     },
     focus() {
@@ -169,14 +162,14 @@ Alpine.data('motorForm', (colors, seriesMap, init) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('.hero-swiper')) {
-        const multi = document.querySelectorAll('.hero-swiper .swiper-slide').length > 1;
         new Swiper('.hero-swiper', {
-            loop: multi,
-            allowTouchMove: multi,
-            autoplay: multi ? { delay: 4500, disableOnInteraction: false, pauseOnMouseEnter: true } : false,
-            speed: 600,
+            loop: document.querySelectorAll('.hero-swiper .swiper-slide').length > 1,
+            autoplay: { delay: 2500, disableOnInteraction: false },
+            speed: 800,
+            effect: 'fade',
+            fadeEffect: { crossFade: true },
             pagination: { el: '.swiper-pagination', clickable: true },
-            grabCursor: multi,
+            grabCursor: true,
         });
     }
 });

@@ -16,12 +16,10 @@
         ['url' => route('pricelist'), 'label' => 'Daftar Harga', 'active' => request()->routeIs('pricelist', 'motor.show')],
         ['url' => route('promos.index'), 'label' => 'Promo', 'active' => request()->routeIs('promos.*')],
         ['url' => route('news.index'), 'label' => 'Berita', 'active' => request()->routeIs('news.*')],
-        ['url' => route('page.show', 'syarat-kredit'), 'label' => 'Syarat Kredit', 'active' => request()->is('syarat-kredit')],
         ['url' => route('page.show', 'tentang-kami'), 'label' => 'Tentang Kami', 'active' => request()->is('tentang-kami')],
         ['url' => route('contact'), 'label' => 'Kontak', 'active' => request()->routeIs('contact')],
     ];
     $footerNav = array_merge($nav, [
-        ['url' => route('faq'), 'label' => 'FAQ', 'active' => request()->routeIs('faq')],
         ['url' => route('page.show', 'kebijakan-privasi'), 'label' => 'Kebijakan Privasi', 'active' => request()->is('kebijakan-privasi')],
     ]);
 @endphp
@@ -54,7 +52,7 @@
     <link rel="icon" href="{{ asset('images/icon.png') }}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script type="application/ld+json">
@@ -75,6 +73,14 @@
         'brand' => ['@type' => 'Brand', 'name' => 'Honda'],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
     </script>
+@if(request()->routeIs('home') && isset($faqs) && $faqs->isNotEmpty())
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@context' => 'https://schema.org', '@type' => 'FAQPage',
+        'mainEntity' => $faqs->map(fn ($f) => ['@type' => 'Question', 'name' => $f->question, 'acceptedAnswer' => ['@type' => 'Answer', 'text' => strip_tags($f->answer)]])->values(),
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    </script>
+    @endif
     @stack('head')
 </head>
 <body class="bg-white font-sans text-zinc-800 antialiased">

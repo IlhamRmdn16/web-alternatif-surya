@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Prospect;
+use App\Support\Helpers;
 use Illuminate\Http\Request;
 
 class ProspectController extends Controller
@@ -19,7 +20,7 @@ class ProspectController extends Controller
 
     public function index(Request $r)
     {
-        $prospects = $this->filtered($r)->latest()->paginate(15)->onEachSide(1)->withQueryString();
+        $prospects = $this->filtered($r)->latest()->paginate(Helpers::perPage($r, 20))->onEachSide(1)->withQueryString();
         $salesNames = Prospect::whereNotNull('sales_name')->distinct()->orderBy('sales_name')->pluck('sales_name');
         return view('admin.prospects.index', compact('prospects', 'salesNames'));
     }
