@@ -19,7 +19,7 @@ class ProspectController extends Controller
 
     public function index(Request $r)
     {
-        $prospects = $this->filtered($r)->latest()->paginate(20)->withQueryString();
+        $prospects = $this->filtered($r)->latest()->paginate(15)->onEachSide(1)->withQueryString();
         $salesNames = Prospect::whereNotNull('sales_name')->distinct()->orderBy('sales_name')->pluck('sales_name');
         return view('admin.prospects.index', compact('prospects', 'salesNames'));
     }

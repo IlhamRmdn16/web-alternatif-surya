@@ -8,7 +8,7 @@ class NewsController extends Controller
 {
     public function index()
     {
-        $posts = Post::published()->orderByDesc('published_at')->orderByDesc('id')->paginate(9);
+        $posts = Post::published()->orderByDesc('published_at')->orderByDesc('id')->paginate(6)->onEachSide(1);
         return view('news.index', compact('posts'));
     }
 

@@ -15,7 +15,7 @@
         <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             @foreach($posts as $post) @include('partials.post-card') @endforeach
         </div>
-        <div class="mt-8">{{ $posts->links() }}</div>
+        <div class="mt-8">{{ $posts->links('partials.pagination') }}</div>
     @endif
 </section>
 @endsection

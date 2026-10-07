@@ -13,7 +13,7 @@ class MotorController extends Controller
 {
     public function index()
     {
-        $motors = Motor::with(['category', 'colors'])->orderBy('name')->orderBy('price')->paginate(30);
+        $motors = Motor::with(['category', 'colors'])->orderBy('name')->orderBy('price')->paginate(10)->onEachSide(1);
         return view('admin.motors.index', compact('motors'));
     }
 

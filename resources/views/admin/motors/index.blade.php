@@ -30,5 +30,5 @@
         </tbody>
     </table>
 </div>
-<div class="mt-5">{{ $motors->links() }}</div>
+<div class="mt-5">{{ $motors->links('partials.pagination') }}</div>
 @endsection
