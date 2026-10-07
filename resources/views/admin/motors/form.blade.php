@@ -40,11 +40,11 @@
             <input type="hidden" name="is_active" value="0">
             <label class="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" name="is_active" value="1" @checked(old('is_active', $motor->is_active ?? true))> Aktif (tampil di website)</label>
             <input type="hidden" name="show_on_home" value="0">
-            <label class="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" name="show_on_home" value="1" @checked(old('show_on_home', $motor->show_on_home))> Tampilkan seri ini di beranda</label>
+            <label class="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" name="show_on_home" value="1" @checked(old('show_on_home', $motor->show_on_home))> Tampilkan tipe ini di beranda</label>
             <label class="flex items-center gap-2 text-sm font-semibold">Urutan di beranda
                 <input type="number" min="0" name="home_sort" value="{{ old('home_sort', $motor->home_sort ?? 0) }}" class="w-20 rounded-xl border border-zinc-300 px-3 py-1.5"></label>
         </div>
-        <p class="text-xs text-zinc-500">Beranda menampilkan maksimal 4 seri per jenis. Cukup satu tipe dalam seri yang dicentang agar seri tampil.</p>
+        <p class="text-xs text-zinc-500">Beranda menampilkan setiap tipe yang dicentang sebagai kartu sendiri (foto, tipe, dan harga tipe itu), maksimal 4 per jenis, urut sesuai "Urutan di beranda".</p>
     </div>
 
     <div class="rounded-2xl bg-white p-6 shadow-sm">
