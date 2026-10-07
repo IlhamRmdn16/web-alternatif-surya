@@ -13,8 +13,8 @@
     </div>
     <div class="flex flex-1 flex-col p-4">
         <h3 class="text-base font-bold leading-snug text-zinc-900 md:text-lg">{{ $s->name }} Series</h3>
-        <p class="mt-0.5 text-xs text-zinc-500">{{ $s->types->count() }} tipe: {{ $s->types->pluck('variant')->take(3)->implode(', ') }}{{ $s->types->count() > 3 ? ', ...' : '' }}</p>
-        <p class="mt-4 text-xs text-zinc-500">Harga OTR mulai</p>
+        <p class="mt-0.5 text-xs text-zinc-500">Tipe: {{ $s->types->pluck('variant')->take(3)->implode(', ') }}{{ $s->types->count() > 3 ? ', ...' : '' }}</p>
+        <p class="mt-4 text-xs text-zinc-500">Harga OTR</p>
         @include('partials.price', ['price' => $o['price'], 'disc' => $o['discount']])
         <span class="mt-4 rounded-xl bg-zinc-900 py-2.5 text-center text-sm font-semibold text-white transition group-hover:bg-honda">Lihat tipe & harga</span>
     </div>

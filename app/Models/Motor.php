@@ -73,4 +73,10 @@ class Motor extends Model
     {
         return $this->display_name.' '.$this->variant;
     }
+
+    /** Foto untuk kartu: foto utama tipe, atau foto warna pertama jika foto utama kosong. */
+    public function getCoverImageAttribute(): ?string
+    {
+        return $this->image ?: $this->colors->first(fn ($c) => $c->image)?->image;
+    }
 }

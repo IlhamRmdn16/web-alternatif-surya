@@ -148,7 +148,9 @@
     </div>
 
     {{-- Tabel harga: lebar penuh di bawah foto & info, supaya tidak ada ruang kosong di kolom foto --}}
-    <section class="mt-12 grid gap-8 lg:gap-14 {{ $varied ? 'lg:grid-cols-2' : '' }}" aria-label="Daftar harga">
+    <section class="mt-12 grid items-start gap-8 lg:gap-14 {{ $related->isNotEmpty() ? 'lg:grid-cols-2' : '' }}" aria-label="Daftar harga dan motor lainnya">
+        {{-- Kiri: daftar harga --}}
+        <div class="space-y-8">
             @if($varied)
                 <div>
                     <h2 class="text-lg font-bold text-zinc-900">Harga {{ $motor->full_name }} per warna</h2>
@@ -188,6 +190,17 @@
                     </table>
                 </div>
             </div>
+        </div>
+
+        {{-- Kanan: rekomendasi motor lainnya (2 saja) --}}
+        @if($related->isNotEmpty())
+            <div>
+                <h2 class="text-lg font-bold text-zinc-900">Motor {{ $motor->category->name }} Honda lainnya</h2>
+                <div class="mt-3 grid grid-cols-2 gap-3 md:gap-5">
+                    @foreach($related->take(2) as $s) @include('partials.series-card') @endforeach
+                </div>
+            </div>
+        @endif
     </section>
 
     {{-- Tombol petunjuk (?) di atas tombol WhatsApp. Klik untuk membuka tutorial halaman. --}}
@@ -265,14 +278,5 @@
             </form>
         </div>
     </div>
-
-    @if($related->isNotEmpty())
-        <section class="pt-16">
-            <h2 class="text-xl font-extrabold text-zinc-900">Motor {{ $motor->category->name }} Honda lainnya</h2>
-            <div class="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-6">
-                @foreach($related as $s) @include('partials.series-card') @endforeach
-            </div>
-        </section>
-    @endif
 </div>
 @endsection
