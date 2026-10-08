@@ -86,13 +86,14 @@
         @include('admin.about.field', ['path' => 'vision.missions', 'label' => 'Misi (satu misi per baris)', 'type' => 'textarea', 'rows' => 6])
     </div>
 
-    {{-- LOKASI --}}
+    {{-- JANGKAUAN --}}
     <div class="space-y-4 rounded-2xl bg-white p-6 shadow-sm">
-        <h2 class="font-bold">6. Lokasi</h2>
-        @include('admin.about.field', ['path' => 'places.eyebrow', 'label' => 'Teks kecil di atas judul'])
-        @include('admin.about.field', ['path' => 'places.title', 'label' => 'Judul'])
-        @include('admin.about.field', ['path' => 'places.intro', 'label' => 'Paragraf pengantar', 'type' => 'textarea', 'rows' => 2])
-        @include('admin.about.field', ['path' => 'places.items', 'label' => 'Daftar lokasi (satu lokasi per baris, format: Nama lokasi | Keterangan). Kosongkan untuk menyembunyikan bagian ini.', 'type' => 'textarea', 'rows' => 5])
+        <h2 class="font-bold">6. Jangkauan layanan (daftar kecamatan)</h2>
+        @include('admin.about.field', ['path' => 'areas.eyebrow', 'label' => 'Teks kecil di atas judul'])
+        @include('admin.about.field', ['path' => 'areas.title', 'label' => 'Judul'])
+        @include('admin.about.field', ['path' => 'areas.intro', 'label' => 'Paragraf pengantar', 'type' => 'textarea', 'rows' => 2])
+        @include('admin.about.field', ['path' => 'areas.home', 'label' => 'Kecamatan lokasi dealer (diberi tanda "Lokasi dealer"; tulis persis seperti di daftar)'])
+        @include('admin.about.field', ['path' => 'areas.items', 'label' => 'Daftar kecamatan (satu kecamatan per baris). Kosongkan untuk menyembunyikan bagian ini.', 'type' => 'textarea', 'rows' => 14])
     </div>
 
     {{-- SEO --}}

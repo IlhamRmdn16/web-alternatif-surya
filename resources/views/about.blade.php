@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @php
-    $h = $about['hero']; $story = $about['story']; $svc = $about['services']; $vm = $about['vision']; $pl = $about['places'];
+    $h = $about['hero']; $story = $about['story']; $svc = $about['services']; $vm = $about['vision']; $ar = $about['areas'];
 
     // Kata dalam judul yang diberi warna (aman: semua teks di-escape)
     $hl = trim($h['highlight'] ?? '');
@@ -12,8 +12,9 @@
 
     $paras = array_filter(array_map('trim', preg_split('/\R{2,}/', (string) $story['text'])));
     $missions = array_filter(array_map('trim', preg_split('/\R/', (string) $vm['missions'])));
-    $places = collect(preg_split('/\R/', (string) $pl['items']))->map(fn ($l) => trim($l))->filter()
-        ->map(function ($l) { [$n, $d] = array_pad(array_map('trim', explode('|', $l, 2)), 2, ''); return ['name' => $n, 'desc' => $d]; })->values();
+    $areas = collect(preg_split('/\R/', (string) $ar['items']))->map(fn ($l) => trim(explode('|', $l, 2)[0]))->filter()
+        ->map(fn ($n) => ['name' => $n])->values();
+    $homeArea = trim((string) ($ar['home'] ?? ''));
 
     $heroPhoto = ! empty($h['photo']) ? asset('storage/'.$h['photo']) : null;
     $storyPhoto = ! empty($story['photo']) ? asset('storage/'.$story['photo']) : null;
@@ -131,26 +132,44 @@
     </div>
 </section>
 
-{{-- LOKASI --}}
-@if($places->isNotEmpty())
-<section class="mx-auto max-w-7xl px-4 pt-16 md:pt-24" x-data="{ q: '' }">
-    <p class="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-honda"><span class="h-px w-8 bg-honda/60"></span>{{ $pl['eyebrow'] }}</p>
-    <h2 class="mt-3 text-3xl font-extrabold leading-tight tracking-tight text-zinc-900 md:text-5xl">{{ $pl['title'] }}</h2>
-    <p class="mt-4 text-sm leading-relaxed text-zinc-600 md:text-base">{{ $pl['intro'] }}</p>
+{{-- JANGKAUAN LAYANAN: daftar kecamatan --}}
+@if($areas->isNotEmpty())
+<section class="mx-auto max-w-7xl px-4 pt-16 md:pt-24"
+         x-data="{ q: '', all: {{ Js::from($areas->map(fn ($a) => Str::lower($a['name']))->values()) }},
+                   get shown() { const s = this.q.trim().toLowerCase(); return s === '' ? this.all.length : this.all.filter(n => n.includes(s)).length; } }">
+    <p class="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-honda"><span class="h-px w-8 bg-honda/60"></span>{{ $ar['eyebrow'] }}</p>
+    <h2 class="mt-3 text-3xl font-extrabold leading-tight tracking-tight text-zinc-900 md:text-5xl">{{ $ar['title'] }}</h2>
+    <p class="mt-4 text-sm leading-relaxed text-zinc-600 md:text-base">{{ $ar['intro'] }}</p>
 
-    @if($places->count() > 8)
-        <input x-model="q" type="search" placeholder="Cari lokasi..." class="mt-6 w-full rounded-full border border-zinc-300 px-5 py-3 text-sm md:max-w-md">
-    @endif
-
-    <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        @foreach($places as $pc)
-            <div x-show="q.trim() === '' || {{ Js::from(Str::lower($pc['name'].' '.$pc['desc'])) }}.includes(q.trim().toLowerCase())" class="rounded-xl border border-zinc-200 bg-white p-4">
-                <p class="text-sm font-bold text-zinc-900">{{ $pc['name'] }}</p>
-                @if($pc['desc'])<p class="mt-0.5 text-xs text-zinc-500">{{ $pc['desc'] }}</p>@endif
+    <div class="mt-8 rounded-3xl border border-zinc-200 bg-white p-5 shadow-sm md:p-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex items-center gap-3">
+                <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-xl font-extrabold text-honda">{{ $areas->count() }}</span>
+                <div>
+                    <p class="text-sm font-bold text-zinc-900">Kecamatan terlayani</p>
+                    <p class="text-xs text-zinc-500">di seluruh Kabupaten Garut</p>
+                </div>
             </div>
-        @endforeach
+            <input x-model="q" type="search" placeholder="Cari kecamatan..." aria-label="Cari kecamatan" class="w-full rounded-full border border-zinc-300 px-5 py-2.5 text-sm sm:max-w-xs">
+        </div>
+
+        <ul class="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
+            @foreach($areas as $i => $a)
+                @php($isHome = $homeArea !== '' && Str::lower($a['name']) === Str::lower($homeArea))
+                <li x-show="q.trim() === '' || {{ Js::from(Str::lower($a['name'])) }}.includes(q.trim().toLowerCase())"
+                    class="flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-sm {{ $isHome ? 'border-honda bg-red-50 font-bold text-honda' : 'border-zinc-200 bg-zinc-50 font-medium text-zinc-700' }}">
+                    <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold {{ $isHome ? 'bg-honda text-white' : 'bg-white text-zinc-400 ring-1 ring-zinc-200' }}">{{ $i + 1 }}</span>
+                    <span class="min-w-0">
+                        <span class="block truncate">{{ $a['name'] }}</span>
+                        @if($isHome)<span class="block text-[10px] font-semibold uppercase tracking-wide">Lokasi dealer</span>@endif
+                    </span>
+                </li>
+            @endforeach
+        </ul>
+        <p x-show="shown === 0" x-cloak class="mt-4 text-center text-sm text-zinc-500">Kecamatan tidak ditemukan.</p>
     </div>
-    <a href="{{ route('contact') }}" class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-honda hover:text-zinc-900">Lihat peta & kontak <span aria-hidden="true">&rarr;</span></a>
+
+    <a href="{{ route('contact') }}" class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-honda hover:text-zinc-900">Lihat peta & kontak dealer <span aria-hidden="true">&rarr;</span></a>
 </section>
 @endif
 

@@ -45,3 +45,13 @@ input[type="checkbox"] { accent-color: #d6001c; }
 .page-content th { background: #fafafa; font-weight: 700; color: #18181b; }
 .page-content h4 { margin: 1.25rem 0 0.4rem; font-weight: 700; color: #18181b; }
 @media (max-width: 640px) { .page-content img { float: none !important; display: block; margin-left: auto !important; margin-right: auto !important; } }
+
+/* Kebijakan privasi: judul bagian bernomor + motif */
+.policy-content { counter-reset: sec; }
+.policy-content > p:first-child { font-size: 1.05rem; color: #27272a; }
+.policy-content h2 { counter-increment: sec; display: flex; align-items: center; gap: 0.75rem; margin: 2.25rem 0 0.75rem; padding-bottom: 0.6rem; border-bottom: 1px dashed #e4e4e7; font-size: 1.3rem; }
+.policy-content h2::before { content: counter(sec); flex: none; display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: 0.6rem; background: #fef2f2; color: #d6001c; font-size: 0.9rem; font-weight: 800; }
+
+/* Pop-up cookie */
+@keyframes cookieWiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+.cookie-wiggle { animation: cookieWiggle 1.8s ease-in-out infinite; }

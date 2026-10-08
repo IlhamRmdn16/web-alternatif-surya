@@ -48,12 +48,13 @@ class AboutDefaults
                 'vision_text'  => 'Dipercaya karena pelayanan yang jujur, harga yang terbuka, dan dukungan purna jual yang prima.',
                 'missions'     => "Memberikan pelayanan yang ramah, jujur, dan transparan kepada setiap pelanggan.\nMenyediakan produk dan layanan purna jual Honda yang berkualitas.\nTerus meningkatkan kemampuan tim agar pelayanan semakin cepat dan tepat.\nMenjaga hubungan jangka panjang dengan pelanggan melalui pengalaman yang positif.",
             ],
-            'places' => [
-                'eyebrow' => 'Lokasi kami',
-                'title'   => 'Mudah dijangkau di Kota Garut.',
-                'intro'   => 'Kunjungi dealer kami atau hubungi sales counter untuk informasi stok, harga, dan promo terbaru.',
-                // satu lokasi per baris, format: Nama lokasi | Keterangan
-                'items'   => 'Dealer Garut Kota | Jl. Papandayan No.112, Kota Kulon, Kec. Garut Kota',
+            'areas' => [
+                'eyebrow' => 'Jangkauan layanan',
+                'title'   => 'Melayani 42 kecamatan di Kabupaten Garut.',
+                'intro'   => 'Dari pusat kota hingga pelosok Garut, tim kami siap membantu pembelian dan perawatan motor Honda Anda di seluruh kecamatan.',
+                'home'    => 'Garut Kota', // kecamatan lokasi dealer (diberi tanda khusus)
+                // satu kecamatan per baris
+                'items'   => "Banjarwangi\nBanyuresmi\nBayongbong\nBalubur Limbangan\nBungbulang\nCaringin\nCibalong\nCibatu\nCibiuk\nCigedug\nCihurip\nCikajang\nCikelet\nCilawu\nCisewu\nCisompet\nCisurupan\nGarut Kota\nKadungora\nKarangpawitan\nKarangtengah\nKersamanah\nLeles\nLeuwigoong\nMalangbong\nMekarmukti\nPakenjeng\nPameungpeuk\nPamulihan\nPangatikan\nPasirwangi\nPeundeuy\nSamarang\nSelaawi\nSingajaya\nSucinaraja\nSukaresmi\nSukawening\nTalegong\nTarogong Kaler\nTarogong Kidul\nWanaraja",
             ],
             'seo' => [
                 'title'       => 'Tentang Kami - Dealer Motor Honda Garut Sejak 1991',

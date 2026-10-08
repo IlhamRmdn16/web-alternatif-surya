@@ -247,7 +247,7 @@
     <div class="border-t border-zinc-800">
         <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-center text-xs text-zinc-500 md:flex-row md:text-left">
             <p>&copy; {{ date('Y') }} DealerMotorHondaGarut.id - CV. Surya Wijaya Sejahtera. Seluruh hak cipta dilindungi.</p>
-            <p>Harga dapat berubah sewaktu-waktu. Konfirmasi harga dan stok ke sales kami. <a href="{{ route('page.show', 'kebijakan-privasi') }}" class="underline underline-offset-2 hover:text-white">Kebijakan Privasi</a></p>
+            <p>Harga dapat berubah sewaktu-waktu. Konfirmasi harga dan stok ke sales kami. <a href="{{ route('page.show', 'kebijakan-privasi') }}" class="underline underline-offset-2 hover:text-white">Kebijakan Privasi</a> &middot; <button type="button" x-data @click="$dispatch('open-cookie')" class="underline underline-offset-2 hover:text-white">Pengaturan Cookie</button></p>
         </div>
     </div>
 </footer>
@@ -281,6 +281,9 @@
         </form>
     </div>
 </div>
+
+{{-- Banner & pengaturan cookie: dipasang di semua halaman agar pilihan pengunjung berlaku di seluruh website --}}
+@include('partials.cookie-notice')
 
 @stack('scripts')
 </body>

@@ -97,7 +97,20 @@ Alpine.data('motorPage', (cfg) => ({
     },
 }));
 
-/* Petunjuk halaman detail motor: hanya tampil saat tombol tanda tanya (?) diklik */
+/* Penanda "sudah pernah" (localStorage + cookie sebagai cadangan), dipakai petunjuk motor & pop-up cookie */
+const flagSeen = (k) => {
+    try { if (localStorage.getItem(k) === '1') return true; } catch (e) {}
+    return document.cookie.split('; ').includes(k + '=1');
+};
+const flagMark = (k) => {
+    try { localStorage.setItem(k, '1'); } catch (e) {}
+    document.cookie = k + '=1; max-age=31536000; path=/; SameSite=Lax';
+};
+
+/* Petunjuk halaman detail motor: tampil otomatis SEKALI (kunjungan pertama ke halaman motor mana pun).
+   Penanda disimpan SEBELUM petunjuk tampil, jadi pindah tipe/halaman tidak pernah mengulang dari awal.
+   Selanjutnya hanya muncul jika tombol tanda tanya (?) diklik. */
+const GUIDE_KEY = 'dmhg_motor_guide_v1';
 Alpine.data('motorGuide', () => ({
     active: false, i: 0, list: [], el: null,
     steps: [
@@ -106,6 +119,12 @@ Alpine.data('motorGuide', () => ({
         { key: 'price', title: 'Lihat harga', text: 'Harga OTR (dan harga setelah diskon, jika ada) tampil di sini, dan berubah otomatis mengikuti warna yang Anda pilih.' },
         { key: 'consult', title: 'Konsultasi pembelian', text: 'Klik tombol ini untuk tanya stok, minta simulasi kredit, atau pesan unit. Tim kami akan menghubungi Anda.' },
     ],
+    init() {
+        if (!flagSeen(GUIDE_KEY)) {
+            flagMark(GUIDE_KEY);
+            setTimeout(() => this.start(), 900);
+        }
+    },
     build() {
         this.list = this.steps.filter((s) => {
             const e = document.querySelector('[data-tour="' + s.key + '"]');
@@ -131,6 +150,77 @@ Alpine.data('motorGuide', () => ({
     prev() { if (this.i > 0) { this.i--; this.focus(); } },
     finish() { this.clear(); this.active = false; },
     get step() { return this.list[this.i] || {}; },
+}));
+
+/* Persetujuan cookie (Terima Semua / Tolak / Pengaturan).
+   Cookie penting selalu aktif. Google Analytics HANYA dimuat setelah pengunjung menyetujui kategori "Analitik".
+   Pilihan disimpan di localStorage (+ cookie cadangan) selama 1 tahun dan bisa diubah lewat tautan "Pengaturan Cookie" di footer. */
+const CONSENT_KEY = 'dmhg_cookie_consent';
+const CONSENT_VERSION = 1;
+
+const readConsent = () => {
+    const parse = (raw) => { try { const v = JSON.parse(raw); return v && v.v === CONSENT_VERSION ? v : null; } catch (e) { return null; } };
+    try { const v = parse(localStorage.getItem(CONSENT_KEY)); if (v) return v; } catch (e) {}
+    const m = document.cookie.split('; ').find((c) => c.startsWith(CONSENT_KEY + '='));
+    return m ? parse(decodeURIComponent(m.slice(CONSENT_KEY.length + 1))) : null;
+};
+const writeConsent = (analytics) => {
+    const value = JSON.stringify({ v: CONSENT_VERSION, necessary: true, analytics: !!analytics, at: Date.now() });
+    try { localStorage.setItem(CONSENT_KEY, value); } catch (e) {}
+    document.cookie = CONSENT_KEY + '=' + encodeURIComponent(value) + '; max-age=31536000; path=/; SameSite=Lax';
+};
+
+let gaLoaded = false;
+const loadAnalytics = (id) => {
+    if (!id) return;
+    window['ga-disable-' + id] = false;
+    if (gaLoaded) return;
+    gaLoaded = true;
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(id);
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', id, { anonymize_ip: true });
+};
+const stopAnalytics = (id) => {
+    if (id) window['ga-disable-' + id] = true;
+    // hapus cookie Google Analytics (_ga, _ga_XXXX) jika sebelumnya sudah terpasang
+    const host = location.hostname.split('.');
+    const domains = ['', location.hostname, ...(host.length > 1 ? ['.' + host.slice(-2).join('.')] : [])];
+    document.cookie.split('; ').map((c) => c.split('=')[0]).filter((n) => n === '_ga' || n.startsWith('_ga_') || n === '_gid').forEach((n) => {
+        domains.forEach((d) => { document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + (d ? '; domain=' + d : ''); });
+    });
+};
+
+Alpine.data('cookieNotice', (gaId) => ({
+    show: false,       // banner kecil
+    settings: false,   // jendela pengaturan
+    analytics: false,  // centang "Analitik"
+    init() {
+        const c = readConsent();
+        if (c) { this.analytics = !!c.analytics; if (c.analytics) loadAnalytics(gaId); }
+        else setTimeout(() => { if (!readConsent()) this.show = true; }, 1200);
+    },
+    openSettings() {
+        const c = readConsent();
+        this.analytics = c ? !!c.analytics : false;
+        this.show = false;
+        this.settings = true;
+    },
+    close() { this.settings = false; if (!readConsent()) this.show = true; },
+    decide(analytics) {
+        this.analytics = analytics;
+        writeConsent(analytics);
+        analytics ? loadAnalytics(gaId) : stopAnalytics(gaId);
+        this.show = false;
+        this.settings = false;
+    },
+    acceptAll() { this.decide(true); },
+    rejectAll() { this.decide(false); },
+    saveSettings() { this.decide(this.analytics); },
 }));
 
 /* Form motor di admin: warna (nama + foto + harga opsional), auto-pilih jenis jika seri sudah ada */
