@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MotorController;
@@ -28,7 +29,8 @@ Route::get('/motor/{motor}', [MotorController::class, 'show'])->name('motor.show
 Route::post('/prospek', [ProspectController::class, 'store'])->middleware('throttle:10,1')->name('prospect.store');
 Route::post('/prospek/wa', [ProspectController::class, 'wa'])->middleware('throttle:20,1')->name('prospect.wa');
 Route::get('/kontak', ContactController::class)->name('contact');
-// Halaman statis: /tentang-kami, /kebijakan-privasi (isi diatur di Admin > Halaman)
+Route::get('/tentang-kami', AboutController::class)->name('about');
+// Halaman statis: /kebijakan-privasi (isi diatur di Admin > Halaman)
 Route::get('/{page}', [StaticPageController::class, 'show'])->whereIn('page', array_keys(PageDefaults::all()))->name('page.show');
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
@@ -57,6 +59,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('prospects/{prospect}', [Admin\ProspectController::class, 'show'])->name('prospects.show');
         Route::put('prospects/{prospect}', [Admin\ProspectController::class, 'update'])->name('prospects.update');
         Route::delete('prospects/{prospect}', [Admin\ProspectController::class, 'destroy'])->name('prospects.destroy');
+
+        Route::get('about', [Admin\AboutController::class, 'edit'])->name('about.edit');
+        Route::put('about', [Admin\AboutController::class, 'update'])->name('about.update');
 
         Route::get('settings', [Admin\SettingController::class, 'edit'])->name('settings.edit');
         Route::put('settings', [Admin\SettingController::class, 'update'])->name('settings.update');

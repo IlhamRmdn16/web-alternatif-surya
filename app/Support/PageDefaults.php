@@ -11,31 +11,6 @@ class PageDefaults
     public static function all(): array
     {
         return [
-            'tentang-kami' => [
-                'title' => 'Tentang Kami',
-                'meta_title' => 'Tentang Kami - Dealer Motor Honda Garut Sejak 1991',
-                'meta_description' => 'Profil CV. Surya Wijaya Sejahtera, dealer motor Honda di Garut sejak 1991: layanan penjualan motor Honda, servis AHASS, dan suku cadang asli Honda.',
-                'content' => <<<'HTML'
-<h2>Dealer motor Honda Garut sejak 1991</h2>
-<p>CV. Surya Wijaya Sejahtera adalah dealer sepeda motor Honda yang berdiri di Kota Garut sejak tahun 1991. Selama lebih dari tiga dekade, kami melayani masyarakat Garut dan sekitarnya dalam memilih, membeli, dan merawat motor Honda.</p>
-<h2>Layanan kami</h2>
-<p>Kami menjalankan tiga pilar layanan Honda (H1, H2, H3):</p>
-<ul>
-<li><strong>Penjualan motor Honda (H1)</strong>: unit baru dengan pilihan jenis, tipe, dan warna yang dapat dilihat langsung di website ini, lengkap dengan harga OTR dan potongan untuk pembelian cash.</li>
-<li><strong>Perawatan dan servis (H2)</strong>: layanan servis di bengkel AHASS untuk menjaga performa motor Anda.</li>
-<li><strong>Suku cadang asli (H3)</strong>: suku cadang asli Honda (Honda Genuine Parts) untuk kebutuhan motor Anda.</li>
-</ul>
-<h2>Mengapa memilih kami</h2>
-<ul>
-<li>Harga setiap tipe ditampilkan terbuka di halaman <a href="/daftar-harga">Daftar Harga</a>.</li>
-<li>Konsultasi pembelian dan simulasi kredit dapat dilakukan langsung dari website.</li>
-<li>Tim sales counter siap membantu melalui WhatsApp. Daftar nomor resmi ada di halaman <a href="/kontak">Kontak &amp; Lokasi</a>.</li>
-</ul>
-<h2>Kunjungi kami</h2>
-<p>Datang langsung ke dealer kami di Jl. Papandayan No.112, Kota Kulon, Kec. Garut Kota, Kabupaten Garut, Jawa Barat 44114. Jam operasional dan peta lokasi dapat dilihat di halaman <a href="/kontak">Kontak &amp; Lokasi</a>.</p>
-HTML,
-            ],
-
             'kebijakan-privasi' => [
                 'title' => 'Kebijakan Privasi',
                 'meta_title' => 'Kebijakan Privasi',

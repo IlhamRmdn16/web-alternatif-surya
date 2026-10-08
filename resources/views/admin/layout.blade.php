@@ -19,6 +19,7 @@
         ['admin.promos.index', 'Promo', 'admin.promos.*'],
         ['admin.faqs.index', 'FAQ', 'admin.faqs.*'],
         ['admin.posts.index', 'Berita', 'admin.posts.*'],
+        ['admin.about.edit', 'Tentang Kami', 'admin.about.*'],
         ['admin.pages.index', 'Halaman', 'admin.pages.*'],
         ['admin.sales.index', 'Sales Counter', 'admin.sales.*'],
         ['admin.settings.edit', 'Pengaturan', 'admin.settings.*'],

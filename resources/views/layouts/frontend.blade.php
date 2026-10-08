@@ -16,7 +16,7 @@
         ['url' => route('pricelist'), 'label' => 'Daftar Harga', 'active' => request()->routeIs('pricelist', 'motor.show')],
         ['url' => route('promos.index'), 'label' => 'Promo', 'active' => request()->routeIs('promos.*')],
         ['url' => route('news.index'), 'label' => 'Berita', 'active' => request()->routeIs('news.*')],
-        ['url' => route('page.show', 'tentang-kami'), 'label' => 'Tentang Kami', 'active' => request()->is('tentang-kami')],
+        ['url' => route('about'), 'label' => 'Tentang Kami', 'active' => request()->routeIs('about')],
         ['url' => route('contact'), 'label' => 'Kontak', 'active' => request()->routeIs('contact')],
     ];
     $footerNav = array_merge($nav, [
