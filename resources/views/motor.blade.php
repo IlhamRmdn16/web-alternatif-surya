@@ -267,7 +267,10 @@
                         </select></label>
                 </div>
 
-                <p class="mt-3 text-xs text-zinc-500">Setelah dikirim, Anda akan diarahkan ke WhatsApp sales counter pilihan Anda dengan pesan yang sudah terisi. Dengan mengirim, Anda menyetujui <a href="{{ route('page.show', 'kebijakan-privasi') }}" target="_blank" class="font-semibold text-honda underline">Kebijakan Privasi</a> kami.</p>
+                <label class="mt-3 flex cursor-pointer items-start gap-2.5 text-xs leading-relaxed text-zinc-600">
+                <input type="checkbox" x-model="consent" class="mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-300 text-honda focus:ring-honda">
+                <span>Dengan mengirimkan formulir ini, saya menyetujui untuk dihubungi oleh tim sales Surya Wijaya melalui WhatsApp.</span>
+            </label>
                 <p x-show="error" x-text="error" class="mt-3 text-sm text-red-600"></p>
                 <div class="mt-5 flex gap-3">
                     <button type="button" @click="open = false" class="flex-1 rounded-xl border border-zinc-300 py-3 text-sm font-semibold">Batal</button>

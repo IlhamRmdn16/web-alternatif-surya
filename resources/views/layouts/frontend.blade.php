@@ -73,7 +73,8 @@
         'brand' => ['@type' => 'Brand', 'name' => 'Honda'],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
     </script>
-@if(request()->routeIs('home') && isset($faqs) && $faqs->isNotEmpty())
+@include('partials.analytics')
+    @if(request()->routeIs('home') && isset($faqs) && $faqs->isNotEmpty())
     <script type="application/ld+json">
     {!! json_encode([
         '@context' => 'https://schema.org', '@type' => 'FAQPage',
@@ -128,7 +129,9 @@
     </nav>
 </header>
 
-<main>@yield('content')</main>
+<main class="pb-20">@yield('content')</main>
+
+@include('partials.cookie-notice')
 
 @php
     // Ikon sosial media (stroke 24x24). Tampil hanya jika link diisi di Admin > Pengaturan.
@@ -140,7 +143,7 @@
     ];
     $iconBtn = 'flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-zinc-300 transition hover:-translate-y-0.5 hover:bg-honda hover:text-white';
 @endphp
-<footer class="mt-20 bg-zinc-900 text-zinc-300">
+<footer class="bg-zinc-900 text-zinc-300">
     {{-- Ajakan konsultasi --}}
     <div class="border-b border-zinc-800">
         <div class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-5 px-4 py-9 md:flex-row md:items-center">
@@ -247,7 +250,7 @@
     <div class="border-t border-zinc-800">
         <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-center text-xs text-zinc-500 md:flex-row md:text-left">
             <p>&copy; {{ date('Y') }} DealerMotorHondaGarut.id - CV. Surya Wijaya Sejahtera. Seluruh hak cipta dilindungi.</p>
-            <p>Harga dapat berubah sewaktu-waktu. Konfirmasi harga dan stok ke sales kami. <a href="{{ route('page.show', 'kebijakan-privasi') }}" class="underline underline-offset-2 hover:text-white">Kebijakan Privasi</a> &middot; <button type="button" x-data @click="$dispatch('open-cookie')" class="underline underline-offset-2 hover:text-white">Pengaturan Cookie</button></p>
+            <p>Harga dapat berubah sewaktu-waktu. Konfirmasi harga dan stok ke sales kami. <a href="{{ route('page.show', 'kebijakan-privasi') }}" class="underline underline-offset-2 hover:text-white">Kebijakan Privasi</a></p>
         </div>
     </div>
 </footer>
@@ -270,7 +273,10 @@
             <label class="mt-3 block text-sm font-semibold">Nomor WhatsApp Anda
                 <input x-model="phone" type="tel" inputmode="tel" maxlength="20" placeholder="mis. 08123456789" class="mt-1 w-full rounded-xl border border-zinc-300 px-4 py-2.5 focus:border-honda focus:ring-honda">
             </label>
-            <p class="mt-3 text-xs text-zinc-500">Dengan melanjutkan, Anda menyetujui <a href="{{ route('page.show', 'kebijakan-privasi') }}" target="_blank" class="font-semibold text-honda underline">Kebijakan Privasi</a> kami.</p>
+            <label class="mt-4 flex cursor-pointer items-start gap-2.5 text-xs leading-relaxed text-zinc-600">
+                <input type="checkbox" x-model="consent" class="mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-300 text-honda focus:ring-honda">
+                <span>Dengan mengirimkan formulir ini, saya menyetujui untuk dihubungi oleh tim sales Surya Wijaya melalui WhatsApp atau telepon, dan data saya diproses sesuai <a href="{{ route('page.show', 'kebijakan-privasi') }}" target="_blank" class="font-semibold text-honda underline">Kebijakan Privasi</a>.</span>
+            </label>
             <p x-show="error" x-text="error" class="mt-3 text-sm text-red-600"></p>
             <div class="mt-5 flex gap-3">
                 <button type="button" @click="open = false" class="flex-1 rounded-xl border border-zinc-300 py-2.5 text-sm font-semibold">Batal</button>
@@ -281,9 +287,6 @@
         </form>
     </div>
 </div>
-
-{{-- Banner & pengaturan cookie: dipasang di semua halaman agar pilihan pengunjung berlaku di seluruh website --}}
-@include('partials.cookie-notice')
 
 @stack('scripts')
 </body>

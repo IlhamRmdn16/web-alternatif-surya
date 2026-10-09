@@ -14,6 +14,7 @@ class SettingController extends Controller
             'site_name' => ['Nama website', 'text'],
             'logo'      => ['Logo (PNG/WEBP)', 'image'],
             'og_image'  => ['Gambar share sosmed / OG (JPG 1200x630)', 'image'],
+            'ga_id'     => ['Google Analytics Measurement ID (mis. G-XXXXXXXXXX; aktif hanya saat APP_ENV=production)', 'text'],
         ],
         'Kontak' => [
             'call_center' => ['Nomor WhatsApp Call Center (tampil di halaman Kontak; mis. 08123456789)', 'text'],

@@ -27,12 +27,14 @@ class ProspectController extends Controller
             'dp'         => 'required_if:purpose,simulasi|nullable|numeric|min:0',
             'tenor'      => ['required_if:purpose,simulasi', 'nullable', Rule::in(Prospect::TENORS)],
             'page'       => 'nullable|string|max:255',
+            'consent'    => 'accepted',
         ], [
             'required'          => ':attribute wajib diisi.',
             'required_if'       => ':attribute wajib diisi untuk simulasi kredit.',
             'phone.regex'       => 'Format nomor HP tidak valid.',
             'sales_id.required' => 'Pilih sales counter yang akan dihubungi.',
             'sales_id.exists'   => 'Sales counter tidak tersedia, silakan pilih yang lain.',
+            'consent.accepted'  => 'Centang persetujuan untuk dihubungi tim sales.',
         ], [
             'name' => 'Nama', 'phone' => 'No. HP', 'purpose' => 'Keperluan', 'dp' => 'Nominal DP', 'tenor' => 'Tenor',
         ]);
@@ -83,9 +85,11 @@ class ProspectController extends Controller
             'call_center' => 'nullable|boolean',
             'topic'       => 'nullable|string|max:150',
             'page'        => 'nullable|string|max:255',
+            'consent'     => 'accepted',
         ], [
             'required'    => ':attribute wajib diisi.',
             'phone.regex' => 'Format nomor WhatsApp tidak valid (contoh: 08123456789).',
+            'consent.accepted' => 'Centang persetujuan untuk dihubungi tim sales.',
         ], ['name' => 'Nama', 'phone' => 'Nomor WhatsApp']);
 
         if ($r->boolean('call_center')) {
