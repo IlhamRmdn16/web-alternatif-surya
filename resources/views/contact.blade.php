@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', 'Kontak & Lokasi Dealer Motor Honda Garut | DealerMotorHondaGarut.id')
+@section('title', 'Kontak & Lokasi Dealer Motor Honda Garut | Dealer Motor Honda Garut')
 @section('meta_description', 'Alamat, jam operasional, peta lokasi, dan nomor WhatsApp sales counter resmi dealer motor Honda Garut di Jl. Papandayan No.112, Garut Kota.')
 
 @php

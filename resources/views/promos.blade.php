@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', 'Promo Motor Honda Garut Terbaru | DealerMotorHondaGarut.id')
+@section('title', 'Promo Motor Honda Garut Terbaru | Dealer Motor Honda Garut')
 @section('meta_description', 'Promo motor Honda Garut terbaru: potongan harga, cicilan ringan, dan penawaran spesial dari dealer motor Honda Garut resmi.')
 
 @section('content')

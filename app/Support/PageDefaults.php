@@ -14,9 +14,9 @@ class PageDefaults
             'kebijakan-privasi' => [
                 'title' => 'Kebijakan Privasi',
                 'meta_title' => 'Kebijakan Privasi',
-                'meta_description' => 'Kebijakan privasi DealerMotorHondaGarut.id: data yang kami kumpulkan, cara penggunaannya, dan hak Anda atas data pribadi.',
+                'meta_description' => 'Kebijakan privasi HondaGarut.id: data yang kami kumpulkan, cara penggunaannya, dan hak Anda atas data pribadi.',
                 'content' => <<<'HTML'
-<p>Kebijakan Privasi ini menjelaskan bagaimana DealerMotorHondaGarut.id ("website"), yang dikelola oleh CV. Surya Wijaya Sejahtera, mengumpulkan, menggunakan, dan melindungi data pribadi Anda.</p>
+<p>Kebijakan Privasi ini menjelaskan bagaimana HondaGarut.id ("website"), yang dikelola oleh CV. Surya Wijaya Sejahtera, mengumpulkan, menggunakan, dan melindungi data pribadi Anda.</p>
 <h2>Data yang kami kumpulkan</h2>
 <p>Kami hanya mengumpulkan data yang Anda isi sendiri melalui website:</p>
 <ul>

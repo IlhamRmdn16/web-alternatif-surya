@@ -2,7 +2,7 @@
 <html lang="id">
 @php
     $siteName   = $settings['site_name'] ?? 'Dealer Motor Honda Garut';
-    $pageTitle  = trim($__env->yieldContent('title')) ?: $siteName.' | DealerMotorHondaGarut.id';
+    $pageTitle  = trim($__env->yieldContent('title')) ?: $siteName.' | Harga, Promo & Kredit Motor Honda';
     $metaDesc   = trim($__env->yieldContent('meta_description')) ?: ($settings['seo_home_description'] ?? '');
     $canonical  = rtrim(config('app.url'), '/').'/'.ltrim(request()->path(), '/');
     $ogImage    = trim($__env->yieldContent('og_image')) ?: (! empty($settings['og_image']) ? asset('storage/'.$settings['og_image']) : asset('images/og-image.jpg'));
@@ -30,7 +30,7 @@
 
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $metaDesc }}">
-    <meta name="keywords" content="dealer motor honda garut, dealermotorhondagarut, dealermotorhondagarut.id, honda garut, dealer honda garut, dealer resmi honda garut, harga motor honda garut, kredit motor honda garut, promo motor honda garut, simulasi kredit motor garut">
+    <meta name="keywords" content="dealer motor honda garut, hondagarut, hondagarut.id, honda garut, dealer honda garut, dealer resmi honda garut, harga motor honda garut, kredit motor honda garut, promo motor honda garut, simulasi kredit motor garut">
     <meta name="author" content="CV. Surya Wijaya Sejahtera">
     <meta name="robots" content="{{ app()->environment('production') ? 'index, follow, max-image-preview:large' : 'noindex, nofollow' }}">
     <meta name="geo.region" content="ID-JB">
@@ -38,7 +38,7 @@
     <link rel="canonical" href="{{ rtrim($canonical, '/') ?: $canonical }}">
 
     <meta property="og:type" content="@yield('og_type', 'website')">
-    <meta property="og:site_name" content="{{ $siteName }} - DealerMotorHondaGarut.id">
+    <meta property="og:site_name" content="{{ $siteName }}">
     <meta property="og:locale" content="id_ID">
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $metaDesc }}">
@@ -60,7 +60,7 @@
         '@context' => 'https://schema.org',
         '@type' => 'AutoDealer',
         'name' => $siteName.' - CV. Surya Wijaya Sejahtera',
-        'alternateName' => ['DealerMotorHondaGarut.id', 'Surya Wijaya Garut'],
+        'alternateName' => ['HondaGarut.id', 'Dealer Honda Garut', 'Surya Wijaya Garut'],
         'url' => rtrim(config('app.url'), '/'),
         'logo' => $logo,
         'image' => $ogImage,
@@ -69,11 +69,23 @@
         'email' => $settings['email'] ?? null,
         'address' => ['@type' => 'PostalAddress', 'streetAddress' => 'Jl. Papandayan No.112, Kota Kulon, Kec. Garut Kota', 'addressLocality' => 'Garut', 'addressRegion' => 'Jawa Barat', 'postalCode' => '44114', 'addressCountry' => 'ID'],
         'hasMap' => $mapUrl,
+        'sameAs' => array_values(array_filter([$settings['instagram'] ?? null, $settings['facebook'] ?? null, $settings['tiktok'] ?? null, $settings['youtube'] ?? null], fn ($u) => is_string($u) && str_starts_with($u, 'http'))),
         'areaServed' => 'Garut',
         'brand' => ['@type' => 'Brand', 'name' => 'Honda'],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
     </script>
 @include('partials.analytics')
+    @if(request()->routeIs('home'))
+    {{-- Nama situs untuk hasil pencarian Google: "Dealer Motor Honda Garut" --}}
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@context' => 'https://schema.org', '@type' => 'WebSite',
+        'name' => $siteName,
+        'alternateName' => ['HondaGarut.id', 'Dealer Honda Garut', 'Surya Wijaya Garut'],
+        'url' => rtrim(config('app.url'), '/').'/',
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    </script>
+    @endif
     @if(request()->routeIs('home') && isset($faqs) && $faqs->isNotEmpty())
     <script type="application/ld+json">
     {!! json_encode([
@@ -249,7 +261,7 @@
 
     <div class="border-t border-zinc-800">
         <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-center text-xs text-zinc-500 md:flex-row md:text-left">
-            <p>&copy; {{ date('Y') }} DealerMotorHondaGarut.id - CV. Surya Wijaya Sejahtera. Seluruh hak cipta dilindungi.</p>
+            <p>&copy; {{ date('Y') }} HondaGarut.id - CV. Surya Wijaya Sejahtera. Seluruh hak cipta dilindungi.</p>
             <p>Harga dapat berubah sewaktu-waktu. Konfirmasi harga dan stok ke sales kami. <a href="{{ route('page.show', 'kebijakan-privasi') }}" class="underline underline-offset-2 hover:text-white">Kebijakan Privasi</a></p>
         </div>
     </div>

@@ -11,7 +11,7 @@
 <form method="POST" action="{{ route('admin.login.post') }}" class="w-full max-w-sm rounded-2xl bg-white p-8 shadow-lg">
     @csrf
     <h1 class="text-xl font-extrabold text-zinc-900">Login Admin</h1>
-    <p class="mt-1 text-sm text-zinc-500">DealerMotorHondaGarut.id</p>
+    <p class="mt-1 text-sm text-zinc-500">HondaGarut.id</p>
     <label class="mt-6 block text-sm font-semibold">Email
         <input type="email" name="email" value="{{ old('email') }}" required autofocus class="mt-1 w-full rounded-xl border border-zinc-300 px-4 py-2.5 focus:border-honda focus:ring-honda"></label>
     <label class="mt-4 block text-sm font-semibold">Password

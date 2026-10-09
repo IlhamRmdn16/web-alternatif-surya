@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', 'Berita & Tips Motor Honda Garut | DealerMotorHondaGarut.id')
+@section('title', 'Berita & Tips Motor Honda Garut | Dealer Motor Honda Garut')
 @section('meta_description', 'Berita, promo, dan tips seputar motor Honda dari dealer motor Honda Garut: info terbaru, panduan memilih motor, dan perawatan.')
 
 @section('content')

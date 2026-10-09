@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', ($page->meta_title ?: $page->title).' | DealerMotorHondaGarut.id')
+@section('title', ($page->meta_title ?: $page->title).' | Dealer Motor Honda Garut')
 @section('meta_description', $page->meta_description)
 
 @php($photo = $page->banner ? asset('storage/'.$page->banner) : null)

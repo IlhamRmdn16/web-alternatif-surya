@@ -20,7 +20,7 @@
     $anyTypeDiscount = $siblings->contains(fn ($t) => $t->lowest_offer['discount'] > 0);
 @endphp
 
-@section('title', $motor->full_name.' Garut: Harga OTR & Diskon Cash | DealerMotorHondaGarut.id')
+@section('title', $motor->full_name.' Garut: Harga OTR & Diskon Cash | Dealer Motor Honda Garut')
 @section('meta_description', Str::limit($desc, 160))
 @section('og_image', $imgUrl)
 @section('og_type', 'product')
@@ -267,9 +267,10 @@
                         </select></label>
                 </div>
 
+                <p class="mt-3 text-xs text-zinc-500">Setelah dikirim, Anda akan diarahkan ke WhatsApp sales counter pilihan Anda dengan pesan yang sudah terisi.</p>
                 <label class="mt-3 flex cursor-pointer items-start gap-2.5 text-xs leading-relaxed text-zinc-600">
                 <input type="checkbox" x-model="consent" class="mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-300 text-honda focus:ring-honda">
-                <span>Dengan mengirimkan formulir ini, saya menyetujui untuk dihubungi oleh tim sales Surya Wijaya melalui WhatsApp.</span>
+                <span>Dengan mengirimkan formulir ini, saya menyetujui untuk dihubungi oleh tim sales Surya Wijaya melalui WhatsApp</span>
             </label>
                 <p x-show="error" x-text="error" class="mt-3 text-sm text-red-600"></p>
                 <div class="mt-5 flex gap-3">

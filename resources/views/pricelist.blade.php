@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
-@section('title', 'Daftar Harga Motor Honda Garut Terbaru: Harga OTR & Diskon Cash | DealerMotorHondaGarut.id')
-@section('meta_description', 'Daftar harga motor Honda Garut terbaru semua seri dan tipe: Matic, Sport, EV, dan Cub. Cek harga OTR, diskon pembelian cash, dan konsultasi kredit di DealerMotorHondaGarut.id.')
+@section('title', 'Daftar Harga Motor Honda Garut Terbaru: Harga OTR & Diskon Cash | Dealer Motor Honda Garut')
+@section('meta_description', 'Daftar harga motor Honda Garut terbaru semua seri dan tipe: Matic, Sport, EV, dan Cub. Cek harga OTR, diskon pembelian cash, dan konsultasi kredit di HondaGarut.id.')
 
 @section('content')
 @php

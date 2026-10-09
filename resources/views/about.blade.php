@@ -20,7 +20,7 @@
     $storyPhoto = ! empty($story['photo']) ? asset('storage/'.$story['photo']) : null;
 @endphp
 
-@section('title', ($about['seo']['title'] ?: 'Tentang Kami').' | DealerMotorHondaGarut.id')
+@section('title', ($about['seo']['title'] ?: 'Tentang Kami').' | Dealer Motor Honda Garut')
 @section('meta_description', $about['seo']['description'])
 @section('og_image', $heroPhoto)
 
