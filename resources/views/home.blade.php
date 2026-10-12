@@ -86,6 +86,9 @@
 </section>
 @endif
 
+{{-- Berita dan Tips: tepat di bawah daftar motor. Desktop 3 berita sebaris, HP 2 berita sebaris (lihat partials/home-news.blade.php) --}}
+@include('partials.home-news')
+
 {{-- Promo --}}
 <section class="mx-auto max-w-7xl px-4 pt-16">
     <div class="flex items-end justify-between gap-3">
@@ -103,22 +106,6 @@
         </div>
     @endif
 </section>
-
-{{-- Berita terbaru --}}
-@if($posts->isNotEmpty())
-<section class="mx-auto max-w-7xl px-4 pt-16">
-    <div class="flex items-end justify-between gap-3">
-        <div>
-            <h2 class="text-xl font-extrabold text-zinc-900 md:text-2xl">Berita & Tips Terbaru</h2>
-            <p class="mt-1 text-sm text-zinc-500">Informasi dan panduan seputar motor Honda.</p>
-        </div>
-        <a href="{{ route('news.index') }}" class="text-sm font-bold text-honda hover:text-zinc-900">Semua berita</a>
-    </div>
-    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-        @foreach($posts as $post) @include('partials.post-card') @endforeach
-    </div>
-</section>
-@endif
 
 {{-- FAQ --}}
 @if($faqs->isNotEmpty())

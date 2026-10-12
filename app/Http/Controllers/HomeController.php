@@ -31,7 +31,7 @@ class HomeController extends Controller
 
         $promos = Promo::active()->latest()->take(3)->get();
         $faqs = Faq::where('is_active', true)->orderBy('sort')->get();   // FAQ hanya ada di beranda: tampilkan semua
-        $posts = Post::published()->orderByDesc('published_at')->take(4)->get();
+        $posts = Post::published()->orderByDesc('published_at')->take(3)->get();
 
         return view('home', compact('banners', 'categories', 'promos', 'faqs', 'posts'));
     }
