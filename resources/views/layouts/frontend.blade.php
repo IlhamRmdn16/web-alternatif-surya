@@ -2,10 +2,10 @@
 <html lang="id">
 @php
     $siteName   = $settings['site_name'] ?? 'Dealer Motor Honda Garut';
-    $pageTitle  = trim($__env->yieldContent('title')) ?: $siteName.' | Harga, Promo & Kredit Motor Honda';
-    $metaDesc   = trim($__env->yieldContent('meta_description')) ?: ($settings['seo_home_description'] ?? '');
+    $pageTitle  = html_entity_decode(trim($__env->yieldContent('title')), ENT_QUOTES | ENT_HTML5, 'UTF-8') ?: $siteName.' | Harga, Promo & Kredit Motor Honda';
+$metaDesc   = html_entity_decode(trim($__env->yieldContent('meta_description')), ENT_QUOTES | ENT_HTML5, 'UTF-8') ?: ($settings['seo_home_description'] ?? '');
     $canonical  = rtrim(config('app.url'), '/').'/'.ltrim(request()->path(), '/');
-    $ogImage    = trim($__env->yieldContent('og_image')) ?: (! empty($settings['og_image']) ? asset('storage/'.$settings['og_image']) : asset('images/og-image.jpg'));
+    $ogImage    = html_entity_decode(trim($__env->yieldContent('og_image')), ENT_QUOTES | ENT_HTML5, 'UTF-8') ?: (! empty($settings['og_image']) ? asset('storage/'.$settings['og_image']) : asset('images/og-image.jpg'));
     $logo       = ! empty($settings['logo']) ? asset('storage/'.$settings['logo']) : null;
     // Alamat dealer (statis)
     $dealerAddress = 'Jl. Papandayan No.112, Kota Kulon, Kec. Garut Kota, Kabupaten Garut, Jawa Barat 44114';

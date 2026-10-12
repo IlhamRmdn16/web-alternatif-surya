@@ -55,7 +55,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('prospects', [Admin\ProspectController::class, 'index'])->name('prospects.index');
         Route::get('prospects/export', [Admin\ProspectController::class, 'export'])->name('prospects.export');
-        Route::get('prospects/export', [Admin\ProspectController::class, 'export'])->name('prospects.export');
         Route::get('prospects/{prospect}', [Admin\ProspectController::class, 'show'])->name('prospects.show');
         Route::put('prospects/{prospect}', [Admin\ProspectController::class, 'update'])->name('prospects.update');
         Route::delete('prospects/{prospect}', [Admin\ProspectController::class, 'destroy'])->name('prospects.destroy');
