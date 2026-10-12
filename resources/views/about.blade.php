@@ -172,19 +172,6 @@
     <a href="{{ route('contact') }}" class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-honda hover:text-zinc-900">Lihat peta & kontak dealer <span aria-hidden="true">&rarr;</span></a>
 </section>
 @endif
-
-{{-- AJAKAN --}}
-<section class="mx-auto max-w-7xl px-4 pt-16 md:pt-24">
-    <div class="rounded-2xl bg-zinc-900 p-6 text-white md:p-8">
-        <p class="text-lg font-extrabold">Ingin tahu lebih banyak?</p>
-        <p class="mt-1 text-sm text-zinc-400">Tim sales counter kami siap membantu Anda.</p>
-        <div class="mt-5 flex flex-wrap gap-3">
-            <button type="button" x-data @click="$dispatch('open-wa')" class="rounded-xl bg-green-500 px-6 py-3 text-sm font-bold text-white hover:bg-green-600">Chat Sales Counter</button>
-            <a href="{{ route('contact') }}" class="rounded-xl border border-zinc-600 px-6 py-3 text-sm font-bold hover:border-white">Kontak & Lokasi</a>
-            <a href="{{ route('pricelist') }}" class="rounded-xl border border-zinc-600 px-6 py-3 text-sm font-bold hover:border-white">Lihat Daftar Harga</a>
-        </div>
-    </div>
-</section>
 @endsection
 
 @push('scripts')
