@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Promo;
+use App\Support\Html;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class PromoController extends CrudController
 {
@@ -21,5 +24,24 @@ class PromoController extends CrudController
                 'is_active'   => ['label' => 'Tampilkan promo', 'type' => 'checkbox', 'rules' => 'boolean'],
             ],
         ];
+    }
+
+    // Form promo memakai editor seperti MS Word (sama dengan Berita), bukan form generik.
+    public function create()
+    {
+        return view('admin.promos.form', ['promo' => new Promo(['is_active' => true])]);
+    }
+
+    public function edit($id)
+    {
+        return view('admin.promos.form', ['promo' => $this->find($id)]);
+    }
+
+    /** Deskripsi dari editor dibersihkan (hanya tag aman) sebelum disimpan. */
+    protected function validated(Request $r, ?Model $item): array
+    {
+        $data = parent::validated($r, $item);
+        $data['description'] = Html::clean($data['description'] ?? '') ?: null;
+        return $data;
     }
 }

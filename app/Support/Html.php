@@ -51,6 +51,17 @@ class Html
         return trim($out);
     }
 
+    /** Teks biasa (baris baru) -> HTML paragraf, agar deskripsi lama tetap rapi di editor & halaman. Teks yang sudah HTML dibiarkan. */
+    public static function fromPlain(?string $text): string
+    {
+        $text = trim((string) $text);
+        if ($text === '') return '';
+        if (preg_match('/<\/?[a-z][^>]*>/i', $text)) return $text;
+
+        $paragraphs = array_filter(preg_split('/\R{2,}/', $text), fn ($p) => trim($p) !== '');
+        return implode("\n", array_map(fn ($p) => '<p>'.nl2br(e(trim($p))).'</p>', $paragraphs));
+    }
+
     private static function walk(\DOMNode $node): void
     {
         foreach (iterator_to_array($node->childNodes) as $child) {
