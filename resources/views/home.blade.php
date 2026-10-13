@@ -75,8 +75,12 @@
 
     @foreach($tabs as $c)
         <div x-show="tab === '{{ $c->slug }}'" @if(! $loop->first) x-cloak @endif role="tabpanel">
-            <div class="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-6">
-                @foreach($c->homeSeries as $s) @include('partials.series-card') @endforeach
+            {{-- HP: semua motor ditampilkan, geser ke kanan untuk melihat yang lain. Desktop: 4 kolom. --}}
+            <p class="mt-3 text-xs text-zinc-400 md:hidden">Geser ke kanan untuk melihat motor lainnya &rarr;</p>
+            <div class="no-scrollbar -mx-4 mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-pl-4 px-4 pb-2 md:mx-0 md:mt-6 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0 md:pb-0">
+                @foreach($c->homeSeries as $s)
+                    <div class="w-[58%] shrink-0 snap-start sm:w-[40%] md:w-auto [&>a]:h-full">@include('partials.series-card')</div>
+                @endforeach
             </div>
             <div class="mt-8 text-center">
                 <a href="{{ route('pricelist') }}" class="inline-block rounded-xl bg-honda px-8 py-3 text-sm font-bold text-white transition hover:bg-honda-dark">Lihat semua motor {{ $c->name }}</a>
