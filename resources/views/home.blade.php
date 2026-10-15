@@ -5,14 +5,8 @@
 
 @section('content')
 
-{{-- Hero: banner bergerak otomatis (latar), teks statis di depannya.
-     Ukuran: mobile rasio 5:4, desktop 1240x520 (maks. lebar 1240px, di tengah).
-     Ringan: slide pertama dimuat prioritas, sisanya lazy; versi mobile (WebP 750px) dipakai bila tersedia.
-     Jelas: gradasi gelap hanya di sisi tulisan (bawah di mobile, kiri di desktop). --}}
 <div class="md:px-4 md:pt-6">
 <section class="relative isolate mx-auto aspect-[5/4] w-full overflow-hidden bg-zinc-900 md:aspect-[1240/520] md:max-w-[1240px] md:rounded-2xl" aria-label="Banner utama">
-    {{-- Pembungkus absolut: class .swiper (CSS Swiper) memaksa position:relative sehingga
-         tidak boleh dipasang bersamaan dengan "absolute" pada elemen yang sama --}}
     <div class="absolute inset-0 z-0">
         @if($banners->isNotEmpty())
             <div class="swiper hero-swiper h-full w-full">
