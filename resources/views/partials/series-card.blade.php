@@ -1,6 +1,7 @@
 {{-- Param: $s. Dua bentuk:
-     - seri (App\Support\Series::group): kartu "Beat Series" berisi beberapa tipe (dipakai di rekomendasi halaman motor)
-     - tipe tunggal ($s->single = true, dari beranda): kartu satu tipe dengan foto, tipe, dan harga tipe itu sendiri --}}
+     - seri (App\Support\Series::group): kartu "Beat Series" berisi beberapa tipe
+     - tipe tunggal ($s->single = true; beranda & rekomendasi halaman motor): kartu satu tipe berlabel "<Nama> Series",
+       lengkap dengan tipe, titik pilihan warna, serta foto dan harga tipe itu sendiri --}}
 @php($single = $s->single ?? false)
 @php($c = $s->cheapest)
 @php($o = $c->lowest_offer)
@@ -16,9 +17,18 @@
     </div>
     <div class="flex flex-1 flex-col p-4">
         @if($single)
-            <h3 class="text-base font-bold leading-snug text-zinc-900 md:text-lg">{{ $c->name }}</h3>
+            <h3 class="text-base font-bold leading-snug text-zinc-900 md:text-lg">{{ $c->name }} Series</h3>
             <p class="mt-0.5 text-xs font-semibold text-zinc-500">Tipe: {{ $c->variant }}</p>
-            <p class="mt-4 text-xs text-zinc-500">{{ $c->has_varied_prices ? 'Harga OTR mulai' : 'Harga OTR' }}</p>
+            @php($dots = $c->colors->filter(fn ($col) => $col->hex)->values())
+            @if($dots->isNotEmpty())
+                <div class="mt-2 flex items-center gap-1.5" aria-label="Pilihan warna: {{ $dots->pluck('name')->implode(', ') }}">
+                    @foreach($dots->take(6) as $col)
+                        <span class="h-3.5 w-3.5 rounded-full ring-1 ring-zinc-300" style="background: {{ $col->hex }}" title="{{ $col->name }}"></span>
+                    @endforeach
+                    @if($dots->count() > 6)<span class="text-[11px] font-semibold text-zinc-400">+{{ $dots->count() - 6 }}</span>@endif
+                </div>
+            @endif
+            <p class="mt-3 text-xs text-zinc-500">{{ $c->has_varied_prices ? 'Harga OTR mulai' : 'Harga OTR' }}</p>
         @else
             <h3 class="text-base font-bold leading-snug text-zinc-900 md:text-lg">{{ $s->name }} Series</h3>
             <p class="mt-0.5 text-xs text-zinc-500">{{ $s->types->count() }} tipe: {{ $s->types->pluck('variant')->take(3)->implode(', ') }}{{ $s->types->count() > 3 ? ', ...' : '' }}</p>

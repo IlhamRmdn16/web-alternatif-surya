@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Motor;
 use App\Models\Prospect;
-use App\Support\Series;
 
 class MotorController extends Controller
 {
@@ -16,11 +15,23 @@ class MotorController extends Controller
         // Semua tipe dalam seri yang sama (nama sama)
         $siblings = Motor::active()->with('colors')->where('series_slug', $motor->series_slug)->orderBy('price')->get();
 
-        $related = Series::group(
-            Motor::active()->with(['category', 'colors'])
-                ->where('category_id', $motor->category_id)
-                ->where('series_slug', '!=', $motor->series_slug)->get()
-        )->take(4);
+        // Rekomendasi per TIPE (bukan seri): satu tipe acak dari tiap seri lain di jenis yang sama,
+        // dibungkus seperti objek seri agar kartu (partials/series-card) sama dengan di beranda.
+        $related = Motor::active()->with(['category', 'colors'])
+            ->where('category_id', $motor->category_id)
+            ->where('series_slug', '!=', $motor->series_slug)->get()
+            ->groupBy('series_slug')->map(fn ($types) => $types->random())
+            ->shuffle()->take(4)->values()
+            ->map(fn ($m) => (object) [
+                'single'   => true,
+                'slug'     => $m->slug,
+                'name'     => $m->name,
+                'category' => $m->category,
+                'types'    => collect([$m]),
+                'cheapest' => $m,
+                'image'    => $m->cover_image,
+                'url'      => route('motor.show', $m),
+            ]);
 
         $purposes = Prospect::PURPOSES;
         $tenors = Prospect::TENORS;
