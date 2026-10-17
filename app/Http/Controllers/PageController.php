@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Category, Motor, Promo};
+use App\Models\{Brochure, Category, Motor, Promo};
+use Illuminate\Support\Facades\Schema;
 use App\Support\Series;
 
 class PageController extends Controller
@@ -15,7 +16,12 @@ class PageController extends Controller
             $c->setRelation('series', $series->filter(fn ($s) => $s->category->id === $c->id)->sortBy('name')->values());
         })->filter(fn ($c) => $c->series->isNotEmpty())->values();
 
-        return view('pricelist', compact('categories'));
+        // Brosur & daftar harga PDF (Admin > Brosur & Daftar Harga). Aman jika migrasi belum dijalankan.
+        $brochures = Schema::hasTable('brochures')
+            ? Brochure::where('is_active', true)->orderBy('sort')->orderByDesc('id')->get()
+            : collect();
+
+        return view('pricelist', compact('categories', 'brochures'));
     }
 
     public function promos()

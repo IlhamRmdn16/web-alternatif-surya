@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\BrochureController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MotorController;
@@ -14,6 +15,11 @@ use App\Support\PageDefaults;
 use Illuminate\Support\Facades\Route;
 
 // ---------- Frontend ----------
+Route::get('/favicon.ico', function () {
+    $icon = public_path('images/icon.png');
+    abort_unless(file_exists($icon), 404);
+    return response()->file($icon, ['Content-Type' => 'image/png', 'Cache-Control' => 'public, max-age=86400']);
+});
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/daftar-harga', [PageController::class, 'pricelist'])->name('pricelist');
 Route::redirect('/pricelist', '/daftar-harga', 301);
@@ -23,6 +29,8 @@ Route::redirect('/syarat-kredit', '/', 301);
 Route::redirect('/faq', '/', 301)->name('faq');
 Route::get('/promo', [PageController::class, 'promos'])->name('promos.index');
 Route::get('/promo/{promo}', [PageController::class, 'promo'])->name('promos.show');
+Route::get('/brosur/{brochure}', [BrochureController::class, 'show'])->name('brochures.show');
+Route::get('/brosur/{brochure}/unduh', [BrochureController::class, 'download'])->name('brochures.download');
 Route::get('/berita', [NewsController::class, 'index'])->name('news.index');
 Route::get('/berita/{post}', [NewsController::class, 'show'])->name('news.show');
 Route::get('/motor/{motor}', [MotorController::class, 'show'])->name('motor.show');
@@ -47,6 +55,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('categories', Admin\CategoryController::class)->except('show');
         Route::resource('banners', Admin\BannerController::class)->except('show');
         Route::resource('promos', Admin\PromoController::class)->except('show');
+        Route::resource('brochures', Admin\BrochureController::class)->except('show');
         Route::resource('faqs', Admin\FaqController::class)->except('show');
         Route::resource('sales', Admin\SalesContactController::class)->except('show');
         Route::resource('pages', Admin\PageController::class)->only(['index', 'edit', 'update']);
@@ -54,6 +63,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('uploads/image', [Admin\UploadController::class, 'image'])->name('uploads.image');
 
         Route::get('prospects', [Admin\ProspectController::class, 'index'])->name('prospects.index');
+        Route::get('prospects/export', [Admin\ProspectController::class, 'export'])->name('prospects.export');
         Route::get('prospects/export', [Admin\ProspectController::class, 'export'])->name('prospects.export');
         Route::get('prospects/{prospect}', [Admin\ProspectController::class, 'show'])->name('prospects.show');
         Route::put('prospects/{prospect}', [Admin\ProspectController::class, 'update'])->name('prospects.update');

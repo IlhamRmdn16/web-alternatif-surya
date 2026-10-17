@@ -17,6 +17,7 @@
         ['admin.categories.index', 'Jenis Motor', 'admin.categories.*'],
         ['admin.banners.index', 'Foto Beranda', 'admin.banners.*'],
         ['admin.promos.index', 'Promo', 'admin.promos.*'],
+        ['admin.brochures.index', 'Brosur & Daftar Harga', 'admin.brochures.*'],
         ['admin.faqs.index', 'FAQ', 'admin.faqs.*'],
         ['admin.posts.index', 'Berita', 'admin.posts.*'],
         ['admin.about.edit', 'Tentang Kami', 'admin.about.*'],
