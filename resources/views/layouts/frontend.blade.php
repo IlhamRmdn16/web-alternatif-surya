@@ -2,14 +2,19 @@
 <html lang="id">
 @php
     $siteName   = $settings['site_name'] ?? 'Dealer Motor Honda Garut';
-    $pageTitle  = html_entity_decode(trim($__env->yieldContent('title')), ENT_QUOTES | ENT_HTML5, 'UTF-8') ?: $siteName.' | Harga, Promo & Kredit Motor Honda';
-$metaDesc   = html_entity_decode(trim($__env->yieldContent('meta_description')), ENT_QUOTES | ENT_HTML5, 'UTF-8') ?: ($settings['seo_home_description'] ?? '');
+    // yieldContent sudah di-escape Blade, jadi decode dulu agar "&" tidak tampil sebagai "&amp;"
+    $decode     = fn ($v) => html_entity_decode((string) $v, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $pageTitle  = $decode(trim($__env->yieldContent('title'))) ?: $siteName.' | Harga, Promo & Kredit Motor Honda';
+    $metaDesc   = $decode(trim($__env->yieldContent('meta_description'))) ?: ($settings['seo_home_description'] ?? '');
     $canonical  = rtrim(config('app.url'), '/').'/'.ltrim(request()->path(), '/');
-    $ogImage    = html_entity_decode(trim($__env->yieldContent('og_image')), ENT_QUOTES | ENT_HTML5, 'UTF-8') ?: (! empty($settings['og_image']) ? asset('storage/'.$settings['og_image']) : asset('images/og-image.jpg'));
+    $ogImage    = trim($__env->yieldContent('og_image')) ?: (! empty($settings['og_image']) ? asset('storage/'.$settings['og_image']) : asset('images/og-image.jpg'));
     $logo       = ! empty($settings['logo']) ? asset('storage/'.$settings['logo']) : null;
+    $iconUrl    = asset('images/icon.png').(file_exists(public_path('images/icon.png')) ? '?v='.filemtime(public_path('images/icon.png')) : '');
+
     // Alamat dealer (statis)
     $dealerAddress = 'Jl. Papandayan No.112, Kota Kulon, Kec. Garut Kota, Kabupaten Garut, Jawa Barat 44114';
     $mapUrl = ! empty($settings['map_url']) ? $settings['map_url'] : 'https://www.google.com/maps/search/?api=1&query='.urlencode($dealerAddress);
+
     // Menu utama (header). FAQ & Kebijakan Privasi hanya di footer.
     $nav = [
         ['url' => route('home'), 'label' => 'Beranda', 'active' => request()->routeIs('home')],
@@ -22,6 +27,18 @@ $metaDesc   = html_entity_decode(trim($__env->yieldContent('meta_description')),
     $footerNav = array_merge($nav, [
         ['url' => route('page.show', 'kebijakan-privasi'), 'label' => 'Kebijakan Privasi', 'active' => request()->is('kebijakan-privasi')],
     ]);
+
+    // Ikon sosial media (stroke 24x24). Tampil hanya jika link diisi di Admin > Pengaturan.
+    $socials = [
+        'instagram' => ['Instagram', '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>'],
+        'facebook'  => ['Facebook', '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>'],
+        'tiktok'    => ['TikTok', '<path d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v4.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"/>'],
+        'youtube'   => ['YouTube', '<path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>'],
+    ];
+    $iconBtn = 'flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-zinc-300 transition hover:-translate-y-0.5 hover:bg-honda hover:text-white';
+
+    // Path ikon WhatsApp (dipakai di beberapa tempat)
+    $waPath = 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z';
 @endphp
 <head>
     <meta charset="UTF-8">
@@ -49,7 +66,9 @@ $metaDesc   = html_entity_decode(trim($__env->yieldContent('meta_description')),
     <meta name="twitter:description" content="{{ $metaDesc }}">
     <meta name="twitter:image" content="{{ $ogImage }}">
 
-    <link rel="icon" href="{{ asset('images/icon.png') }}" type="image/png">
+    <link rel="icon" href="{{ $iconUrl }}" type="image/png" sizes="any">
+    <link rel="shortcut icon" href="{{ $iconUrl }}" type="image/png">
+    <link rel="apple-touch-icon" href="{{ $iconUrl }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
@@ -74,9 +93,9 @@ $metaDesc   = html_entity_decode(trim($__env->yieldContent('meta_description')),
         'brand' => ['@type' => 'Brand', 'name' => 'Honda'],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
     </script>
-@include('partials.analytics')
+    @include('partials.analytics')
     @if(request()->routeIs('home'))
-    {{-- Nama situs untuk hasil pencarian Google: "Dealer Motor Honda Garut" --}}
+    {{-- Nama situs untuk hasil pencarian Google --}}
     <script type="application/ld+json">
     {!! json_encode([
         '@context' => 'https://schema.org', '@type' => 'WebSite',
@@ -114,11 +133,12 @@ $metaDesc   = html_entity_decode(trim($__env->yieldContent('meta_description')),
             @endforeach
         </nav>
 
-        <form action="{{ route('pricelist') }}" method="GET" role="search" class="hidden w-64 xl:block">
+        <form action="{{ route('search') }}" method="GET" role="search" autocomplete="off" class="hidden w-64 xl:block" x-data="siteSearch('{{ route('search.suggest') }}', {{ Js::from(is_string(request('q')) ? request('q') : '') }})" @keydown.arrow-down.prevent="move(1)" @keydown.arrow-up.prevent="move(-1)" @keydown.escape="close()" @click.outside="close()" @submit="go($event)">
             <label class="relative block">
                 <span class="sr-only">Cari motor</span>
                 <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                <input type="search" name="q" value="{{ is_string(request('q')) ? request('q') : '' }}" placeholder="Cari motor, mis. Beat" class="w-full rounded-full border border-zinc-300 bg-white py-2 pl-9 pr-4 text-sm">
+                <input type="search" name="q" x-model="q" @input="input()" @focus="if (results.length) open = true" value="{{ is_string(request('q')) ? request('q') : '' }}" placeholder="Cari motor, mis. Beat CBS ISS" class="w-full rounded-full border border-zinc-300 bg-white py-2 pl-9 pr-4 text-sm">
+                @include('partials.search-suggest')
             </label>
         </form>
 
@@ -127,11 +147,12 @@ $metaDesc   = html_entity_decode(trim($__env->yieldContent('meta_description')),
         </button>
     </div>
     {{-- Kolom cari untuk layar kecil/menengah: selalu terlihat, tanpa perlu scroll --}}
-    <form action="{{ route('pricelist') }}" method="GET" role="search" class="border-t border-zinc-100 px-4 py-2 xl:hidden">
+    <form action="{{ route('search') }}" method="GET" role="search" autocomplete="off" class="border-t border-zinc-100 px-4 py-2 xl:hidden" x-data="siteSearch('{{ route('search.suggest') }}', {{ Js::from(is_string(request('q')) ? request('q') : '') }})" @keydown.arrow-down.prevent="move(1)" @keydown.arrow-up.prevent="move(-1)" @keydown.escape="close()" @click.outside="close()" @submit="go($event)">
         <label class="relative block">
             <span class="sr-only">Cari motor</span>
             <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="search" name="q" value="{{ is_string(request('q')) ? request('q') : '' }}" placeholder="Cari motor, mis. Beat" class="w-full rounded-full border border-zinc-300 bg-zinc-50 py-2 pl-9 pr-4 text-sm">
+            <input type="search" name="q" x-model="q" @input="input()" @focus="if (results.length) open = true" value="{{ is_string(request('q')) ? request('q') : '' }}" placeholder="Cari motor, mis. Beat CBS ISS" class="w-full rounded-full border border-zinc-300 bg-zinc-50 py-2 pl-9 pr-4 text-sm">
+            @include('partials.search-suggest')
         </label>
     </form>
     <nav x-show="menu" x-cloak class="border-t border-zinc-100 bg-white px-4 py-3 lg:hidden" aria-label="Menu mobile">
@@ -145,16 +166,6 @@ $metaDesc   = html_entity_decode(trim($__env->yieldContent('meta_description')),
 
 @include('partials.cookie-notice')
 
-@php
-    // Ikon sosial media (stroke 24x24). Tampil hanya jika link diisi di Admin > Pengaturan.
-    $socials = [
-        'instagram' => ['Instagram', '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>'],
-        'facebook'  => ['Facebook', '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>'],
-        'tiktok'    => ['TikTok', '<path d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v4.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"/>'],
-        'youtube'   => ['YouTube', '<path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>'],
-    ];
-    $iconBtn = 'flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-zinc-300 transition hover:-translate-y-0.5 hover:bg-honda hover:text-white';
-@endphp
 <footer class="bg-zinc-900 text-zinc-300">
     {{-- Ajakan konsultasi --}}
     <div class="border-b border-zinc-800">
@@ -165,7 +176,7 @@ $metaDesc   = html_entity_decode(trim($__env->yieldContent('meta_description')),
             </div>
             <div class="flex flex-wrap gap-3">
                 <button type="button" x-data @click="$dispatch('open-wa')" class="inline-flex items-center gap-2 rounded-xl bg-green-500 px-6 py-3 text-sm font-bold text-white transition hover:bg-green-600">
-                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="{{ $waPath }}"/></svg>
                     Chat WhatsApp
                 </button>
                 <a href="{{ route('pricelist') }}" class="inline-flex items-center rounded-xl border border-zinc-600 px-6 py-3 text-sm font-bold text-white transition hover:border-white">Lihat Pricelist</a>
@@ -190,10 +201,9 @@ $metaDesc   = html_entity_decode(trim($__env->yieldContent('meta_description')),
                     @endif
                 @endforeach
                 <button type="button" x-data @click="$dispatch('open-wa')" aria-label="Chat sales counter via WhatsApp" title="Chat sales counter" class="{{ $iconBtn }}">
-                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="{{ $waPath }}"/></svg>
                 </button>
             </div>
-             <img src="{{ asset('images/hondacare.webp') }}" alt="Honda Care" loading="lazy" class="mt-5 h-12 w-auto">
         </div>
 
         {{-- Menu --}}
@@ -215,7 +225,7 @@ $metaDesc   = html_entity_decode(trim($__env->yieldContent('meta_description')),
                     <address class="not-italic leading-relaxed text-zinc-400">{{ $dealerAddress }}</address>
                 </li>
                 <li class="flex gap-3">
-                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="{{ $waPath }}"/></svg>
                     <button type="button" x-data @click="$dispatch('open-wa')" class="text-left text-zinc-400 transition hover:text-white">Chat sales counter via WhatsApp</button>
                 </li>
                 @if(! empty($settings['phone']))
@@ -271,7 +281,7 @@ $metaDesc   = html_entity_decode(trim($__env->yieldContent('meta_description')),
 {{-- Tombol WhatsApp melayang (semua halaman): pilih sales counter -> isi nama & nomor -> WhatsApp --}}
 <div x-data="waLead('{{ route('prospect.wa') }}', {{ Js::from($salesList) }})" @keydown.escape.window="open = false" @open-wa.window="openFor($event.detail)">
     <button @click="openFor()" class="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-lg transition hover:scale-110 hover:bg-green-600 md:bottom-8 md:right-8 md:h-16 md:w-16" aria-label="Chat via WhatsApp">
-        <svg class="h-8 w-8 md:h-9 md:w-9" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <svg class="h-8 w-8 md:h-9 md:w-9" fill="currentColor" viewBox="0 0 24 24"><path d="{{ $waPath }}"/></svg>
     </button>
     <div x-show="open" x-cloak class="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-black/50 p-4 sm:items-center">
         <form @submit.prevent="submit" @click.outside="open = false" class="my-auto w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">

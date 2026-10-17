@@ -9,6 +9,7 @@ use App\Http\Controllers\MotorController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProspectController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\StaticPageController;
 use App\Support\PageDefaults;
@@ -36,6 +37,8 @@ Route::get('/berita/{post}', [NewsController::class, 'show'])->name('news.show')
 Route::get('/motor/{motor}', [MotorController::class, 'show'])->name('motor.show');
 Route::post('/prospek', [ProspectController::class, 'store'])->middleware('throttle:10,1')->name('prospect.store');
 Route::post('/prospek/wa', [ProspectController::class, 'wa'])->middleware('throttle:20,1')->name('prospect.wa');
+Route::get('/cari', [SearchController::class, 'go'])->name('search');
+Route::get('/cari/saran', [SearchController::class, 'suggest'])->middleware('throttle:90,1')->name('search.suggest');
 Route::get('/kontak', ContactController::class)->name('contact');
 Route::get('/tentang-kami', AboutController::class)->name('about');
 // Halaman statis: /kebijakan-privasi (isi diatur di Admin > Halaman)

@@ -154,6 +154,37 @@ Alpine.data('motorGuide', () => ({
     get step() { return this.list[this.i] || {}; },
 }));
 
+/* Kolom cari di navbar: saran langsung saat mengetik; Enter ke detail motor jika nama persis cocok */
+Alpine.data('siteSearch', (url, initial) => ({
+    q: initial || '', results: [], open: false, loading: false, active: -1, timer: null,
+    input() {
+        clearTimeout(this.timer);
+        const v = this.q.trim();
+        this.active = -1;
+        if (v.length < 2) { this.results = []; this.open = false; return; }
+        this.timer = setTimeout(() => this.fetchResults(v), 200);
+    },
+    async fetchResults(v) {
+        this.loading = true;
+        try {
+            const res = await fetch(url + '?q=' + encodeURIComponent(v), { headers: { Accept: 'application/json' } });
+            const json = await res.json();
+            if (v === this.q.trim()) { this.results = json.results || []; this.open = true; }
+        } catch (e) { /* abaikan */ }
+        this.loading = false;
+    },
+    move(d) {
+        if (!this.results.length) return;
+        this.open = true;
+        this.active = (this.active + d + this.results.length) % this.results.length;
+    },
+    go(e) {
+        // Saran dipilih dengan panah: langsung buka. Selain itu form dikirim ke /cari (server memutuskan).
+        if (this.active >= 0 && this.results[this.active]) { e.preventDefault(); location.href = this.results[this.active].url; }
+    },
+    close() { this.open = false; this.active = -1; },
+}));
+
 /* Pemberitahuan cookie (strip di atas footer): hanya informasi, tampil sampai pengunjung klik "Mengerti" */
 const COOKIE_KEY = 'dmhg_cookie_ok';
 Alpine.data('cookieNotice', () => ({
