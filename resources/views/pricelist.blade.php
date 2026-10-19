@@ -5,10 +5,9 @@
 
 @section('content')
 @php
-    // teks pencarian per seri: nama + semua tipe (huruf kecil)
-    $hay = fn ($s) => Str::lower($s->cheapest->display_name.' '.$s->types->pluck('variant')->implode(' '));
+    // teks pencarian per kartu (huruf kecil): nama + tipe + jenis
     $qInit = Str::limit(trim(is_string(request('q')) ? request('q') : ''), 60, '');
-    $allHay = $categories->flatMap(fn ($c) => $c->series)->map($hay)->values();
+    $allHay = $categories->flatMap(fn ($c) => $c->cards)->pluck('hay')->values();
 @endphp
 {{-- Pencarian per kata: semua kata harus ada, urutan bebas (mis. beat cbs iss cocok dengan Beat tipe CBS ISS) --}}
 <section class="mx-auto max-w-7xl px-4 pt-10"
@@ -61,28 +60,12 @@
     <p x-show="none" x-cloak class="mt-10 rounded-2xl border border-dashed border-zinc-300 p-8 text-center text-sm text-zinc-500">Motor yang Anda cari tidak ditemukan. Coba kata kunci lain atau hubungi kami via WhatsApp.</p>
 
     @forelse($categories as $c)
-        <div x-show="(cat === 'all' || cat === '{{ $c->slug }}') && {{ Js::from($c->series->map($hay)->values()) }}.some(h => match(h))" class="mt-10">
+        <div x-show="(cat === 'all' || cat === '{{ $c->slug }}') && {{ Js::from($c->cards->pluck('hay')->values()) }}.some(h => match(h))" class="mt-10">
             <h2 class="text-xl font-extrabold text-zinc-900">Motor Honda {{ $c->name }}</h2>
-            <div class="mt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-                @foreach($c->series as $s)
-                    <article x-show="match({{ Js::from($hay($s)) }})" class="flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white">
-                        <a href="{{ $s->url }}" class="flex items-center gap-4 bg-zinc-50 p-4">
-                            @if($s->image)<img src="{{ asset('storage/'.$s->image) }}" alt="{{ $s->cheapest->display_name }} Garut" loading="lazy" class="h-24 w-28 object-contain">@endif
-                            <h3 class="text-lg font-extrabold text-zinc-900 hover:text-honda">{{ $s->name }} Series</h3>
-                        </a>
-                        <ul class="divide-y divide-zinc-100 px-4 text-sm">
-                            @foreach($s->types as $t)
-                                <li>
-                                    <a href="{{ route('motor.show', $t) }}" class="flex items-center justify-between gap-3 py-3 hover:text-honda">
-                                        <span class="font-medium text-zinc-700">{{ $t->variant }}</span>
-                                        @php($o = $t->lowest_offer)
-                                        <span class="text-right">@if($t->has_varied_prices)<span class="block text-[10px] text-zinc-400">mulai</span>@endif @include('partials.price', ['price' => $o['price'], 'disc' => $o['discount']])</span>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                        <a href="{{ $s->url }}" class="m-4 mt-auto rounded-xl bg-zinc-900 py-2.5 text-center text-sm font-semibold text-white hover:bg-honda">Lihat warna & konsultasi</a>
-                    </article>
+            {{-- Satu kartu per tipe (sama seperti beranda): label seri, tipe, titik warna, foto & harga tipe itu --}}
+            <div class="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
+                @foreach($c->cards as $s)
+                    <div x-show="match({{ Js::from($s->hay) }})" class="flex [&>a]:w-full">@include('partials.series-card')</div>
                 @endforeach
             </div>
         </div>
