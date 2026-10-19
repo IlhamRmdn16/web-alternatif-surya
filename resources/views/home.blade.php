@@ -5,8 +5,14 @@
 
 @section('content')
 
+{{-- Hero: banner bergerak otomatis (latar), teks statis di depannya.
+     Ukuran: mobile rasio 5:4, desktop 1240x520 (maks. lebar 1240px, di tengah).
+     Ringan: slide pertama dimuat prioritas, sisanya lazy; versi mobile (WebP 750px) dipakai bila tersedia.
+     Jelas: gradasi gelap hanya di sisi tulisan (bawah di mobile, kiri di desktop). --}}
 <div class="md:px-4 md:pt-6">
 <section class="relative isolate mx-auto aspect-[5/4] w-full overflow-hidden bg-zinc-900 md:aspect-[1240/520] md:max-w-[1240px] md:rounded-2xl" aria-label="Banner utama">
+    {{-- Pembungkus absolut: class .swiper (CSS Swiper) memaksa position:relative sehingga
+         tidak boleh dipasang bersamaan dengan "absolute" pada elemen yang sama --}}
     <div class="absolute inset-0 z-0">
         @if($banners->isNotEmpty())
             <div class="swiper hero-swiper h-full w-full">
@@ -77,7 +83,7 @@
                 @endforeach
             </div>
             <div class="mt-8 text-center">
-                <a href="{{ route('pricelist') }}" class="inline-block rounded-xl bg-honda px-8 py-3 text-sm font-bold text-white transition hover:bg-honda-dark">Lihat semua motor {{ $c->name }}</a>
+                <a href="{{ route('pricelist', ['jenis' => $c->slug]) }}" class="inline-block rounded-xl bg-honda px-8 py-3 text-sm font-bold text-white transition hover:bg-honda-dark">Lihat semua motor {{ $c->name }}</a>
             </div>
         </div>
     @endforeach

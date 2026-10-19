@@ -5,15 +5,12 @@
 
 @section('content')
 @php
-    // teks pencarian per kartu (huruf kecil): nama + tipe + jenis
-    $qInit = Str::limit(trim(is_string(request('q')) ? request('q') : ''), 60, '');
-    $allHay = $categories->flatMap(fn ($c) => $c->cards)->pluck('hay')->values();
+    // ?jenis=sport -> langsung menampilkan jenis itu (dari tombol "Lihat semua motor Sport" di beranda)
+    $jenis = request('jenis');
+    $catInit = is_string($jenis) && $categories->contains('slug', $jenis) ? $jenis : 'all';
 @endphp
-{{-- Pencarian per kata: semua kata harus ada, urutan bebas (mis. beat cbs iss cocok dengan Beat tipe CBS ISS) --}}
 <section class="mx-auto max-w-7xl px-4 pt-10"
-         x-data="{ cat: 'all', q: {{ Js::from($qInit) }}, all: {{ Js::from($allHay) }},
-                   match(h) { const w = this.q.trim().toLowerCase().split(/\s+/).filter(Boolean); return w.every(x => h.includes(x)); },
-                   get none() { return this.q.trim() !== '' && !this.all.some(h => this.match(h)) } }">
+         x-data="{ cat: {{ Js::from($catInit) }} }">
     <h1 class="text-2xl font-extrabold text-zinc-900 md:text-4xl">Daftar Harga Motor Honda Garut</h1>
     <div class="mt-3 h-1 w-14 rounded bg-honda"></div>
     <p class="mt-4 text-sm leading-relaxed text-zinc-600 md:text-base">Harga OTR setiap tipe motor Honda di dealer kami, termasuk potongan untuk pembelian cash. Harga dapat berubah sewaktu-waktu, hubungi kami untuk konfirmasi harga dan stok terbaru.</p>
@@ -47,25 +44,22 @@
         </div>
     @endif
 
-    <div class="mt-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <div class="mt-8">
         <div class="no-scrollbar flex gap-2 overflow-x-auto">
             <button @click="cat = 'all'" :class="cat === 'all' ? 'bg-honda text-white' : 'bg-zinc-100 text-zinc-700'" class="whitespace-nowrap rounded-full px-5 py-2 text-sm font-bold">Semua</button>
             @foreach($categories as $c)
                 <button @click="cat = '{{ $c->slug }}'" :class="cat === '{{ $c->slug }}' ? 'bg-honda text-white' : 'bg-zinc-100 text-zinc-700'" class="whitespace-nowrap rounded-full px-5 py-2 text-sm font-bold">{{ $c->name }}</button>
             @endforeach
         </div>
-        <input x-model="q" type="search" placeholder="Cari motor, mis. Beat" class="w-full rounded-full border border-zinc-300 px-5 py-2.5 text-sm md:w-72">
     </div>
 
-    <p x-show="none" x-cloak class="mt-10 rounded-2xl border border-dashed border-zinc-300 p-8 text-center text-sm text-zinc-500">Motor yang Anda cari tidak ditemukan. Coba kata kunci lain atau hubungi kami via WhatsApp.</p>
-
     @forelse($categories as $c)
-        <div x-show="(cat === 'all' || cat === '{{ $c->slug }}') && {{ Js::from($c->cards->pluck('hay')->values()) }}.some(h => match(h))" class="mt-10">
+        <div x-show="cat === 'all' || cat === '{{ $c->slug }}'" class="mt-10">
             <h2 class="text-xl font-extrabold text-zinc-900">Motor Honda {{ $c->name }}</h2>
             {{-- Satu kartu per tipe (sama seperti beranda): label seri, tipe, titik warna, foto & harga tipe itu --}}
             <div class="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
                 @foreach($c->cards as $s)
-                    <div x-show="match({{ Js::from($s->hay) }})" class="flex [&>a]:w-full">@include('partials.series-card')</div>
+                    <div class="flex [&>a]:w-full">@include('partials.series-card')</div>
                 @endforeach
             </div>
         </div>
