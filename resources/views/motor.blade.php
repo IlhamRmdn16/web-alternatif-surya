@@ -68,11 +68,44 @@
     </nav>
 
     <div class="mt-6 grid items-start gap-8 lg:grid-cols-2 lg:gap-14">
-        <div class="lg:sticky lg:top-28">
-            <div class="flex aspect-square items-center justify-center rounded-3xl bg-zinc-50 p-6 md:aspect-[4/3]">
-                <img :src="image" alt="{{ $motor->full_name }} Garut" class="max-h-full max-w-full object-contain" x-show="image" @if(! $imgUrl && ! optional($motor->colors->first())->image) style="display:none" @endif>
-                <p x-show="!image" class="text-sm text-zinc-400" @if($imgUrl) style="display:none" @endif>Foto belum tersedia</p>
+        <div class="min-w-0 lg:sticky lg:top-28">
+            {{-- Foto motor: geser kiri/kanan untuk ganti warna (satu slide per warna) --}}
+            <div class="relative">
+                <div x-ref="photo" class="swiper photo-swiper aspect-square rounded-3xl bg-zinc-50 md:aspect-[4/3]">
+                    <div class="swiper-wrapper">
+                        @forelse($motor->colors as $c)
+                            @php($src = $c->image ? asset('storage/'.$c->image) : $imgUrl)
+                            <div class="swiper-slide flex items-center justify-center p-6">
+                                @if($src)
+                                    <img src="{{ $src }}" alt="{{ $motor->full_name }} Garut warna {{ $c->name }}" draggable="false"
+                                         class="h-full w-full object-contain" :class="hint && 'photo-nudge'">
+                                @else
+                                    <p class="text-sm text-zinc-400">Foto belum tersedia</p>
+                                @endif
+                            </div>
+                        @empty
+                            <div class="swiper-slide flex items-center justify-center p-6">
+                                @if($imgUrl)
+                                    <img src="{{ $imgUrl }}" alt="{{ $motor->full_name }} Garut" draggable="false" class="h-full w-full object-contain">
+                                @else
+                                    <p class="text-sm text-zinc-400">Foto belum tersedia</p>
+                                @endif
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+                @if($motor->colors->count() > 1)
+                    <div x-show="hint" x-cloak x-transition.opacity class="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
+                        <span class="rounded-full bg-zinc-900/80 px-3 py-1 text-xs font-semibold text-white">&larr; Geser foto &rarr;</span>
+                    </div>
+                @endif
             </div>
+
+            {{-- Penanda posisi geser: panjang penanda menyesuaikan jumlah foto/warna --}}
+            @if($motor->colors->count() > 1)
+                <div x-ref="bar" class="photo-bar" aria-hidden="true"></div>
+            @endif
+
             @if($motor->colors->isNotEmpty())
             <div class="mt-5" data-tour="colors">
                 <p class="text-sm font-bold text-zinc-900">Pilihan warna: <span class="font-medium text-zinc-600" x-text="colors[ci]?.name">{{ $motor->colors->first()->name }}</span></p>

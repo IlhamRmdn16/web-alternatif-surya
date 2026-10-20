@@ -19,6 +19,16 @@ async function post(url, data) {
 
 const firstError = (d) => (d.errors ? Object.values(d.errors)[0][0] : d.message) || 'Terjadi kesalahan, coba lagi.';
 
+/* Penanda "sudah pernah" (localStorage + cookie sebagai cadangan), dipakai petunjuk motor & pemberitahuan cookie */
+const flagSeen = (k) => {
+    try { if (localStorage.getItem(k) === '1') return true; } catch (e) {}
+    return document.cookie.split('; ').includes(k + '=1');
+};
+const flagMark = (k) => {
+    try { localStorage.setItem(k, '1'); } catch (e) {}
+    document.cookie = k + '=1; max-age=31536000; path=/; SameSite=Lax';
+};
+
 /* Tombol WhatsApp melayang: simpan nama + alamat sebagai prospek, lalu buka WhatsApp */
 Alpine.data('waLead', (url, sales) => ({
     sales, open: false, loading: false, name: '', phone: '', error: '', consent: false,
@@ -57,57 +67,83 @@ Alpine.data('waLead', (url, sales) => ({
     },
 }));
 
-/* Halaman detail motor: warna menentukan harga + form konsultasi pembelian */
-Alpine.data('motorPage', (cfg) => ({
-    colors: cfg.colors, mainImage: cfg.image, sales: cfg.sales || [],
-    target: (cfg.sales && cfg.sales.length === 1) ? cfg.sales[0].id : null,
-    ci: 0,
-    open: false, loading: false, done: false, error: '', waUrl: '', consent: false,
-    form: { name: '', phone: '', purpose: '', dp: '', tenor: '' },
-    rp: (n) => 'Rp ' + Number(n || 0).toLocaleString('id-ID'),
-    get image() { return this.colors[this.ci]?.image || this.mainImage; },
-    get offer() {
-        const c = this.colors[this.ci];
-        const price = Number(c ? c.price : cfg.base.price);
-        const discount = Math.min(Number(c ? c.discount : cfg.base.discount), price);
-        return { price, discount, cash: Math.max(price - discount, 0) };
-    },
-    formatDp(e) {
-        const d = e.target.value.replace(/\D/g, '');
-        this.form.dp = d;
-        e.target.value = d ? Number(d).toLocaleString('id-ID') : '';
-    },
-    async submit() {
-        this.error = '';
-        if (!this.target) { this.error = 'Pilih sales counter yang akan dihubungi.'; return; }
-        if (!this.consent) { this.error = 'Centang persetujuan untuk dihubungi tim sales.'; return; }
-        this.loading = true;
-        // Buka tab WhatsApp langsung saat klik (agar tidak diblokir popup blocker), isi alamatnya setelah data tersimpan.
-        const win = window.open('', '_blank');
-        const r = await post(cfg.url, { ...this.form, consent: this.consent, sales_id: this.target, motor_id: cfg.motorId, color_name: this.colors[this.ci]?.name, page: location.href });
-        this.loading = false;
-        if (r.ok) {
-            this.waUrl = r.data.url || '';
-            if (this.waUrl) { win ? (win.location.href = this.waUrl) : (location.href = this.waUrl); }
-            else if (win) win.close();
-            this.done = true; this.consent = false;
-            this.form = { name: '', phone: '', purpose: '', dp: '', tenor: '' };
-        } else {
-            if (win) win.close();
-            this.error = firstError(r.data);
-        }
-    },
-}));
+/* Halaman detail motor: warna menentukan harga + foto bisa digeser + form konsultasi pembelian */
+const SWIPE_KEY = 'dmhg_swipe_hint_v1';
+Alpine.data('motorPage', (cfg) => {
+    let sw = null; // instance Swiper (di luar state reaktif Alpine)
+    return {
+        colors: cfg.colors, mainImage: cfg.image, sales: cfg.sales || [],
+        target: (cfg.sales && cfg.sales.length === 1) ? cfg.sales[0].id : null,
+        ci: 0,
+        hint: false,
+        open: false, loading: false, done: false, error: '', waUrl: '', consent: false,
+        form: { name: '', phone: '', purpose: '', dp: '', tenor: '' },
+        rp: (n) => 'Rp ' + Number(n || 0).toLocaleString('id-ID'),
+        get image() { return this.colors[this.ci]?.image || this.mainImage; },
+        get offer() {
+            const c = this.colors[this.ci];
+            const price = Number(c ? c.price : cfg.base.price);
+            const discount = Math.min(Number(c ? c.discount : cfg.base.discount), price);
+            return { price, discount, cash: Math.max(price - discount, 0) };
+        },
+        init() {
+            this.$nextTick(() => {
+                const el = this.$refs.photo;
+                if (!el) return;
+                const total = el.querySelectorAll('.swiper-slide').length;
+                sw = new Swiper(el, {
+                    slidesPerView: 1,
+                    spaceBetween: 16,
+                    speed: 350,
+                    grabCursor: total > 1,
+                    allowTouchMove: total > 1,
+                    resistanceRatio: 0.6,
+                    a11y: false,
+                    // Penanda posisi geser (seperti scrollbar): lebar penanda menyesuaikan jumlah foto
+                    scrollbar: this.$refs.bar ? { el: this.$refs.bar, draggable: true, hide: false } : false,
+                });
+                // Geser foto -> warna & harga ikut berubah
+                sw.on('slideChange', () => { this.ci = sw.activeIndex; });
+                // Klik bulatan warna -> foto ikut bergeser
+                this.$watch('ci', (v) => { if (sw && sw.activeIndex !== v) sw.slideTo(v, 350); });
 
-/* Penanda "sudah pernah" (localStorage + cookie sebagai cadangan), dipakai petunjuk motor & pemberitahuan cookie */
-const flagSeen = (k) => {
-    try { if (localStorage.getItem(k) === '1') return true; } catch (e) {}
-    return document.cookie.split('; ').includes(k + '=1');
-};
-const flagMark = (k) => {
-    try { localStorage.setItem(k, '1'); } catch (e) {}
-    document.cookie = k + '=1; max-age=31536000; path=/; SameSite=Lax';
-};
+                // Animasi petunjuk geser: hanya saat pertama kali membuka halaman motor
+                if (total > 1 && !flagSeen(SWIPE_KEY)) {
+                    flagMark(SWIPE_KEY);
+                    setTimeout(() => {
+                        this.hint = true;
+                        setTimeout(() => { this.hint = false; }, 2600);
+                    }, 500);
+                }
+            });
+        },
+        formatDp(e) {
+            const d = e.target.value.replace(/\D/g, '');
+            this.form.dp = d;
+            e.target.value = d ? Number(d).toLocaleString('id-ID') : '';
+        },
+        async submit() {
+            this.error = '';
+            if (!this.target) { this.error = 'Pilih sales counter yang akan dihubungi.'; return; }
+            if (!this.consent) { this.error = 'Centang persetujuan untuk dihubungi tim sales.'; return; }
+            this.loading = true;
+            // Buka tab WhatsApp langsung saat klik (agar tidak diblokir popup blocker), isi alamatnya setelah data tersimpan.
+            const win = window.open('', '_blank');
+            const r = await post(cfg.url, { ...this.form, consent: this.consent, sales_id: this.target, motor_id: cfg.motorId, color_name: this.colors[this.ci]?.name, page: location.href });
+            this.loading = false;
+            if (r.ok) {
+                this.waUrl = r.data.url || '';
+                if (this.waUrl) { win ? (win.location.href = this.waUrl) : (location.href = this.waUrl); }
+                else if (win) win.close();
+                this.done = true; this.consent = false;
+                this.form = { name: '', phone: '', purpose: '', dp: '', tenor: '' };
+            } else {
+                if (win) win.close();
+                this.error = firstError(r.data);
+            }
+        },
+    };
+});
 
 /* Petunjuk halaman detail motor: tampil otomatis SEKALI (kunjungan pertama ke halaman motor mana pun).
    Penanda disimpan SEBELUM petunjuk tampil, jadi pindah tipe/halaman tidak pernah mengulang dari awal.
@@ -116,7 +152,7 @@ const GUIDE_KEY = 'dmhg_motor_guide_v1';
 Alpine.data('motorGuide', () => ({
     active: false, i: 0, list: [], el: null,
     steps: [
-        { key: 'colors', title: 'Pilih warna', text: 'Klik bulatan warna di bawah foto untuk melihat foto dan harga warna tersebut.' },
+        { key: 'colors', title: 'Pilih warna', text: 'Klik bulatan warna di bawah foto, atau geser fotonya ke kiri/kanan, untuk melihat foto dan harga warna tersebut.' },
         { key: 'types', title: 'Ganti tipe', text: 'Klik tombol tipe (misalnya CBS atau CBS ISS) untuk membuka tipe lain dari motor yang sama. Setiap tipe punya harga sendiri.' },
         { key: 'price', title: 'Lihat harga', text: 'Harga OTR (dan harga setelah diskon, jika ada) tampil di sini, dan berubah otomatis mengikuti warna yang Anda pilih.' },
         { key: 'consult', title: 'Konsultasi pembelian', text: 'Klik tombol ini untuk tanya stok, minta simulasi kredit, atau pesan unit. Tim kami akan menghubungi Anda.' },
