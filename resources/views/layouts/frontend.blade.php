@@ -167,23 +167,6 @@
 @include('partials.cookie-notice')
 
 <footer class="bg-zinc-900 text-zinc-300">
-    {{-- Ajakan konsultasi --}}
-    <div class="border-b border-zinc-800">
-        <div class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-5 px-4 py-9 md:flex-row md:items-center">
-            <div>
-                <p class="text-xl font-extrabold text-white md:text-2xl">Siap memiliki motor Honda impian Anda?</p>
-                <p class="mt-1 text-sm text-zinc-400">Konsultasikan pembelian, cek stok, dan minta simulasi kredit bersama tim kami.</p>
-            </div>
-            <div class="flex flex-wrap gap-3">
-                <button type="button" x-data @click="$dispatch('open-wa')" class="inline-flex items-center gap-2 rounded-xl bg-green-500 px-6 py-3 text-sm font-bold text-white transition hover:bg-green-600">
-                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="{{ $waPath }}"/></svg>
-                    Chat WhatsApp
-                </button>
-                <a href="{{ route('pricelist') }}" class="inline-flex items-center rounded-xl border border-zinc-600 px-6 py-3 text-sm font-bold text-white transition hover:border-white">Lihat Pricelist</a>
-            </div>
-        </div>
-    </div>
-
     <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
         {{-- Brand --}}
         <div class="lg:col-span-4">
@@ -272,8 +255,7 @@
 
     <div class="border-t border-zinc-800">
         <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-center text-xs text-zinc-500 md:flex-row md:text-left">
-            <p>&copy; {{ date('Y') }} HondaGarut.id - CV. Surya Wijaya Sejahtera. Seluruh hak cipta dilindungi.</p>
-            <p>Harga dapat berubah sewaktu-waktu. Konfirmasi harga dan stok ke sales kami. <a href="{{ route('page.show', 'kebijakan-privasi') }}" class="underline underline-offset-2 hover:text-white">Kebijakan Privasi</a></p>
+            <p>&copy; {{ date('Y') }} HondaGarut.id - CV. Surya Wijaya Sejahtera. Seluruh hak cipta dilindungi.<a href="{{ route('page.show', 'kebijakan-privasi') }}" class="underline underline-offset-2 hover:text-white">Kebijakan Privasi</a></p>
         </div>
     </div>
 </footer>
