@@ -25,6 +25,6 @@
         {!! $descHtml !!}
     </div>
 
-    <button type="button" x-data @click="$dispatch('open-wa', {{ Js::from(['topic' => 'Promo: '.$promo->title]) }})" class="mt-8 inline-block rounded-xl bg-green-500 px-8 py-3 text-sm font-bold text-white hover:bg-green-600">Tanya promo ini ke Sales Counter</button>
+    <button type="button" x-data @click="$dispatch('open-wa', {{ Js::from(['topic' => 'Promo: '.$promo->title]) }})" class="mt-8 inline-block rounded-xl bg-green-500 px-8 py-3 text-sm font-bold text-white hover:bg-green-600">Tanya promo ini ke Admin</button>
 </article>
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -9,6 +10,22 @@ use Illuminate\Support\Str;
 class Helpers
 {
     public const DEALER_ADDRESS = 'Jl. Papandayan No.112, Kota Kulon, Kec. Garut Kota, Kabupaten Garut, Jawa Barat 44114';
+
+    /** Admin website: satu-satunya tujuan chat/WhatsApp konsumen (sales counter hanya ditampilkan di halaman Tentang Kami). */
+    public const ADMIN_NAME  = 'Surya Wijaya';
+    public const ADMIN_PHONE = '085199359033';
+
+    /** Nomor admin format internasional (62...) untuk link wa.me */
+    public static function adminWa(): string
+    {
+        return Setting::normalizeNumber(self::ADMIN_PHONE);
+    }
+
+    /** Nomor admin untuk ditampilkan (0851-9935-9033) */
+    public static function adminDisplay(): string
+    {
+        return '0851-9935-9033';
+    }
 
     public static function uniqueSlug(string $model, string $text, ?int $ignoreId = null): string
     {

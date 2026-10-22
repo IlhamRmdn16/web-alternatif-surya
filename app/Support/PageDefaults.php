@@ -20,8 +20,8 @@ class PageDefaults
 <h2>Data yang kami kumpulkan</h2>
 <p>Kami hanya mengumpulkan data yang Anda isi sendiri melalui website:</p>
 <ul>
-<li><strong>Formulir Konsultasi Pembelian:</strong> nama, nomor HP/WhatsApp, keperluan (tanya stok, simulasi kredit, booking unit, atau lainnya), unit yang Anda minati, serta sales counter yang Anda pilih. Untuk simulasi kredit, kami juga menyimpan nominal DP dan tenor yang Anda pilih.</li>
-<li><strong>Tombol WhatsApp:</strong> nama dan nomor WhatsApp yang Anda isi, serta sales counter atau call center yang Anda pilih, sebelum diarahkan ke WhatsApp.</li>
+<li><strong>Formulir Konsultasi Pembelian:</strong> nama, nomor HP/WhatsApp, keperluan (tanya stok, simulasi kredit, booking unit, atau lainnya), serta unit yang Anda minati. Untuk simulasi kredit, kami juga menyimpan nominal DP dan tenor yang Anda pilih.</li>
+<li><strong>Tombol WhatsApp:</strong> nama dan nomor WhatsApp yang Anda isi, sebelum Anda diarahkan ke WhatsApp admin kami (atau call center).</li>
 <li><strong>Data penggunaan website:</strong> melalui Google Analytics, misalnya halaman yang dibuka, durasi kunjungan, jenis perangkat dan browser, serta perkiraan wilayah. Data ini bersifat statistik dan tidak mencakup nama atau nomor telepon Anda.</li>
 </ul>
 <h2>Cara kami menggunakan data</h2>

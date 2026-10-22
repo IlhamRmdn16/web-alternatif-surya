@@ -9,6 +9,17 @@ class SalesContact extends Model
     protected $guarded = [];
     protected $casts = ['is_active' => 'boolean'];
 
+    /** Nomor sudah tidak ditampilkan di website; boleh kosong (kolom database wajib terisi, jadi disimpan string kosong). */
+    public function setPhoneAttribute($v): void
+    {
+        $this->attributes['phone'] = (string) $v;
+    }
+
+    public function setPositionAttribute($v): void
+    {
+        $this->attributes['position'] = trim((string) $v) !== '' ? $v : 'Sales Counter';
+    }
+
     /** Nomor format internasional (62...) untuk link wa.me */
     public function getWaNumberAttribute(): string
     {

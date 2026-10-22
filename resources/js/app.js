@@ -29,32 +29,27 @@ const flagMark = (k) => {
     document.cookie = k + '=1; max-age=31536000; path=/; SameSite=Lax';
 };
 
-/* Tombol WhatsApp melayang: simpan nama + alamat sebagai prospek, lalu buka WhatsApp */
-Alpine.data('waLead', (url, sales) => ({
-    sales, open: false, loading: false, name: '', phone: '', error: '', consent: false,
-    target: null,        // id sales counter terpilih
+/* Tombol WhatsApp melayang: simpan nama + nomor sebagai prospek, lalu buka WhatsApp admin (atau call center dari halaman Kontak) */
+Alpine.data('waLead', (url) => ({
+    open: false, loading: false, name: '', phone: '', error: '', consent: false,
     callCenter: false,   // true = tujuan call center (dari halaman Kontak)
     topic: '',
     openFor(d) {
         d = d || {};
         this.error = ''; this.topic = d.topic || ''; this.callCenter = !!d.callCenter;
-        if (this.callCenter) this.target = null;
-        else if (d.salesId) this.target = d.salesId;
-        else this.target = this.sales.length === 1 ? this.sales[0].id : null;
         this.open = true;
     },
     async submit() {
         this.error = '';
-        if (!this.callCenter && !this.target) { this.error = 'Pilih sales counter yang akan dihubungi.'; return; }
         if (!this.name.trim()) { this.error = 'Nama wajib diisi.'; return; }
-        if (!this.consent) { this.error = 'Centang persetujuan untuk dihubungi tim sales.'; return; }
+        if (!this.consent) { this.error = 'Centang persetujuan untuk dihubungi oleh admin kami.'; return; }
         if (!this.phone.trim()) { this.error = 'Nomor WhatsApp wajib diisi.'; return; }
         if (!/^[0-9+\-\s]{8,20}$/.test(this.phone.trim())) { this.error = 'Format nomor WhatsApp tidak valid (contoh: 08123456789).'; return; }
         this.loading = true;
         const win = window.open('', '_blank');
         const r = await post(url, {
             name: this.name, phone: this.phone, consent: this.consent, page: location.href, topic: this.topic,
-            sales_id: this.callCenter ? null : this.target, call_center: this.callCenter,
+            call_center: this.callCenter,
         });
         this.loading = false;
         if (r.ok && r.data.url) {
@@ -72,8 +67,7 @@ const SWIPE_KEY = 'dmhg_swipe_hint_v1';
 Alpine.data('motorPage', (cfg) => {
     let sw = null; // instance Swiper (di luar state reaktif Alpine)
     return {
-        colors: cfg.colors, mainImage: cfg.image, sales: cfg.sales || [],
-        target: (cfg.sales && cfg.sales.length === 1) ? cfg.sales[0].id : null,
+        colors: cfg.colors, mainImage: cfg.image,
         ci: 0,
         hint: false,
         open: false, loading: false, done: false, error: '', waUrl: '', consent: false,
@@ -124,12 +118,11 @@ Alpine.data('motorPage', (cfg) => {
         },
         async submit() {
             this.error = '';
-            if (!this.target) { this.error = 'Pilih sales counter yang akan dihubungi.'; return; }
-            if (!this.consent) { this.error = 'Centang persetujuan untuk dihubungi tim sales.'; return; }
+            if (!this.consent) { this.error = 'Centang persetujuan untuk dihubungi oleh admin kami.'; return; }
             this.loading = true;
             // Buka tab WhatsApp langsung saat klik (agar tidak diblokir popup blocker), isi alamatnya setelah data tersimpan.
             const win = window.open('', '_blank');
-            const r = await post(cfg.url, { ...this.form, consent: this.consent, sales_id: this.target, motor_id: cfg.motorId, color_name: this.colors[this.ci]?.name, page: location.href });
+            const r = await post(cfg.url, { ...this.form, consent: this.consent, motor_id: cfg.motorId, color_name: this.colors[this.ci]?.name, page: location.href });
             this.loading = false;
             if (r.ok) {
                 this.waUrl = r.data.url || '';

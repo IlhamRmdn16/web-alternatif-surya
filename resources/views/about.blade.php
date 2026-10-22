@@ -132,6 +132,28 @@
     </div>
 </section>
 
+{{-- SALES COUNTER (hanya foto + nama) --}}
+@if(isset($sales) && $sales->isNotEmpty())
+<section id="sales" class="mx-auto max-w-7xl scroll-mt-24 px-4 pt-16 md:pt-24">
+    <p class="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-honda"><span class="h-px w-8 bg-honda/60"></span>Tim Kami</p>
+    <h2 class="mt-3 text-3xl font-extrabold leading-tight tracking-tight text-zinc-900 md:text-5xl">Sales Counter</h2>
+    <p class="mt-4 text-sm leading-relaxed text-zinc-600 md:text-base">Tim sales counter yang siap melayani kebutuhan motor Honda Anda di showroom.</p>
+
+    <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-6">
+        @foreach($sales as $s)
+            <div class="flex flex-col items-center rounded-2xl border border-zinc-200 bg-white p-5 text-center">
+                @if($s->photo)
+                    <img src="{{ asset('storage/'.$s->photo) }}" alt="{{ $s->name }} - Sales Counter Honda Garut" loading="lazy" class="h-24 w-24 rounded-full object-cover ring-4 ring-zinc-100 md:h-28 md:w-28">
+                @else
+                    <div class="flex h-24 w-24 items-center justify-center rounded-full bg-zinc-100 text-3xl font-extrabold text-zinc-400 ring-4 ring-zinc-50 md:h-28 md:w-28">{{ Str::upper(Str::substr($s->name, 0, 1)) }}</div>
+                @endif
+                <p class="mt-4 text-sm font-bold text-zinc-900 md:text-base">{{ $s->name }}</p>
+            </div>
+        @endforeach
+    </div>
+</section>
+@endif
+
 {{-- JANGKAUAN LAYANAN: daftar kecamatan --}}
 @if($areas->isNotEmpty())
 <section class="mx-auto max-w-7xl px-4 pt-16 md:pt-24"

@@ -13,7 +13,7 @@
         @foreach(\App\Models\Prospect::STATUSES as $k => $l)<option value="{{ $k }}" @selected(request('status') === $k)>{{ $l }}</option>@endforeach
     </select>
     <select name="sales" class="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
-        <option value="">Semua sales / call center</option>
+        <option value="">Semua tujuan (admin / call center)</option>
         @foreach($salesNames as $n)<option value="{{ $n }}" @selected(request('sales') === $n)>{{ $n }}</option>@endforeach
     </select>
     @include('admin.partials.per-page', ['default' => 20])

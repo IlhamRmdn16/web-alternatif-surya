@@ -183,7 +183,7 @@
                         </a>
                     @endif
                 @endforeach
-                <button type="button" x-data @click="$dispatch('open-wa')" aria-label="Chat sales counter via WhatsApp" title="Chat sales counter" class="{{ $iconBtn }}">
+                <button type="button" x-data @click="$dispatch('open-wa')" aria-label="Chat Admin Surya Wijaya via WhatsApp" title="Chat Admin Surya Wijaya" class="{{ $iconBtn }}">
                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="{{ $waPath }}"/></svg>
                 </button>
             </div>
@@ -209,7 +209,8 @@
                 </li>
                 <li class="flex gap-3">
                     <svg class="mt-0.5 h-5 w-5 shrink-0 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="{{ $waPath }}"/></svg>
-                    <button type="button" x-data @click="$dispatch('open-wa')" class="text-left text-zinc-400 transition hover:text-white">Chat sales counter via WhatsApp</button>
+                    <span class="text-zinc-400">Admin Website (Surya Wijaya):<br><button type="button" x-data @click="$dispatch('open-wa')" class="font-semibold text-white transition hover:text-red-400">{{ \App\Support\Helpers::adminDisplay() }}</button>
+                        <span class="block text-xs text-zinc-500">Klik untuk chat WhatsApp</span></span>
                 </li>
                 @if(! empty($settings['phone']))
                     <li class="flex gap-3">
@@ -260,17 +261,15 @@
     </div>
 </footer>
 
-{{-- Tombol WhatsApp melayang (semua halaman): pilih sales counter -> isi nama & nomor -> WhatsApp --}}
-<div x-data="waLead('{{ route('prospect.wa') }}', {{ Js::from($salesList) }})" @keydown.escape.window="open = false" @open-wa.window="openFor($event.detail)">
+{{-- Tombol WhatsApp melayang (semua halaman): isi nama & nomor -> WhatsApp Admin Surya Wijaya --}}
+<div x-data="waLead('{{ route('prospect.wa') }}')" @keydown.escape.window="open = false" @open-wa.window="openFor($event.detail)">
     <button @click="openFor()" class="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-lg transition hover:scale-110 hover:bg-green-600 md:bottom-8 md:right-8 md:h-16 md:w-16" aria-label="Chat via WhatsApp">
         <svg class="h-8 w-8 md:h-9 md:w-9" fill="currentColor" viewBox="0 0 24 24"><path d="{{ $waPath }}"/></svg>
     </button>
     <div x-show="open" x-cloak class="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-black/50 p-4 sm:items-center">
         <form @submit.prevent="submit" @click.outside="open = false" class="my-auto w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-            <h2 class="text-lg font-bold text-zinc-900" x-text="callCenter ? 'Hubungi Call Center' : 'Hubungi Sales Counter'">Hubungi Sales Counter</h2>
-            <p class="mt-1 text-sm text-zinc-500" x-text="callCenter ? 'Isi nama dan nomor WhatsApp Anda, lalu kami arahkan ke WhatsApp call center.' : 'Pilih sales counter, isi nama dan nomor WhatsApp Anda, lalu kami arahkan ke WhatsApp.'">Pilih sales counter, isi nama dan nomor WhatsApp Anda, lalu kami arahkan ke WhatsApp.</p>
-
-            <div x-show="!callCenter" x-cloak>@include('partials.sales-picker')</div>
+            <h2 class="text-lg font-bold text-zinc-900" x-text="callCenter ? 'Hubungi Call Center' : 'Chat Admin Surya Wijaya'">Chat Admin Surya Wijaya</h2>
+            <p class="mt-1 text-sm text-zinc-500" x-text="callCenter ? 'Isi nama dan nomor WhatsApp Anda, lalu kami arahkan ke WhatsApp call center.' : 'Isi nama dan nomor WhatsApp Anda, lalu kami arahkan ke WhatsApp Admin Surya Wijaya.'">Isi nama dan nomor WhatsApp Anda, lalu kami arahkan ke WhatsApp Admin Surya Wijaya.</p>
 
             <label class="mt-4 block text-sm font-semibold">Nama
                 <input x-model="name" type="text" maxlength="100" class="mt-1 w-full rounded-xl border border-zinc-300 px-4 py-2.5 focus:border-honda focus:ring-honda">
@@ -280,7 +279,7 @@
             </label>
             <label class="mt-4 flex cursor-pointer items-start gap-2.5 text-xs leading-relaxed text-zinc-600">
                 <input type="checkbox" x-model="consent" class="mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-300 text-honda focus:ring-honda">
-                <span>Dengan mengirimkan formulir ini, saya menyetujui untuk dihubungi oleh tim sales Surya Wijaya melalui WhatsApp atau telepon, dan data saya diproses sesuai <a href="{{ route('page.show', 'kebijakan-privasi') }}" target="_blank" class="font-semibold text-honda underline">Kebijakan Privasi</a>.</span>
+                <span>Dengan mengirimkan formulir ini, saya menyetujui untuk dihubungi oleh admin Surya Wijaya melalui WhatsApp atau telepon, dan data saya diproses sesuai <a href="{{ route('page.show', 'kebijakan-privasi') }}" target="_blank" class="font-semibold text-honda underline">Kebijakan Privasi</a>.</span>
             </label>
             <p x-show="error" x-text="error" class="mt-3 text-sm text-red-600"></p>
             <div class="mt-5 flex gap-3">

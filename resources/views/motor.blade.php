@@ -57,7 +57,7 @@
 <div class="mx-auto max-w-7xl px-4 pt-8"
      x-data="motorPage({{ Js::from([
         'colors' => $colorsJs, 'base' => ['price' => $base['price'], 'discount' => $base['discount']],
-        'image' => $imgUrl, 'url' => route('prospect.store'), 'motorId' => $motor->id, 'sales' => $salesList,
+        'image' => $imgUrl, 'url' => route('prospect.store'), 'motorId' => $motor->id,
      ]) }})"
      @keydown.escape.window="open = false">
 
@@ -165,7 +165,7 @@
                 <div class="mt-4 flex gap-2.5 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs leading-relaxed text-amber-900">
                     <svg class="mt-0.5 h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                     <p>Harga di atas belum termasuk diskon khusus. Ingin tanya diskon atau penawaran terbaik?
-                        <button type="button" @click="$dispatch('open-wa')" class="font-bold underline underline-offset-2 hover:text-honda">Hubungi sales kami via WhatsApp</button>.</p>
+                        <button type="button" @click="$dispatch('open-wa')" class="font-bold underline underline-offset-2 hover:text-honda">Hubungi admin kami via WhatsApp</button>.</p>
                 </div>
             </div>
 
@@ -269,7 +269,7 @@
             <template x-if="done">
                 <div class="text-center">
                     <p class="text-lg font-bold text-zinc-900">Data terkirim</p>
-                    <p class="mt-2 text-sm text-zinc-600">Terima kasih! Data Anda sudah kami terima dan WhatsApp sales counter dibuka di tab baru. Jika tidak terbuka, klik tombol di bawah.</p>
+                    <p class="mt-2 text-sm text-zinc-600">Terima kasih! Data Anda sudah kami terima dan WhatsApp admin dibuka di tab baru. Jika tidak terbuka, klik tombol di bawah.</p>
                     <a x-show="waUrl" :href="waUrl" target="_blank" rel="noopener" class="mt-5 block w-full rounded-xl bg-green-500 py-3 text-sm font-semibold text-white hover:bg-green-600">Buka WhatsApp</a>
                     <button @click="open = false" class="mt-3 w-full rounded-xl border border-zinc-300 py-3 text-sm font-semibold">Tutup</button>
                 </div>
@@ -277,8 +277,6 @@
             <form x-show="!done" @submit.prevent="submit">
                 <h2 class="text-lg font-bold text-zinc-900">Konsultasi pembelian</h2>
                 <p class="mt-1 text-sm text-zinc-500">{{ $motor->full_name }}<span x-show="colors[ci]?.name"> - <span x-text="colors[ci]?.name"></span></span></p>
-
-                @include('partials.sales-picker')
 
                 <label class="mt-4 block text-sm font-semibold">Nama
                     <input x-model="form.name" type="text" required class="mt-1 w-full rounded-xl border border-zinc-300 px-4 py-2.5"></label>
@@ -302,7 +300,7 @@
 
                 <label class="mt-3 flex cursor-pointer items-start gap-2.5 text-xs leading-relaxed text-zinc-600">
                 <input type="checkbox" x-model="consent" class="mt-0.5 h-4 w-4 shrink-0 rounded border-zinc-300 text-honda focus:ring-honda">
-                <span>Dengan mengirimkan formulir ini, saya bersedia untuk dihubungi oleh tim sales Surya Wijaya melalui WhatsApp</span>
+                <span>Dengan mengirimkan formulir ini, saya bersedia untuk dihubungi oleh admin Surya Wijaya melalui WhatsApp</span>
             </label>
                 <p x-show="error" x-text="error" class="mt-3 text-sm text-red-600"></p>
                 <div class="mt-5 flex gap-3">

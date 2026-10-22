@@ -59,10 +59,10 @@
 
     <div class="clear-both mt-10 rounded-2xl bg-zinc-900 p-6 text-white md:p-8">
         <p class="text-lg font-extrabold">Tertarik dengan motor Honda?</p>
-        <p class="mt-1 text-sm text-zinc-400">Lihat harga terbaru atau konsultasikan langsung dengan sales counter kami.</p>
+        <p class="mt-1 text-sm text-zinc-400">Lihat harga terbaru atau konsultasikan langsung dengan admin kami.</p>
         <div class="mt-5 flex flex-wrap gap-3">
             <a href="{{ route('pricelist') }}" class="rounded-xl bg-honda px-6 py-3 text-sm font-bold hover:bg-honda-dark">Lihat Daftar Harga</a>
-            <button type="button" x-data @click="$dispatch('open-wa', {{ Js::from(['topic' => $post->title]) }})" class="rounded-xl bg-green-500 px-6 py-3 text-sm font-bold hover:bg-green-600">Chat Sales Counter</button>
+            <button type="button" x-data @click="$dispatch('open-wa', {{ Js::from(['topic' => $post->title]) }})" class="rounded-xl bg-green-500 px-6 py-3 text-sm font-bold hover:bg-green-600">Chat Admin</button>
         </div>
     </div>
 </article>

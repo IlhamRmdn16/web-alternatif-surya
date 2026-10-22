@@ -53,9 +53,9 @@
         @if($page->slug !== 'kebijakan-privasi')
             <div class="mt-10 rounded-2xl bg-zinc-900 p-6 text-white md:p-8">
                 <p class="text-lg font-extrabold">Masih ada pertanyaan?</p>
-                <p class="mt-1 text-sm text-zinc-400">Tim sales counter kami siap membantu Anda.</p>
+                <p class="mt-1 text-sm text-zinc-400">Admin kami siap membantu Anda.</p>
                 <div class="mt-5 flex flex-wrap gap-3">
-                    <button type="button" x-data @click="$dispatch('open-wa')" class="rounded-xl bg-green-500 px-6 py-3 text-sm font-bold text-white hover:bg-green-600">Chat Sales Counter</button>
+                    <button type="button" x-data @click="$dispatch('open-wa')" class="rounded-xl bg-green-500 px-6 py-3 text-sm font-bold text-white hover:bg-green-600">Chat Admin</button>
                     <a href="{{ route('contact') }}" class="rounded-xl border border-zinc-600 px-6 py-3 text-sm font-bold hover:border-white">Kontak & Lokasi</a>
                 </div>
             </div>
