@@ -101,9 +101,9 @@
                 @endif
             </div>
 
-            {{-- Penanda posisi geser: panjang penanda menyesuaikan jumlah foto/warna --}}
+            {{-- Titik penanda posisi geser: satu titik per foto/warna (aktif = hitam, lainnya = abu-abu) --}}
             @if($motor->colors->count() > 1)
-                <div x-ref="bar" class="photo-bar" aria-hidden="true"></div>
+                <div x-ref="dots" class="photo-dots"></div>
             @endif
 
             @if($motor->colors->isNotEmpty())

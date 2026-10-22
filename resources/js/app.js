@@ -99,8 +99,8 @@ Alpine.data('motorPage', (cfg) => {
                     allowTouchMove: total > 1,
                     resistanceRatio: 0.6,
                     a11y: false,
-                    // Penanda posisi geser (seperti scrollbar): lebar penanda menyesuaikan jumlah foto
-                    scrollbar: this.$refs.bar ? { el: this.$refs.bar, draggable: true, hide: false } : false,
+                    // Titik penanda posisi geser: satu titik per foto/warna, titik aktif berwarna hitam
+                    pagination: this.$refs.dots ? { el: this.$refs.dots, clickable: true } : false,
                 });
                 // Geser foto -> warna & harga ikut berubah
                 sw.on('slideChange', () => { this.ci = sw.activeIndex; });

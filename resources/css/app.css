@@ -18,10 +18,10 @@ input[type="checkbox"] { accent-color: #d6001c; }
 .photo-swiper { overflow: hidden; }
 .photo-swiper img { -webkit-user-drag: none; user-select: none; }
 
-/* Penanda posisi geser di bawah foto (jalur abu-abu + penanda merah yang ikut bergeser) */
-.photo-bar { position: relative; width: 100%; height: 6px; margin-top: 14px; border-radius: 9999px; background: #e4e4e7; cursor: pointer; }
-.photo-bar .swiper-scrollbar-drag { position: relative; height: 100%; border-radius: 9999px; background: #d6001c; cursor: grab; }
-.photo-bar.swiper-scrollbar-lock { display: none; }
+/* Titik penanda posisi geser di bawah foto: aktif hitam, lainnya abu-abu */
+.photo-dots { position: static !important; display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; margin-top: 14px; }
+.photo-dots .swiper-pagination-bullet { width: 10px; height: 10px; margin: 0 !important; border-radius: 9999px; background: #d4d4d8 !important; opacity: 1; cursor: pointer; transition: background-color .25s, transform .25s; }
+.photo-dots .swiper-pagination-bullet-active { background: #18181b !important; transform: scale(1.2); }
 
 /* Animasi petunjuk geser: foto bergeser sedikit ke kiri lalu kanan, hanya saat kunjungan pertama */
 .photo-nudge { animation: photoNudge 1.3s ease-in-out 2; }
