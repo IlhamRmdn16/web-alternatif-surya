@@ -1,10 +1,14 @@
-{{-- Paginasi: "Menampilkan x-y dari z" + tombol halaman. Dipakai di admin (motor, prospek, berita) dan berita publik. --}}
+{{-- Paginasi: "Menampilkan x-y dari z" + tombol halaman. Dipakai di admin (motor, prospek, berita) dan berita publik.
+     Param opsional: showInfo (default true). Berita publik memakai showInfo = false (tanpa teks "Menampilkan ..."). --}}
+@php($showInfo = $showInfo ?? true)
 @if ($paginator->total() > 0)
-<nav role="navigation" aria-label="Navigasi halaman" class="flex flex-col items-center justify-between gap-3 sm:flex-row">
+<nav role="navigation" aria-label="Navigasi halaman" class="flex flex-col items-center gap-3 sm:flex-row {{ $showInfo ? 'justify-between' : 'justify-center' }}">
+    @if ($showInfo)
     <p class="text-sm text-zinc-500">
         Menampilkan <b class="text-zinc-800">{{ $paginator->firstItem() }}</b>&ndash;<b class="text-zinc-800">{{ $paginator->lastItem() }}</b>
         dari <b class="text-zinc-800">{{ $paginator->total() }}</b> data
     </p>
+    @endif
 
     @if ($paginator->hasPages())
         <ul class="flex flex-wrap items-center justify-center gap-1.5">

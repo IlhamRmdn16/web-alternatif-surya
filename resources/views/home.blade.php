@@ -105,8 +105,12 @@
     @if($promos->isEmpty())
         <div class="mt-6 rounded-2xl border border-dashed border-zinc-300 p-8 text-center text-sm text-zinc-500">Belum ada promo aktif. Hubungi kami via WhatsApp untuk info penawaran terbaru.</div>
     @else
-        <div class="mt-6 grid gap-4 md:grid-cols-3 md:gap-6">
-            @foreach($promos as $p) @include('partials.promo-card') @endforeach
+        {{-- Susunan SAMA dengan Berita dan Tips: HP/tablet bisa digeser, desktop 3 kartu sebaris --}}
+        <p class="mt-3 text-xs text-zinc-400 lg:hidden">Geser ke kanan untuk melihat promo lainnya &rarr;</p>
+        <div class="no-scrollbar -mx-4 mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-pl-4 px-4 pb-2 lg:mx-0 lg:mt-6 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0">
+            @foreach($promos as $p)
+                <div class="w-[72%] shrink-0 snap-start sm:w-[46%] lg:w-auto [&>a]:h-full">@include('partials.promo-card')</div>
+            @endforeach
         </div>
     @endif
 </section>
