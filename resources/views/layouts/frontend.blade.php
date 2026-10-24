@@ -35,7 +35,7 @@
         'tiktok'    => ['TikTok', '<path d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v4.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"/>'],
         'youtube'   => ['YouTube', '<path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>'],
     ];
-    $iconBtn = 'flex h-10 w-10 items-center justify-center rounded-full bg-zinc-800 text-zinc-300 transition hover:-translate-y-0.5 hover:bg-honda hover:text-white';
+    $iconBtn = 'flex h-8 w-8 items-center justify-center rounded-full bg-zinc-800 text-zinc-300 transition hover:-translate-y-0.5 hover:bg-honda hover:text-white';
 
     // Path ikon WhatsApp (dipakai di beberapa tempat)
     $waPath = 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z';
@@ -167,32 +167,31 @@
 @include('partials.cookie-notice')
 
 <footer class="bg-zinc-900 text-zinc-300">
-    <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+    <div class="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-7 px-4 py-8 md:py-10 lg:grid-cols-12 lg:gap-8">
         {{-- Brand --}}
-        <div class="lg:col-span-4">
-            <a href="{{ route('home') }}" class="text-xl font-extrabold leading-tight text-white">Dealer Motor <span class="text-red-500">Honda Garut</span></a>
-            <p class="mt-1 text-xs font-semibold uppercase tracking-widest text-zinc-500">CV. Surya Wijaya Sejahtera</p>
-            <p class="mt-4 max-w-sm text-sm leading-relaxed text-zinc-400">Dealer motor Honda di Garut sejak 1991. Daftar harga lengkap, promo terbaru, simulasi kredit, dan konsultasi pembelian motor Honda yang jujur dan transparan.</p>
+        <div class="col-span-2 lg:col-span-4">
+            <a href="{{ route('home') }}" class="text-lg font-extrabold leading-tight text-white">Dealer Motor <span class="text-red-500">Honda Garut</span></a>
+            <p class="mt-0.5 text-[10px] font-semibold uppercase tracking-widest text-zinc-500">CV. Surya Wijaya Sejahtera</p>
+            <p class="mt-3 max-w-sm text-xs leading-relaxed text-zinc-400">Dealer motor Honda di Garut sejak 1991. Daftar harga lengkap, promo terbaru, simulasi kredit, dan konsultasi pembelian motor Honda yang jujur dan transparan.</p>
 
-            <p class="mt-6 text-xs font-bold uppercase tracking-widest text-zinc-500">Ikuti kami</p>
-            <div class="mt-3 flex flex-wrap gap-3">
+            <div class="mt-4 flex flex-wrap items-center gap-2.5">
                 @foreach($socials as $key => [$label, $paths])
                     @if(! empty($settings[$key]))
                         <a href="{{ $settings[$key] }}" target="_blank" rel="noopener" aria-label="{{ $label }}" title="{{ $label }}" class="{{ $iconBtn }}">
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">{!! $paths !!}</svg>
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">{!! $paths !!}</svg>
                         </a>
                     @endif
                 @endforeach
                 <button type="button" x-data @click="$dispatch('open-wa')" aria-label="Chat Admin Surya Wijaya via WhatsApp" title="Chat Admin Surya Wijaya" class="{{ $iconBtn }}">
-                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="{{ $waPath }}"/></svg>
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="{{ $waPath }}"/></svg>
                 </button>
             </div>
         </div>
 
         {{-- Menu --}}
-        <div class="lg:col-span-2">
-            <p class="text-sm font-bold uppercase tracking-widest text-white">Menu</p>
-            <ul class="mt-4 space-y-3 text-sm">
+        <div class="order-2 col-span-1 lg:order-none lg:col-span-2">
+            <p class="text-xs font-bold uppercase tracking-widest text-white">Menu</p>
+            <ul class="mt-3 space-y-2 text-xs">
                 @foreach($footerNav as $item)
                     <li><a class="text-zinc-400 transition hover:text-white" href="{{ $item['url'] }}">{{ $item['label'] }}</a></li>
                 @endforeach
@@ -200,46 +199,45 @@
         </div>
 
         {{-- Kontak --}}
-        <div class="lg:col-span-3">
-            <p class="text-sm font-bold uppercase tracking-widest text-white">Kunjungi Dealer</p>
-            <ul class="mt-4 space-y-4 text-sm">
-                <li class="flex gap-3">
-                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="order-4 col-span-2 md:col-span-1 lg:order-none lg:col-span-3">
+            <p class="text-xs font-bold uppercase tracking-widest text-white">Kunjungi Dealer</p>
+            <ul class="mt-3 space-y-2.5 text-xs">
+                <li class="flex gap-2.5">
+                    <svg class="mt-0.5 h-4 w-4 shrink-0 text-red-500" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                     <address class="not-italic leading-relaxed text-zinc-400">{{ $dealerAddress }}</address>
                 </li>
-                <li class="flex gap-3">
-                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="{{ $waPath }}"/></svg>
-                    <span class="text-zinc-400">Admin Website (Surya Wijaya):<br><button type="button" x-data @click="$dispatch('open-wa')" class="font-semibold text-white transition hover:text-red-400">{{ \App\Support\Helpers::adminDisplay() }}</button>
-                        <span class="block text-xs text-zinc-500">Klik untuk chat WhatsApp</span></span>
+                <li class="flex gap-2.5">
+                    <svg class="mt-0.5 h-4 w-4 shrink-0 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="{{ $waPath }}"/></svg>
+                    <span class="text-zinc-400">Admin Website (Surya Wijaya):<br><button type="button" x-data @click="$dispatch('open-wa')" class="font-semibold text-white transition hover:text-red-400">{{ \App\Support\Helpers::adminDisplay() }}</button></span>
                 </li>
                 @if(! empty($settings['phone']))
-                    <li class="flex gap-3">
-                        <svg class="mt-0.5 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <li class="flex gap-2.5">
+                        <svg class="mt-0.5 h-4 w-4 shrink-0 text-red-500" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                         <a href="tel:{{ preg_replace('/[^0-9+]/', '', $settings['phone']) }}" class="text-zinc-400 transition hover:text-white">{{ $settings['phone'] }}</a>
                     </li>
                 @endif
                 @if(! empty($settings['email']))
-                    <li class="flex gap-3">
-                        <svg class="mt-0.5 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <li class="flex gap-2.5">
+                        <svg class="mt-0.5 h-4 w-4 shrink-0 text-red-500" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                         <a href="mailto:{{ $settings['email'] }}" class="break-all text-zinc-400 transition hover:text-white">{{ $settings['email'] }}</a>
                     </li>
                 @endif
             </ul>
-            <a href="{{ $mapUrl }}" target="_blank" rel="noopener" class="mt-5 inline-flex items-center gap-2 rounded-lg border border-zinc-700 px-4 py-2 text-xs font-bold text-white transition hover:border-honda hover:bg-honda">
+            <a href="{{ $mapUrl }}" target="_blank" rel="noopener" class="mt-3 inline-flex items-center gap-2 rounded-lg border border-zinc-700 px-3 py-1.5 text-xs font-bold text-white transition hover:border-honda hover:bg-honda">
                 Lihat di Google Maps
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
         </div>
 
         {{-- Jam operasional --}}
-        <div class="lg:col-span-3">
-            <p class="text-sm font-bold uppercase tracking-widest text-white">Jam Operasional</p>
+        <div class="order-3 col-span-1 lg:order-none lg:col-span-3">
+            <p class="text-xs font-bold uppercase tracking-widest text-white">Jam Operasional</p>
             @if(! empty($settings['hours']))
-                <ul class="mt-4 space-y-3 text-sm">
+                <ul class="mt-3 space-y-2 text-xs">
                     @foreach(preg_split('/\r\n|\r|\n/', trim($settings['hours'])) as $line)
                         @continue(trim($line) === '')
-                        <li class="flex items-start gap-3 border-b border-zinc-800 pb-3 last:border-0">
-                            <svg class="mt-0.5 h-5 w-5 shrink-0 text-red-500" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <li class="flex items-start gap-2.5 border-b border-zinc-800 pb-2 last:border-0">
+                            <svg class="mt-0.5 h-4 w-4 shrink-0 text-red-500" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                             @if(preg_match('/^(.*?):\s*(\d.*)$/u', trim($line), $m))
                                 <span class="flex flex-1 flex-wrap justify-between gap-x-3"><span class="text-zinc-400">{{ $m[1] }}</span><span class="font-semibold text-white">{{ $m[2] }}</span></span>
                             @else
@@ -249,13 +247,13 @@
                     @endforeach
                 </ul>
             @else
-                <p class="mt-4 text-sm text-zinc-400">Hubungi kami via WhatsApp untuk informasi jam operasional.</p>
+                <p class="mt-3 text-xs text-zinc-400">Hubungi kami via WhatsApp untuk informasi jam operasional.</p>
             @endif
         </div>
     </div>
 
     <div class="border-t border-zinc-800">
-        <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-center text-xs text-zinc-500 md:flex-row md:text-left">
+        <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-1 px-4 py-3 text-center text-[11px] text-zinc-500 md:flex-row md:text-left">
             <p>&copy; {{ date('Y') }} HondaGarut.id - CV. Surya Wijaya Sejahtera. Seluruh hak cipta dilindungi.<a href="{{ route('page.show', 'kebijakan-privasi') }}" class="underline underline-offset-2 hover:text-white">Kebijakan Privasi</a></p>
         </div>
     </div>
