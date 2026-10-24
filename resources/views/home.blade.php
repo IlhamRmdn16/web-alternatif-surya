@@ -45,9 +45,9 @@
     {{-- Teks statis (tidak ikut bergerak), tepat di depan banner --}}
     <div class="pointer-events-none absolute inset-0 z-20 flex items-end px-5 pb-9 md:items-center md:px-12 md:pb-0">
         <div class="max-w-full md:max-w-md lg:max-w-xl">
-            <h1 class="text-lg font-extrabold leading-tight tracking-tight text-white drop-shadow sm:text-2xl md:text-4xl">{{ $settings['home_h1'] ?? 'Dealer Motor Honda Garut Resmi' }}</h1>
+            <h1 class="text-lg font-extrabold leading-tight tracking-tight text-white drop-shadow sm:text-xl md:text-3xl">{{ $settings['home_h1'] ?? 'Dealer Motor Honda Garut Resmi' }}</h1>
             <div class="mt-2 h-1 w-10 rounded bg-honda md:mt-3 md:w-16"></div>
-            <p class="mt-2 line-clamp-3 text-xs leading-relaxed text-white/90 drop-shadow sm:text-sm md:mt-3 md:line-clamp-none md:text-base">{{ $settings['home_intro'] ?? '' }}</p>
+            <p class="mt-2 line-clamp-3 text-xs leading-relaxed text-white/90 drop-shadow sm:text-sm md:mt-3 md:line-clamp-none">{{ $settings['home_intro'] ?? '' }}</p>
         </div>
     </div>
 </section>
@@ -56,7 +56,7 @@
 {{-- Katalog per jenis --}}
 @php($tabs = $categories->filter(fn ($c) => $c->homeSeries->isNotEmpty())->values())
 @if($tabs->isNotEmpty())
-<section class="mx-auto max-w-7xl px-4 pt-12" x-data="{ tab: '{{ $tabs->first()->slug }}' }">
+<section class="mx-auto max-w-7xl px-4 pt-10 md:pt-12" x-data="{ tab: '{{ $tabs->first()->slug }}' }">
     <div class="flex flex-wrap items-end justify-between gap-3">
         <div>
             <h2 class="text-xl font-extrabold text-zinc-900 md:text-2xl">Motor Honda Pilihan</h2>
@@ -94,7 +94,7 @@
 @include('partials.home-news')
 
 {{-- Promo --}}
-<section class="mx-auto max-w-7xl px-4 pt-16">
+<section class="mx-auto max-w-7xl px-4 pt-10 md:pt-12">
     <div class="flex items-end justify-between gap-3">
         <div>
             <h2 class="text-xl font-extrabold text-zinc-900 md:text-2xl">Promo Motor Honda Garut</h2>
@@ -117,14 +117,14 @@
 
 {{-- FAQ --}}
 @if($faqs->isNotEmpty())
-<section class="mx-auto max-w-7xl px-4 pt-16">
-    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+<section class="mx-auto max-w-7xl px-4 pt-10 md:pt-12">
+    <div class="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
         <div>
             <h2 class="text-xl font-extrabold text-zinc-900 md:text-2xl">Pertanyaan yang sering diajukan</h2>
             <div class="mt-6 space-y-3" x-data="{ open: null }">
                 @foreach($faqs as $i => $f)
                     <div class="rounded-xl border border-zinc-200">
-                        <button class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-bold text-zinc-900 md:text-base" @click="open = open === {{ $i }} ? null : {{ $i }}" :aria-expanded="open === {{ $i }}">
+                        <button class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-bold text-zinc-900" @click="open = open === {{ $i }} ? null : {{ $i }}" :aria-expanded="open === {{ $i }}">
                             {{ $f->question }}
                             <span class="text-xl text-honda" x-text="open === {{ $i }} ? '−' : '+'"></span>
                         </button>

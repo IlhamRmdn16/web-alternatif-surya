@@ -122,7 +122,7 @@
 
         <div>
             <span class="rounded-full bg-honda px-3 py-1 text-xs font-semibold text-white">{{ $motor->category->name }}</span>
-            <h1 class="mt-3 text-2xl font-extrabold text-zinc-900 md:text-4xl">{{ $motor->full_name }}</h1>
+            <h1 class="mt-3 text-xl font-extrabold text-zinc-900 md:text-3xl">{{ $motor->full_name }}</h1>
 
             @if($siblings->count() > 1)
                 <p class="mt-6 text-sm font-bold text-zinc-900">Pilih tipe {{ $motor->name }}</p>
@@ -138,23 +138,23 @@
             <div class="mt-6 rounded-2xl bg-zinc-50 p-5" data-tour="price">
                 <p class="text-xs text-zinc-500">Harga Garut tipe {{ $motor->variant }}<span x-show="colors[ci]?.name"> - warna <span x-text="colors[ci]?.name">{{ $motor->colors->first()?->name }}</span></span></p>
 
-                <p x-show="offer.price <= 0" class="mt-2 text-2xl font-extrabold text-honda" @if($first['price'] > 0) style="display:none" @endif>Hubungi kami</p>
+                <p x-show="offer.price <= 0" class="mt-2 text-xl font-extrabold text-honda" @if($first['price'] > 0) style="display:none" @endif>Hubungi kami</p>
 
                 <div x-show="offer.price > 0" class="mt-3" @if($first['price'] <= 0) style="display:none" @endif>
                     {{-- Tanpa diskon: hanya harga OTR --}}
                     <div x-show="offer.discount <= 0" @if($first['discount'] > 0) style="display:none" @endif>
                         <p class="text-xs font-semibold text-zinc-500">Harga OTR</p>
-                        <p class="mt-1 text-3xl font-extrabold text-honda" x-text="rp(offer.price)">{{ $rp($first['price']) }}</p>
+                        <p class="mt-1 text-xl font-extrabold text-honda" x-text="rp(offer.price)">{{ $rp($first['price']) }}</p>
                     </div>
                     {{-- Ada diskon: OTR dicoret + harga setelah diskon --}}
                     <div x-show="offer.discount > 0" class="grid grid-cols-2 gap-4" @if($first['discount'] <= 0) style="display:none" @endif>
                         <div>
                             <p class="text-xs font-semibold text-zinc-500">Harga OTR</p>
-                            <p class="mt-1 text-lg font-bold md:text-xl" style="text-decoration:line-through;color:#a1a1aa" x-text="rp(offer.price)">{{ $rp($first['price']) }}</p>
+                            <p class="mt-1 text-base font-bold md:text-lg" style="text-decoration:line-through;color:#a1a1aa" x-text="rp(offer.price)">{{ $rp($first['price']) }}</p>
                         </div>
                         <div>
                             <p class="text-xs font-semibold text-zinc-500">Harga Setelah Diskon</p>
-                            <p class="mt-1 text-2xl font-extrabold text-honda md:text-3xl" x-text="rp(offer.cash)">{{ $rp($first['cash']) }}</p>
+                            <p class="mt-1 text-xl font-extrabold text-honda md:text-2xl" x-text="rp(offer.cash)">{{ $rp($first['cash']) }}</p>
                         </div>
                     </div>
                 </div>
@@ -169,11 +169,11 @@
                 </div>
             </div>
 
-            <button type="button" data-tour="consult" @click="open = true; done = false" class="mt-6 w-full rounded-xl bg-honda py-4 text-base font-bold text-white shadow-lg shadow-red-200 transition hover:bg-honda-dark md:w-auto md:px-10">Konsultasi Pembelian</button>
+            <button type="button" data-tour="consult" @click="open = true; done = false" class="mt-6 w-full rounded-xl bg-honda py-3.5 text-sm font-bold text-white shadow-lg shadow-red-200 transition hover:bg-honda-dark md:w-auto md:px-10">Konsultasi Pembelian</button>
 
             @if($motor->description)
                 <div class="mt-8">
-                    <h2 class="text-lg font-bold text-zinc-900">Tentang {{ $motor->full_name }}</h2>
+                    <h2 class="text-base font-bold text-zinc-900">Tentang {{ $motor->full_name }}</h2>
                     <p class="mt-2 whitespace-pre-line text-sm leading-relaxed text-zinc-600">{{ $motor->description }}</p>
                 </div>
             @endif
@@ -181,12 +181,12 @@
     </div>
 
     {{-- Tabel harga: lebar penuh di bawah foto & info, supaya tidak ada ruang kosong di kolom foto --}}
-    <section class="mt-12 grid items-start gap-8 lg:gap-14 {{ $related->isNotEmpty() ? 'lg:grid-cols-2' : '' }}" aria-label="Daftar harga dan motor lainnya">
+    <section class="mt-10 md:mt-12 grid items-start gap-8 lg:gap-14 {{ $related->isNotEmpty() ? 'lg:grid-cols-2' : '' }}" aria-label="Daftar harga dan motor lainnya">
         {{-- Kiri: daftar harga --}}
         <div class="space-y-8">
             @if($varied)
                 <div>
-                    <h2 class="text-lg font-bold text-zinc-900">Harga {{ $motor->full_name }} per warna</h2>
+                    <h2 class="text-base font-bold text-zinc-900">Harga {{ $motor->full_name }} per warna</h2>
                     <div class="mt-3 overflow-x-auto rounded-xl border border-zinc-200">
                         <table class="w-full text-sm">
                             <thead class="bg-zinc-50 text-left text-xs text-zinc-500"><tr><th class="px-4 py-2.5">Warna</th><th class="px-4 py-2.5 text-right">Harga OTR</th>@if($anyColorDiscount)<th class="px-4 py-2.5 text-right">Harga Setelah Diskon</th>@endif</tr></thead>
@@ -206,7 +206,7 @@
             @endif
 
             <div>
-                <h2 class="text-lg font-bold text-zinc-900">Daftar harga {{ $motor->display_name }} Garut</h2>
+                <h2 class="text-base font-bold text-zinc-900">Daftar harga {{ $motor->display_name }} Garut</h2>
                 <div class="mt-3 overflow-x-auto rounded-xl border border-zinc-200">
                     <table class="w-full text-sm">
                         <thead class="bg-zinc-50 text-left text-xs text-zinc-500"><tr><th class="px-4 py-2.5">Tipe</th><th class="px-4 py-2.5 text-right">Harga OTR</th>@if($anyTypeDiscount)<th class="px-4 py-2.5 text-right">Harga Setelah Diskon</th>@endif</tr></thead>
@@ -228,7 +228,7 @@
         {{-- Kanan: rekomendasi motor lainnya (2 saja) --}}
         @if($related->isNotEmpty())
             <div>
-                <h2 class="text-lg font-bold text-zinc-900">Motor {{ $motor->category->name }} Honda lainnya</h2>
+                <h2 class="text-base font-bold text-zinc-900">Motor {{ $motor->category->name }} Honda lainnya</h2>
                 <div class="mt-3 grid grid-cols-2 gap-3 md:gap-5">
                     @foreach($related->take(2) as $s) @include('partials.series-card') @endforeach
                 </div>
@@ -249,7 +249,7 @@
                 <p class="text-xs font-bold uppercase tracking-widest text-red-400" x-text="'Petunjuk ' + (i + 1) + ' dari ' + list.length"></p>
                 <button type="button" @click="finish()" class="text-xs font-semibold text-zinc-400 hover:text-white">Lewati</button>
             </div>
-            <p class="mt-2 text-base font-bold" x-text="step.title"></p>
+            <p class="mt-2 text-sm font-bold" x-text="step.title"></p>
             <p class="mt-1 text-sm leading-relaxed text-zinc-300" x-text="step.text"></p>
             <div class="mt-4 flex items-center justify-between gap-3">
                 <div class="flex gap-1.5">
@@ -268,14 +268,14 @@
         <div @click.outside="open = false" class="my-auto w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
             <template x-if="done">
                 <div class="text-center">
-                    <p class="text-lg font-bold text-zinc-900">Data terkirim</p>
+                    <p class="text-base font-bold text-zinc-900">Data terkirim</p>
                     <p class="mt-2 text-sm text-zinc-600">Terima kasih! Data Anda sudah kami terima dan WhatsApp admin dibuka di tab baru. Jika tidak terbuka, klik tombol di bawah.</p>
                     <a x-show="waUrl" :href="waUrl" target="_blank" rel="noopener" class="mt-5 block w-full rounded-xl bg-green-500 py-3 text-sm font-semibold text-white hover:bg-green-600">Buka WhatsApp</a>
                     <button @click="open = false" class="mt-3 w-full rounded-xl border border-zinc-300 py-3 text-sm font-semibold">Tutup</button>
                 </div>
             </template>
             <form x-show="!done" @submit.prevent="submit">
-                <h2 class="text-lg font-bold text-zinc-900">Konsultasi pembelian</h2>
+                <h2 class="text-base font-bold text-zinc-900">Konsultasi pembelian</h2>
                 <p class="mt-1 text-sm text-zinc-500">{{ $motor->full_name }}<span x-show="colors[ci]?.name"> - <span x-text="colors[ci]?.name"></span></span></p>
 
                 <label class="mt-4 block text-sm font-semibold">Nama

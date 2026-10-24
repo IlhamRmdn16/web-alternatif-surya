@@ -11,7 +11,7 @@
     @endif
     <div class="flex flex-1 flex-col {{ $compact ? 'p-3 sm:p-5' : 'p-5' }}">
         <p class="text-xs font-semibold text-zinc-400">{{ $p->end_date ? 'Berlaku hingga '.$p->end_date->translatedFormat('d F Y') : 'Promo' }}</p>
-        <h3 class="mt-1 line-clamp-2 font-bold leading-snug text-zinc-900 group-hover:text-honda {{ $compact ? 'text-sm sm:text-base md:text-lg' : 'text-base md:text-lg' }}">{{ $p->title }}</h3>
+        <h3 class="mt-1 line-clamp-2 font-bold leading-snug text-zinc-900 group-hover:text-honda {{ $compact ? 'text-sm md:text-base' : 'text-sm md:text-base' }}">{{ $p->title }}</h3>
         <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-zinc-600 {{ $compact ? 'hidden sm:block' : '' }}">{{ $promoSummary }}</p>
         <span class="mt-auto pt-3 font-bold text-honda {{ $compact ? 'text-xs sm:text-sm' : 'text-sm' }}">Lihat detail promo</span>
     </div>

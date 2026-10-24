@@ -8,7 +8,7 @@
     @endif
     <div class="flex flex-1 flex-col {{ $compact ? 'p-3 sm:p-5' : 'p-5' }}">
         <p class="text-xs font-semibold text-zinc-400">{{ ($post->published_at ?? $post->created_at)->translatedFormat('d F Y') }}</p>
-        <h3 class="mt-1 line-clamp-2 font-bold leading-snug text-zinc-900 group-hover:text-honda {{ $compact ? 'text-sm sm:text-base md:text-lg' : 'text-base md:text-lg' }}">{{ $post->title }}</h3>
+        <h3 class="mt-1 line-clamp-2 font-bold leading-snug text-zinc-900 group-hover:text-honda {{ $compact ? 'text-sm md:text-base' : 'text-sm md:text-base' }}">{{ $post->title }}</h3>
         <p class="mt-2 line-clamp-3 text-sm leading-relaxed text-zinc-600 {{ $compact ? 'hidden sm:block' : '' }}">{{ $post->summary }}</p>
         <span class="mt-auto pt-3 font-bold text-honda {{ $compact ? 'text-xs sm:text-sm' : 'text-sm' }}">Baca selengkapnya</span>
     </div>

@@ -30,8 +30,8 @@
                 <a href="{{ route('home') }}" class="hover:text-white">Beranda</a> / <span class="text-white">{{ $page->title }}</span>
             </nav>
             <p class="mt-6 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-amber-300"><span class="h-px w-8 bg-amber-300/70"></span>Transparansi data</p>
-            <h1 class="mt-4 text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">{{ $page->title }}</h1>
-            @if($page->meta_description)<p class="mt-5 max-w-xl text-base leading-relaxed text-zinc-300 md:text-lg">{{ $page->meta_description }}</p>@endif
+            <h1 class="mt-4 text-2xl font-extrabold leading-[1.15] tracking-tight sm:text-3xl lg:text-4xl">{{ $page->title }}</h1>
+            @if($page->meta_description)<p class="mt-5 max-w-xl text-sm leading-relaxed text-zinc-300">{{ $page->meta_description }}</p>@endif
         </div>
 
         @if($photo)
@@ -45,14 +45,14 @@
 </section>
 
 {{-- ISI: kartu putih di atas latar motif titik --}}
-<div class="bg-zinc-50 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:20px_20px] pb-16">
+<div class="bg-zinc-50 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:20px_20px] pb-4">
     <article class="relative z-10 mx-auto -mt-14 max-w-7xl px-4 md:-mt-16">
         <div class="page-content policy-content rounded-3xl border border-zinc-200 bg-white p-6 shadow-xl md:p-10">{!! $page->content !!}</div>
         <p class="mt-6 text-xs text-zinc-500">Terakhir diperbarui: {{ $page->updated_at->translatedFormat('d F Y') }}</p>
 
         @if($page->slug !== 'kebijakan-privasi')
-            <div class="mt-10 rounded-2xl bg-zinc-900 p-6 text-white md:p-8">
-                <p class="text-lg font-extrabold">Masih ada pertanyaan?</p>
+            <div class="mt-8 rounded-2xl bg-zinc-900 p-6 text-white md:p-8">
+                <p class="text-base font-extrabold">Masih ada pertanyaan?</p>
                 <p class="mt-1 text-sm text-zinc-400">Admin kami siap membantu Anda.</p>
                 <div class="mt-5 flex flex-wrap gap-3">
                     <button type="button" x-data @click="$dispatch('open-wa')" class="rounded-xl bg-green-500 px-6 py-3 text-sm font-bold text-white hover:bg-green-600">Chat Admin</button>

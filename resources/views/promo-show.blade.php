@@ -9,9 +9,9 @@
 @if($promo->image)@section('og_image', asset('storage/'.$promo->image))@endif
 
 @section('content')
-<article class="mx-auto w-full max-w-7xl px-4 pt-10 md:px-8">
+<article class="mx-auto w-full max-w-7xl px-4 pt-10 md:px-8 md:pt-12">
     <nav class="text-xs text-zinc-500"><a href="{{ route('promos.index') }}" class="hover:text-honda">Promo</a> / <span class="text-zinc-800">{{ $promo->title }}</span></nav>
-    <h1 class="mt-4 text-2xl font-extrabold text-zinc-900 md:text-4xl">{{ $promo->title }}</h1>
+    <h1 class="mt-4 text-xl font-extrabold text-zinc-900 md:text-3xl">{{ $promo->title }}</h1>
     @if($promo->start_date || $promo->end_date)
         <p class="mt-2 text-sm text-zinc-500">Periode:
             {{ $promo->start_date?->translatedFormat('d F Y') ?? 'sekarang' }} - {{ $promo->end_date?->translatedFormat('d F Y') ?? 'sampai pemberitahuan lebih lanjut' }}</p>

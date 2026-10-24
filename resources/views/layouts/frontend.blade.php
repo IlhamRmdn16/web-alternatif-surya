@@ -123,7 +123,7 @@
             @if($logo)
                 <img src="{{ $logo }}" alt="Logo {{ $siteName }}" class="h-10 w-auto md:h-12">
             @else
-                <span class="text-lg font-extrabold leading-tight text-zinc-900 md:text-xl">Dealer Motor <span class="text-honda">Honda Garut</span></span>
+                <span class="text-base font-extrabold leading-tight text-zinc-900 md:text-lg">Dealer Motor <span class="text-honda">Honda Garut</span></span>
             @endif
         </a>
 
@@ -162,7 +162,7 @@
     </nav>
 </header>
 
-<main class="pb-20">@yield('content')</main>
+<main class="pb-10 md:pb-12">@yield('content')</main>
 
 @include('partials.cookie-notice')
 
@@ -266,7 +266,7 @@
     </button>
     <div x-show="open" x-cloak class="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-black/50 p-4 sm:items-center">
         <form @submit.prevent="submit" @click.outside="open = false" class="my-auto w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-            <h2 class="text-lg font-bold text-zinc-900" x-text="callCenter ? 'Hubungi Call Center' : 'Chat Admin Surya Wijaya'">Chat Admin Surya Wijaya</h2>
+            <h2 class="text-base font-bold text-zinc-900" x-text="callCenter ? 'Hubungi Call Center' : 'Chat Admin Surya Wijaya'">Chat Admin Surya Wijaya</h2>
             <p class="mt-1 text-sm text-zinc-500" x-text="callCenter ? 'Isi nama dan nomor WhatsApp Anda, lalu kami arahkan ke WhatsApp call center.' : 'Isi nama dan nomor WhatsApp Anda, lalu kami arahkan ke WhatsApp Admin Surya Wijaya.'">Isi nama dan nomor WhatsApp Anda, lalu kami arahkan ke WhatsApp Admin Surya Wijaya.</p>
 
             <label class="mt-4 block text-sm font-semibold">Nama

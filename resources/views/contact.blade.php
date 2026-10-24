@@ -26,13 +26,13 @@
 @endpush
 
 @section('content')
-<section class="mx-auto max-w-7xl px-4 pt-10">
+<section class="mx-auto max-w-7xl px-4 pt-10 md:pt-12">
     <nav class="text-xs text-zinc-500" aria-label="Breadcrumb">
         <a href="{{ route('home') }}" class="hover:text-honda">Beranda</a> / <span class="text-zinc-800">Kontak & Lokasi</span>
     </nav>
-    <h1 class="mt-4 text-2xl font-extrabold text-zinc-900 md:text-4xl">Kontak & Lokasi Dealer Motor Honda Garut</h1>
+    <h1 class="mt-4 text-xl font-extrabold text-zinc-900 md:text-3xl">Kontak & Lokasi Dealer Motor Honda Garut</h1>
     <div class="mt-3 h-1 w-14 rounded bg-honda"></div>
-    <p class="mt-4 text-sm leading-relaxed text-zinc-600 md:text-base">Kunjungi showroom kami atau hubungi admin kami untuk menanyakan stok, harga, promo, dan simulasi kredit motor Honda.</p>
+    <p class="mt-4 text-sm leading-relaxed text-zinc-600">Kunjungi showroom kami atau hubungi admin kami untuk menanyakan stok, harga, promo, dan simulasi kredit motor Honda.</p>
 
     {{-- Info + peta --}}
     <div class="mt-8 grid gap-6 lg:grid-cols-5 lg:gap-8">

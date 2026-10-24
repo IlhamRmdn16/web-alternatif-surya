@@ -37,7 +37,7 @@
 @endpush
 
 @section('content')
-<article class="mx-auto max-w-6xl px-4 pt-10">
+<article class="mx-auto max-w-6xl px-4 pt-10 md:pt-12">
     <nav class="text-xs text-zinc-500" aria-label="Breadcrumb">
         <a href="{{ route('home') }}" class="hover:text-honda">Beranda</a> /
         <a href="{{ route('news.index') }}" class="hover:text-honda">Berita</a>
@@ -51,14 +51,14 @@
                  class="mt-6 w-full rounded-2xl md:float-right md:ml-8 md:mb-4 md:mt-4 md:w-5/12">
         @endif
 
-        <h1 class="mt-4 text-2xl font-extrabold leading-tight text-zinc-900 md:text-4xl">{{ $post->title }}</h1>
+        <h1 class="mt-4 text-xl font-extrabold leading-tight text-zinc-900 md:text-3xl">{{ $post->title }}</h1>
         <p class="mt-3 text-sm text-zinc-500">{{ $date->translatedFormat('d F Y') }} &middot; CV. Surya Wijaya Sejahtera</p>
 
         <div class="page-content mt-8 md:mt-6">{!! $post->content !!}</div>
     </div>
 
-    <div class="clear-both mt-10 rounded-2xl bg-zinc-900 p-6 text-white md:p-8">
-        <p class="text-lg font-extrabold">Tertarik dengan motor Honda?</p>
+    <div class="clear-both mt-8 rounded-2xl bg-zinc-900 p-6 text-white md:p-8">
+        <p class="text-base font-extrabold">Tertarik dengan motor Honda?</p>
         <p class="mt-1 text-sm text-zinc-400">Lihat harga terbaru atau konsultasikan langsung dengan admin kami.</p>
         <div class="mt-5 flex flex-wrap gap-3">
             <a href="{{ route('pricelist') }}" class="rounded-xl bg-honda px-6 py-3 text-sm font-bold hover:bg-honda-dark">Lihat Daftar Harga</a>
@@ -68,7 +68,7 @@
 </article>
 
 @if($related->isNotEmpty())
-<section class="mx-auto max-w-7xl px-4 pt-16">
+<section class="mx-auto max-w-7xl px-4 pt-10 md:pt-12">
     <h2 class="text-xl font-extrabold text-zinc-900 md:text-2xl">Berita lainnya</h2>
     <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
         @foreach($related as $post) @include('partials.post-card') @endforeach

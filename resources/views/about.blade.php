@@ -45,8 +45,8 @@
     <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-24 pt-12 md:pb-32 md:pt-16 {{ $heroPhoto ? 'lg:grid-cols-2' : '' }}">
         <div>
             <p class="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-amber-300"><span class="h-px w-8 bg-amber-300/70"></span>{{ $h['eyebrow'] }}</p>
-            <h1 class="mt-4 text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">{!! $titleHtml !!}</h1>
-            <p class="mt-5 max-w-xl text-base leading-relaxed text-zinc-300 md:text-lg">{{ $h['text'] }}</p>
+            <h1 class="mt-4 text-2xl font-extrabold leading-[1.15] tracking-tight sm:text-3xl lg:text-4xl">{!! $titleHtml !!}</h1>
+            <p class="mt-5 max-w-xl text-sm leading-relaxed text-zinc-300">{{ $h['text'] }}</p>
             <div class="mt-8 flex flex-wrap gap-3">
                 @if($h['btn1'])<a href="#cerita" data-scroll="cerita" class="inline-flex items-center gap-2 rounded-full bg-honda px-6 py-3 text-sm font-bold text-white transition hover:bg-honda-dark">{{ $h['btn1'] }} <span aria-hidden="true">&darr;</span></a>@endif
                 @if($h['btn2'])<a href="#layanan" data-scroll="layanan" class="inline-flex items-center rounded-full border border-white/30 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10">{{ $h['btn2'] }}</a>@endif
@@ -68,7 +68,7 @@
     <div class="grid gap-3 sm:grid-cols-3 md:gap-5">
         @foreach($about['stats'] as $st)
             <div class="rounded-2xl border border-zinc-200 bg-white p-5 shadow-lg">
-                <p class="text-2xl font-extrabold text-honda md:text-3xl">{{ $st['value'] }}</p>
+                <p class="text-xl font-extrabold text-honda md:text-2xl">{{ $st['value'] }}</p>
                 <p class="mt-1 text-sm font-bold text-zinc-900">{{ $st['label'] }}</p>
                 <p class="text-xs text-zinc-500">{{ $st['desc'] }}</p>
             </div>
@@ -77,15 +77,15 @@
 </section>
 
 {{-- CERITA --}}
-<section id="cerita" class="mx-auto max-w-7xl scroll-mt-24 px-4 pt-16 md:pt-24 lg:scroll-mt-28">
+<section id="cerita" class="mx-auto max-w-7xl scroll-mt-24 px-4 pt-10 md:pt-12 lg:scroll-mt-28">
     <div class="grid items-center gap-8 lg:gap-14 {{ $storyPhoto ? 'lg:grid-cols-2' : '' }}">
         @if($storyPhoto)
             <img src="{{ $storyPhoto }}" alt="{{ $story['title'] }}" loading="lazy" class="aspect-[4/3] w-full rounded-3xl object-cover shadow-xl">
         @endif
         <div>
             <p class="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-honda"><span class="h-px w-8 bg-honda/60"></span>{{ $story['eyebrow'] }}</p>
-            <h2 class="mt-3 text-2xl font-extrabold leading-tight tracking-tight text-zinc-900 md:text-4xl">{{ $story['title'] }}</h2>
-            <div class="mt-5 space-y-4 text-sm leading-relaxed text-zinc-600 md:text-base">
+            <h2 class="mt-3 text-xl font-extrabold leading-tight tracking-tight text-zinc-900 md:text-2xl">{{ $story['title'] }}</h2>
+            <div class="mt-5 space-y-4 text-sm leading-relaxed text-zinc-600">
                 @foreach($paras as $p)<p>{{ $p }}</p>@endforeach
             </div>
         </div>
@@ -93,17 +93,17 @@
 </section>
 
 {{-- LAYANAN --}}
-<section id="layanan" class="mt-16 scroll-mt-20 bg-zinc-50 py-16 md:mt-24 md:py-20 lg:scroll-mt-24">
+<section id="layanan" class="mt-10 scroll-mt-20 bg-zinc-50 py-10 md:mt-12 md:py-12 lg:scroll-mt-24">
     <div class="mx-auto max-w-7xl px-4">
         <p class="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-honda"><span class="h-px w-8 bg-honda/60"></span>{{ $svc['eyebrow'] }}</p>
-        <h2 class="mt-3 text-3xl font-extrabold leading-tight tracking-tight text-zinc-900 md:text-5xl">{{ $svc['title'] }}</h2>
-        <p class="mt-4 text-sm leading-relaxed text-zinc-600 md:text-base">{{ $svc['intro'] }}</p>
+        <h2 class="mt-3 text-xl font-extrabold leading-tight tracking-tight text-zinc-900 md:text-2xl">{{ $svc['title'] }}</h2>
+        <p class="mt-4 text-sm leading-relaxed text-zinc-600">{{ $svc['intro'] }}</p>
 
         <div class="mt-8 grid gap-4 md:grid-cols-3 md:gap-6">
             @foreach($svc['items'] as $it)
                 <div class="flex flex-col rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
                     <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 text-sm font-extrabold text-honda">{{ $it['code'] }}</span>
-                    <h3 class="mt-4 text-lg font-bold text-zinc-900">{{ $it['title'] }}</h3>
+                    <h3 class="mt-4 text-base font-bold text-zinc-900">{{ $it['title'] }}</h3>
                     <p class="mt-2 text-sm leading-relaxed text-zinc-600">{{ $it['text'] }}</p>
                     @if($it['chip'])<div class="mt-auto pt-5"><span class="inline-block rounded-full bg-red-50 px-3 py-1.5 text-xs font-bold text-honda">{{ $it['chip'] }}</span></div>@endif
                 </div>
@@ -113,19 +113,19 @@
 </section>
 
 {{-- VISI & MISI --}}
-<section class="mx-auto max-w-7xl px-4 pt-16 md:pt-24">
+<section class="mx-auto max-w-7xl px-4 pt-10 md:pt-12">
     <p class="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-honda"><span class="h-px w-8 bg-honda/60"></span>{{ $vm['eyebrow'] }}</p>
-    <h2 class="mt-3 text-3xl font-extrabold leading-tight tracking-tight text-zinc-900 md:text-5xl">{{ $vm['title'] }}</h2>
+    <h2 class="mt-3 text-xl font-extrabold leading-tight tracking-tight text-zinc-900 md:text-2xl">{{ $vm['title'] }}</h2>
 
     <div class="mt-8 grid gap-4 md:grid-cols-2 md:gap-6">
         <div class="rounded-3xl bg-zinc-50 p-6 md:p-8">
-            <h3 class="text-2xl font-bold text-zinc-900">Visi</h3>
-            <p class="mt-3 text-sm font-bold leading-relaxed text-zinc-900 md:text-base">&ldquo;{{ $vm['vision_quote'] }}&rdquo;</p>
-            <p class="mt-3 text-sm leading-relaxed text-zinc-600 md:text-base">{{ $vm['vision_text'] }}</p>
+            <h3 class="text-base font-bold text-zinc-900">Visi</h3>
+            <p class="mt-3 text-sm font-bold leading-relaxed text-zinc-900">&ldquo;{{ $vm['vision_quote'] }}&rdquo;</p>
+            <p class="mt-3 text-sm leading-relaxed text-zinc-600">{{ $vm['vision_text'] }}</p>
         </div>
         <div class="rounded-3xl bg-zinc-50 p-6 md:p-8">
-            <h3 class="text-2xl font-bold text-zinc-900">Misi</h3>
-            <ol class="mt-3 list-decimal space-y-3 pl-5 text-sm leading-relaxed text-zinc-600 marker:font-semibold marker:text-honda md:text-base">
+            <h3 class="text-base font-bold text-zinc-900">Misi</h3>
+            <ol class="mt-3 list-decimal space-y-3 pl-5 text-sm leading-relaxed text-zinc-600 marker:font-semibold marker:text-honda">
                 @foreach($missions as $m)<li>{{ $m }}</li>@endforeach
             </ol>
         </div>
@@ -134,10 +134,10 @@
 
 {{-- SALES COUNTER (hanya foto + nama) --}}
 @if(isset($sales) && $sales->isNotEmpty())
-<section id="sales" class="mx-auto max-w-7xl scroll-mt-24 px-4 pt-16 md:pt-24">
+<section id="sales" class="mx-auto max-w-7xl scroll-mt-24 px-4 pt-10 md:pt-12">
     <p class="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-honda"><span class="h-px w-8 bg-honda/60"></span>Tim Kami</p>
-    <h2 class="mt-3 text-3xl font-extrabold leading-tight tracking-tight text-zinc-900 md:text-5xl">Sales Counter</h2>
-    <p class="mt-4 text-sm leading-relaxed text-zinc-600 md:text-base">Tim sales counter yang siap melayani kebutuhan motor Honda Anda di showroom.</p>
+    <h2 class="mt-3 text-xl font-extrabold leading-tight tracking-tight text-zinc-900 md:text-2xl">Sales Counter</h2>
+    <p class="mt-4 text-sm leading-relaxed text-zinc-600">Tim sales counter yang siap melayani kebutuhan motor Honda Anda di showroom.</p>
 
     <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-6">
         @foreach($sales as $s)
@@ -145,9 +145,9 @@
                 @if($s->photo)
                     <img src="{{ asset('storage/'.$s->photo) }}" alt="{{ $s->name }} - Sales Counter Honda Garut" loading="lazy" class="h-24 w-24 rounded-full object-cover ring-4 ring-zinc-100 md:h-28 md:w-28">
                 @else
-                    <div class="flex h-24 w-24 items-center justify-center rounded-full bg-zinc-100 text-3xl font-extrabold text-zinc-400 ring-4 ring-zinc-50 md:h-28 md:w-28">{{ Str::upper(Str::substr($s->name, 0, 1)) }}</div>
+                    <div class="flex h-24 w-24 items-center justify-center rounded-full bg-zinc-100 text-2xl font-extrabold text-zinc-400 ring-4 ring-zinc-50 md:h-28 md:w-28">{{ Str::upper(Str::substr($s->name, 0, 1)) }}</div>
                 @endif
-                <p class="mt-4 text-sm font-bold text-zinc-900 md:text-base">{{ $s->name }}</p>
+                <p class="mt-4 text-sm font-bold text-zinc-900">{{ $s->name }}</p>
             </div>
         @endforeach
     </div>
@@ -156,17 +156,17 @@
 
 {{-- JANGKAUAN LAYANAN: daftar kecamatan --}}
 @if($areas->isNotEmpty())
-<section class="mx-auto max-w-7xl px-4 pt-16 md:pt-24"
+<section class="mx-auto max-w-7xl px-4 pt-10 md:pt-12"
          x-data="{ q: '', all: {{ Js::from($areas->map(fn ($a) => Str::lower($a['name']))->values()) }},
                    get shown() { const s = this.q.trim().toLowerCase(); return s === '' ? this.all.length : this.all.filter(n => n.includes(s)).length; } }">
     <p class="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-honda"><span class="h-px w-8 bg-honda/60"></span>{{ $ar['eyebrow'] }}</p>
-    <h2 class="mt-3 text-3xl font-extrabold leading-tight tracking-tight text-zinc-900 md:text-5xl">{{ $ar['title'] }}</h2>
-    <p class="mt-4 text-sm leading-relaxed text-zinc-600 md:text-base">{{ $ar['intro'] }}</p>
+    <h2 class="mt-3 text-xl font-extrabold leading-tight tracking-tight text-zinc-900 md:text-2xl">{{ $ar['title'] }}</h2>
+    <p class="mt-4 text-sm leading-relaxed text-zinc-600">{{ $ar['intro'] }}</p>
 
     <div class="mt-8 rounded-3xl border border-zinc-200 bg-white p-5 shadow-sm md:p-8">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div class="flex items-center gap-3">
-                <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-xl font-extrabold text-honda">{{ $areas->count() }}</span>
+                <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-lg font-extrabold text-honda">{{ $areas->count() }}</span>
                 <div>
                     <p class="text-sm font-bold text-zinc-900">Kecamatan terlayani</p>
                     <p class="text-xs text-zinc-500">di seluruh Kabupaten Garut</p>

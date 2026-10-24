@@ -17,7 +17,7 @@
     </div>
     <div class="flex flex-1 flex-col p-4">
         @if($single)
-            <h3 class="text-base font-bold leading-snug text-zinc-900 md:text-lg">{{ $c->name }} Series</h3>
+            <h3 class="text-sm font-bold leading-snug text-zinc-900 md:text-base">{{ $c->name }} Series</h3>
             <p class="mt-0.5 text-xs font-semibold text-zinc-500">Tipe: {{ $c->variant }}</p>
             @php($dots = $c->colors->filter(fn ($col) => $col->hex)->values())
             @if($dots->isNotEmpty())
@@ -30,7 +30,7 @@
             @endif
             <p class="mt-3 text-xs text-zinc-500">{{ $c->has_varied_prices ? 'Harga OTR mulai' : 'Harga OTR' }}</p>
         @else
-            <h3 class="text-base font-bold leading-snug text-zinc-900 md:text-lg">{{ $s->name }} Series</h3>
+            <h3 class="text-sm font-bold leading-snug text-zinc-900 md:text-base">{{ $s->name }} Series</h3>
             <p class="mt-0.5 text-xs text-zinc-500">{{ $s->types->count() }} tipe: {{ $s->types->pluck('variant')->take(3)->implode(', ') }}{{ $s->types->count() > 3 ? ', ...' : '' }}</p>
             <p class="mt-4 text-xs text-zinc-500">Harga OTR mulai</p>
         @endif

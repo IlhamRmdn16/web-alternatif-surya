@@ -1,6 +1,6 @@
 {{-- Berita dan Tips di beranda. HP/tablet: semua berita bisa digeser ke kanan. Desktop: 3 berita sebaris. --}}
 @if($posts->isNotEmpty())
-<section class="mx-auto max-w-7xl px-4 pt-16">
+<section class="mx-auto max-w-7xl px-4 pt-10 md:pt-12">
     <div class="flex items-end justify-between gap-3">
         <div>
             <h2 class="text-xl font-extrabold text-zinc-900 md:text-2xl">Berita dan Tips</h2>
